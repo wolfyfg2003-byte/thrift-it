@@ -1,0 +1,36 @@
+---
+description: "Supabase database operations, schema standards, and typescript type generation"
+globs: "src/lib/supabase/**/*.ts, src/types/database.types.ts, src/api/**/*.ts"
+alwaysApply: false
+---
+# Supabase & Database Architecture Rules
+
+This rule enforces type safety and database conventions for the Supabase backend. Always load this rule when interacting with Supabase clients, database queries, or tables.
+
+## Supabase Client Best Practices
+- **Strict TypeScript Auto-Complete:** Always use the generated types when initializing the Supabase client:
+  ```typescript
+  import { createClient } from '@supabase/supabase-js';
+  import { Database } from '@/types/database.types';
+  
+  export const supabase = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+  ```
+- **Query Structure:** Never fetch unneeded fields. Specify exactly which columns to select (`.select('id, title, price')`) to minimize token consumption and speed up database round-trips.
+
+## Core Database Schema Rules
+- **user_profiles:** Stores user details, wallets, active roles (buyer, seller, concierge), and verified identity metadata.
+- **listings:** Stores contemporary clothing items. 
+  - Must include: `id`, `brand`, `size`, `condition`, `price`, `original_photo_url`, `escrow_status`, and `is_consignment`.
+  - Photo Constraint: Enforce metadata validation checks ensuring images are original phone photos rather than stock screenshots.
+- **make_an_offer_logs:**
+  - Must include: `id`, `listing_id`, `buyer_id`, `offered_price`, `status` (pending, accepted, declined, countered), and `expires_at`.
+- **escrow_balances:**
+  - Tracks payments held in trust. Balance increases on transaction checkout and is only released to `user_profiles.wallet_balance` upon buyer accept or a successful 12-hour delivery verification.
+
+## Terminal Code Generation Protection
+- **Stale Type Defs Warning:** If the developer is actively editing schema or client services, always double-check that local types have been re-generated:
+  `npx supabase gen types typescript --local > src/types/database.types.ts`
+  This eliminates TypeScript errors caused by out-of-date interfaces.

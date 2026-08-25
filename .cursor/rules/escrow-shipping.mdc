@@ -1,0 +1,34 @@
+---
+description: "Logic rules for Mamo Pay escrow, secure payouts, and automated AJEX logistics"
+globs: "src/api/payment/**/*.ts, src/api/shipping/**/*.ts, src/hooks/useCheckout.ts"
+alwaysApply: false
+---
+# Escrow & Logistics Integration Rules
+
+This rule manages the software logic for escrow-based payments and automated last-mile shipping fulfillment. Always load this when writing transaction, checkout, or dispatch logic.
+
+## 1. Mamo Pay Escrow Logic
+- **Checkout Escrow Trigger:** Upon a buyer clicking "Buy Now" or completing an accepted offer, authorize the transaction amount and place the funds in a secure, digital escrow status:
+  `transaction.status = 'escrow_held'`
+- **The 12-Hour Inspection Timer (accelerated release):**
+  - Upon AJEX courier updating status to `delivered`, start a 12-hour auto-release countdown.
+  - During that window the buyer may tap **Accept Order & Release Funds** to set `transaction.status = 'completed'` and dispatch payout to `user_profiles.wallet_balance` immediately.
+  - If no dispute is filed within 12 hours, automatically release the escrow funds and credit the seller's wallet (`completed`).
+  - If a dispute is opened, freeze the transaction (`frozen`) and stop the countdown. Never release frozen escrow funds automatically.
+
+## 2. AJEX Last-Mile Courier Integration
+- **Automated Label Generation:**
+  - The moment a transaction is placed in `escrow_held`, programmatically invoke the AJEX API to generate a domestic prepaid shipping label in PDF format.
+  - Save this PDF path to `listings.shipping_label_url`.
+  - Expose this label directly in the seller's "My Sales" dashboard.
+- **Logistics Arbitrage Tracking:**
+  - Programmatically calculate shipping costs.
+  - Charge the buyer a flat **AED 20** shipping fee at checkout.
+  - Book the AJEX courier at your negotiated bulk rate of **AED 14**.
+  - Track and verify that the net **AED 6** margin is credited to the company account.
+
+## 3. The "Make an Offer" Negotiation Floor
+- **Math Floor Validation:** Before passing an offer to the seller, validate that:
+  `offered_price >= original_price * 0.8`
+  Reject any offer below this floor directly at the API route level with a clear error: *"To respect our sellers' time, offers must be at least 80% of the asking price."*
+- **Acceptance Lock-In:** If an offer is accepted, lock the listing status to `offer_accepted` and apply a strict 24-hour expiration window. If unpaid after 24 hours, return the listing status to `active` automatically.

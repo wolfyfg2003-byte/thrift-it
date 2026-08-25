@@ -1,0 +1,30 @@
+---
+description: "Aesthetic rules and typography scale using Impeccable design guidelines to eliminate AI slop"
+globs: "src/components/**/*.tsx, src/app/**/*.tsx, src/styles/**/*.css"
+alwaysApply: true
+---
+# Impeccable Design Guidelines for Apex Swap
+
+This rule ensures that all generated frontends look like a human designer crafted them rather than an AI generator. Always apply these guidelines to visual styling.
+
+## Typography Scale & Hierarchy
+- **Header Font:** Use Plus Jakarta Sans or Figtree. Do not use default Inter or Arial.
+- **Body Font:** Match with clean secondary font (line length capped between 65-75 characters).
+- **Scale:**
+  - Display / Hero (H1): 32px (used selectively, never for standard section headers)
+  - Section Headers: 20px (clear visual landmarks)
+  - Body Content: 16px (legible, warm contrast)
+  - Secondary Elements: 14px (navigation, buttons, form labels)
+  - Metadata / Badges: 12px (supporting data, status tags)
+
+## OKLCH Color Axis & Commitment
+- **No Pure Neutral Colors:** Never use raw `#000` or `#fff`. Use warm-tinted neutrals by adding 0.005 to 0.01 chroma tuned to the brand's primary hue.
+- **Restrained Color Strategy (Product default):** Tinted neutrals dominate the UI, with a single high-saturation brand accent color representing $\le10\%$ of the screen (used only for primary CTAs).
+- **Contrast:** Always verify WCAG AA compliance (4.5:1 contrast ratio). Never overlay gray text on saturated color backdrops.
+
+## Absolute Design Bans (Match & Refuse)
+- **No Side-Stripe Card Accents:** Do not use `border-left` or `border-right` greater than 1px as a colored accent on cards, lists, or alerts. Use standard borders or background tints.
+- **No Gradient Text:** Strictly ban `background-clip: text` gradients on headers. Use solid, high-contrast, bold typography.
+- **No Monotonous Card Grids:** Avoid repeated card layouts (icon + header + text in identical sizes). Use asymmetrical spacing, custom groupings, or left-aligned typography.
+- **No Modals by Default:** Avoid popups or modals as a first resort. Exhaust inline or progressive disclosure patterns first.
+- **No Bounce Transitions:** Do not use elastic or bouncy easing curves. Animations must use physics-based deceleration curves (`ease-out-quart` or `ease-out-expo`).
