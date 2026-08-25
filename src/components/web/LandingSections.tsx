@@ -1,4 +1,5 @@
 import { TeaserDeck } from "@/components/mobile/TeaserDeck";
+import { Accordion } from "@/components/web/Accordion";
 import { PhoneFrame } from "@/components/web/PhoneFrame";
 import type { TeaserDeckData } from "@/lib/listings";
 
@@ -44,18 +45,7 @@ export function LandingSections({ deck }: LandingSectionsProps) {
           <h2 className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             How It Works
           </h2>
-          <div className="mt-8 grid gap-10 lg:grid-cols-3">
-            {STEPS.map((step) => (
-              <div key={step.title}>
-                <h3 className="font-figtree text-[16px] leading-6 font-semibold tracking-[-0.01em] text-[oklch(0.22_0.025_55)]">
-                  {step.title}
-                </h3>
-                <p className="mt-3 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-                  {step.body}
-                </p>
-              </div>
-            ))}
-          </div>
+          <Accordion items={STEPS} name="how-it-works" />
         </div>
 
         {deck ? (
@@ -85,18 +75,7 @@ export function LandingSections({ deck }: LandingSectionsProps) {
         <h2 className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
           The Tech
         </h2>
-        <div className="mt-8 grid gap-10 lg:grid-cols-3">
-          {TECH.map((item) => (
-            <div key={item.title}>
-              <h3 className="font-figtree text-[16px] leading-6 font-semibold tracking-[-0.01em] text-[oklch(0.22_0.025_55)]">
-                {item.title}
-              </h3>
-              <p className="mt-3 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-                {item.body}
-              </p>
-            </div>
-          ))}
-        </div>
+        <Accordion items={TECH} name="the-tech" />
       </section>
     </div>
   );
