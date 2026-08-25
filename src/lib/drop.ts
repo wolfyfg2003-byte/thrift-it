@@ -4,7 +4,7 @@ type DropSource = Listing | string | undefined;
 
 function dropInstant(source: DropSource): string | undefined {
   if (!source) return undefined;
-  return typeof source === "string" ? source : source.dropTime;
+  return typeof source === "string" ? source : source.dropTime ?? undefined;
 }
 
 export function remainingDropMs(source: DropSource, now = Date.now()): number {
