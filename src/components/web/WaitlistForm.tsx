@@ -92,8 +92,7 @@ export function WaitlistForm({
         role="status"
       >
         <p className="font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)] lg:text-[20px]">
-          You’re on the list! Keep an eye on your inbox/phone this Sunday at 8 PM
-          GST.
+          You’re on the list. We’ll write when the closet opens.
         </p>
       </div>
     );

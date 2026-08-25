@@ -1,11 +1,11 @@
 const GATES = [
   {
     title: "48-Hour Escrow",
-    body: "Mamo Pay holds the buyer’s payment after delivery. If no dispute is opened within 48 hours, funds release to the seller.",
+    body: "Payment is held after delivery. If no dispute is opened within 48 hours, funds release to the seller.",
   },
   {
-    title: "AJEX flat-rate courier",
-    body: "Domestic pickup and tracked delivery across the UAE. Buyers pay a published flat shipping rate; a prepaid AJEX label is issued after checkout.",
+    title: "Tracked courier",
+    body: "Domestic pickup and tracked delivery across the UAE. Buyers pay a published flat shipping rate; a prepaid label is issued after checkout.",
   },
   {
     title: "UAE Consumer Protection",
@@ -33,7 +33,7 @@ export function Footer() {
           ))}
         </div>
         <p className="mt-12 text-[12px] leading-4 text-[oklch(0.5_0.02_55)] lg:mt-16">
-          Thrift It · Dubai · Demonstration marketplace
+          Thrift It · Dubai
         </p>
       </div>
     </footer>

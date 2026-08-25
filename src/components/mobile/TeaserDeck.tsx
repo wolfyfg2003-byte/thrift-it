@@ -3,7 +3,6 @@
 import { WaitlistForm } from "@/components/web/WaitlistForm";
 import { formatAed } from "@/lib/checkout";
 import type { PreviewPlate, TeaserDeckData } from "@/lib/listings";
-import { formatCountdown, nextSundayDropMs } from "@/lib/next-drop";
 import { Heart, Info, RotateCcw, X } from "lucide-react";
 import {
   useCallback,
@@ -32,12 +31,10 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
   const [gate, setGate] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [inView, setInView] = useState(false);
-  const [now, setNow] = useState(() => Date.now());
   const startX = useRef(0);
   const pointer = useRef<number | null>(null);
   const cardRef = useRef<HTMLElement | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const remaining = nextSundayDropMs(now) - now;
 
   const onGate = index >= 2;
   const current = onGate ? null : plates[index];
@@ -51,11 +48,6 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
     sync();
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
-    const tick = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(tick);
   }, []);
 
   useEffect(() => {
@@ -176,10 +168,7 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
             className="pointer-events-none absolute inset-0 rounded-[1.5rem] shadow-[0_22px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
           />
           {next === "gate" || onGate ? (
-            <MysteryCard
-              photo={deck.mysteryPhoto}
-              countdown={formatCountdown(remaining)}
-            />
+            <MysteryCard photo={deck.mysteryPhoto} />
           ) : next ? (
             <article
               aria-hidden
@@ -270,8 +259,8 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
               Join the VIP waitlist
             </p>
             <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
-              Sunday 8:00 PM GST is the demonstration drop time — not a live
-              inventory claim.
+              The live closet is not public yet. Leave your details and we will
+              write when it opens.
             </p>
             <div className="mt-4">
               <WaitlistForm variant="drawer" />
@@ -283,13 +272,7 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
   );
 }
 
-function MysteryCard({
-  photo,
-  countdown,
-}: {
-  photo: string;
-  countdown: string;
-}) {
+function MysteryCard({ photo }: { photo: string }) {
   return (
     <article className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]">
       <img
@@ -305,10 +288,10 @@ function MysteryCard({
         >
           <LockMark />
           <p className="mt-3 text-[12px] font-semibold tracking-[0.16em] text-[oklch(0.38_0.03_55)] uppercase">
-            Next reveal in
+            Coming soon
           </p>
-          <p className="mt-2 font-figtree text-[32px] leading-none font-semibold tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
-            {countdown}
+          <p className="mt-2 font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+            Join the waitlist
           </p>
         </div>
       </div>

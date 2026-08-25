@@ -49,11 +49,11 @@ const CHAT = [
   },
   {
     from: "seller" as const,
-    text: "I’ll take it. Packed tonight. AJEX label is yours.",
+    text: "I’ll take it. Packed tonight. Courier label is yours.",
   },
   {
     from: "system" as const,
-    text: "Offer accepted. Pay into Mamo Pay escrow.",
+    text: "Offer accepted. Pay into escrow.",
   },
 ];
 
@@ -584,7 +584,7 @@ function CheckoutStage({
       label: "Buyer protection (20%)",
       value: formatAed(quote.buyer_protection_fee),
     },
-    { label: "Flat AJEX courier fee", value: formatAed(quote.shipping_fee) },
+    { label: "Flat courier fee", value: formatAed(quote.shipping_fee) },
   ] as const;
 
   return (
@@ -628,7 +628,7 @@ function CheckoutStage({
           color: pulse ? "oklch(0.82 0.1 78)" : undefined,
         }}
       >
-        Pay with Mamo Pay
+        Pay into escrow
       </div>
     </div>
   );
@@ -648,7 +648,7 @@ function TimelineStage({ track }: { track: number }) {
         Escrow timeline
       </p>
       <p className="mt-2 text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
-        Mamo Pay holds the funds. AJEX is on the way. Demonstration status.
+        Escrow holds the funds. Courier is on the way.
       </p>
       <ol className="mt-6 flex flex-col">
         {stops.map((label, index) => {
@@ -705,7 +705,7 @@ function InspectStage({
           48-hour inspection
         </p>
         <p className="mt-3 max-w-[34ch] text-[14px] leading-6 text-[oklch(0.42_0.03_55)]">
-          Delivered. Mamo Pay still holds the money. The buyer must Accept item
+          Delivered. Escrow still holds the money. The buyer must Accept item
           to release payout, or Reject & dispute to freeze it.
         </p>
         <p

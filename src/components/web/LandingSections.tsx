@@ -9,7 +9,7 @@ const STEPS = [
   },
   {
     title: "Pay into escrow",
-    body: "Mamo Pay holds the charge. AJEX generates a prepaid label. Nothing is a classified meetup.",
+    body: "Escrow holds the charge. A prepaid courier label is generated. Nothing is a classified meetup.",
   },
   {
     title: "Inspect, then release",
@@ -19,12 +19,12 @@ const STEPS = [
 
 const TECH = [
   {
-    title: "Mamo Pay escrow",
+    title: "Escrow hold",
     body: "The buyer’s payment is held until the inspection window closes. Payout is not instant on tap.",
   },
   {
-    title: "AJEX courier",
-    body: "Buyers pay a published flat AED 20. A prepaid label is issued after checkout at the contracted wholesale rate.",
+    title: "Tracked courier",
+    body: "Buyers pay a published flat AED 20. A prepaid label is issued after checkout.",
   },
   {
     title: "Two seller doors",
