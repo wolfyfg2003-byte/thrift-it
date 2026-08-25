@@ -1,7 +1,6 @@
 "use client";
 
 import { WaitlistForm } from "@/components/web/WaitlistForm";
-import { WaitlistQr } from "@/components/web/WaitlistQr";
 import { formatAed } from "@/lib/checkout";
 import type { PreviewPlate, TeaserDeckData } from "@/lib/listings";
 import { formatCountdown, nextSundayDropMs } from "@/lib/next-drop";
@@ -268,15 +267,12 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
             aria-label="App waitlist gate"
           >
             <p className="text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
-              The real drops happen on the app.
+              Join the VIP waitlist
             </p>
             <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
-              Join the VIP waitlist. Sunday 8:00 PM GST is the demonstration
-              drop time — not a live inventory claim.
+              Sunday 8:00 PM GST is the demonstration drop time — not a live
+              inventory claim.
             </p>
-            <div className="mt-4 hidden lg:block">
-              <WaitlistQr />
-            </div>
             <div className="mt-4">
               <WaitlistForm variant="drawer" />
             </div>

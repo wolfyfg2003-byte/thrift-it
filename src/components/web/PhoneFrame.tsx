@@ -1,11 +1,10 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 const TABS = [
-  { href: "/app", label: "Home", icon: HomeIcon },
-  { href: "/chats", label: "Inbox", icon: InboxIcon },
-  { href: "/sell", label: "Sell", icon: SellIcon },
-  { href: "/closet", label: "Closet", icon: ClosetIcon },
+  { id: "home", label: "Home", icon: HomeIcon },
+  { id: "inbox", label: "Inbox", icon: InboxIcon },
+  { id: "sell", label: "Sell", icon: SellIcon },
+  { id: "closet", label: "Closet", icon: ClosetIcon },
 ] as const;
 
 type PhoneFrameProps = {
@@ -30,26 +29,24 @@ export function PhoneFrame({
           </div>
           <nav
             aria-label={label}
-            className="shrink-0 border-t border-[#E5D9C4] bg-[#FDFBF7]"
+            className="pointer-events-none shrink-0 border-t border-[#E5D9C4] bg-[#FDFBF7]"
           >
             <ul className="grid h-[3.85rem] grid-cols-4">
               {TABS.map((tab) => {
                 const Icon = tab.icon;
-                const active = tab.href === "/app";
+                const active = tab.id === "home";
                 return (
-                  <li key={tab.href} className="contents">
-                    <Link
-                      href={tab.href}
+                  <li key={tab.id} className="contents">
+                    <span
                       className={`flex flex-col items-center justify-center gap-0.5 text-[11px] leading-4 ${
                         active
                           ? "font-semibold text-[oklch(0.22_0.025_55)]"
                           : "text-[oklch(0.5_0.03_55)]"
                       }`}
-                      aria-current={active ? "page" : undefined}
                     >
                       <Icon active={active} />
                       {tab.label}
-                    </Link>
+                    </span>
                   </li>
                 );
               })}

@@ -5,7 +5,7 @@ import type { TeaserDeckData } from "@/lib/listings";
 const STEPS = [
   {
     title: "Swipe the closet",
-    body: "Pass left, like right. Offers cannot drop below 80% of asking. Demonstration teaser — the live deck is the app.",
+    body: "Pass left, like right. Offers cannot drop below 80% of asking. Demonstration teaser — the live closet is not public yet.",
   },
   {
     title: "Pay into escrow",
@@ -68,8 +68,8 @@ export function LandingSections({ deck }: LandingSectionsProps) {
                 Now try it yourself
               </h3>
               <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-                Pass left, like right, or use the arrow keys. Same loop as the
-                app — demonstration plates, then the waitlist gate.
+                Pass left, like right, or use the arrow keys. Demonstration
+                plates, then the waitlist form.
               </p>
             </div>
             <div className="order-1 lg:order-2">

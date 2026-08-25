@@ -1,6 +1,5 @@
 "use client";
 
-import { WaitlistQr } from "@/components/web/WaitlistQr";
 import { formatAed, quoteCheckout } from "@/lib/checkout";
 import { Heart, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -58,7 +57,7 @@ const CHAT = [
   },
 ];
 
-type Step = "swipe" | "bargain" | "chat" | "checkout" | "timeline" | "inspect" | "gate";
+type Step = "swipe" | "bargain" | "chat" | "checkout" | "timeline" | "inspect";
 type BargainPhase = "offer" | "sending";
 type SwipeMotion = "hold" | "drift" | "fly";
 type InspectPhase = "choose" | "accept";
@@ -262,10 +261,6 @@ export function TeaserPipeline() {
         setInspectPhase("accept");
         await wait(2000);
         if (cancelled) return;
-
-        setStep("gate");
-        await wait(4200);
-        if (cancelled) return;
       }
     };
 
@@ -316,7 +311,6 @@ export function TeaserPipeline() {
           held={quote.total_charge}
         />
       ) : null}
-      {step === "gate" ? <GateStage /> : null}
     </div>
   );
 }
@@ -751,31 +745,6 @@ function InspectStage({
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function GateStage() {
-  return (
-    <div className="flex min-h-0 flex-1 flex-col justify-end p-1">
-      <div
-        className="rounded-[1.25rem] border bg-[oklch(0.97_0.012_82)] px-4 py-5 motion-safe:animate-[teaser-overlay_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
-        style={{ borderColor: GOLD }}
-      >
-        <p className="font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
-          Ready to shop for real?
-        </p>
-        <p className="mt-2 text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
-          Join the waitlist beside this phone. Demonstration loop — not a live
-          checkout.
-        </p>
-        <div className="mt-4">
-          <WaitlistQr size={132} />
-        </div>
-        <div className="mt-4 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7]">
-          Secure My Early Access
-        </div>
-      </div>
     </div>
   );
 }
