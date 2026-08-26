@@ -4,15 +4,13 @@ import { addToWaitlist } from "@/app/actions/waitlist";
 import {
   formatUaeMobile,
   isVerifiedMobile,
-  localMobileDigits,
 } from "@/lib/profile-store";
 import {
   isValidEmail,
-  readWaitlist,
   saveWaitlist,
   type WaitlistEntry,
 } from "@/lib/waitlist-store";
-import { useEffect, useId, useState, useTransition, type FormEvent } from "react";
+import { useId, useState, useTransition, type FormEvent } from "react";
 
 const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 const LINE = "#2A1A14";
@@ -29,7 +27,7 @@ type WaitlistFormProps = {
 
 export function WaitlistForm({
   variant = "page",
-  submitLabel = "Join the VIP waitlist",
+  submitLabel = "Join the waitlist",
 }: WaitlistFormProps) {
   const emailId = useId();
   const mobileId = useId();
@@ -41,20 +39,6 @@ export function WaitlistForm({
     null,
   );
   const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    if (variant === "drawer") return;
-    const sync = () => {
-      const existing = readWaitlist();
-      if (!existing) return;
-      setJoined(existing);
-      setEmail(existing.email);
-      setMobileLocal(localMobileDigits(existing.mobile));
-    };
-    sync();
-    window.addEventListener("thrift-waitlist", sync);
-    return () => window.removeEventListener("thrift-waitlist", sync);
-  }, [variant]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -85,18 +69,16 @@ export function WaitlistForm({
     ? ""
     : "relative border border-[#2A1A14] bg-[#F4EFE6] px-5 py-6 shadow-[4px_4px_0_0_#2A1A14]";
 
-  if (joined) {
-    return (
-      <div className={shell} role="status">
-        <p className="font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14] lg:text-[20px]">
-          You’re on the list. We’ll write when the closet opens.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={onSubmit} noValidate className={shell}>
+      {joined ? (
+        <p
+          className="mb-4 font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14] lg:text-[20px]"
+          role="status"
+        >
+          You’re on the list. We’ll write when the closet opens.
+        </p>
+      ) : null}
       <div>
         <label
           htmlFor={emailId}
@@ -170,7 +152,7 @@ export function WaitlistForm({
           className="mt-4 border border-[#2A1A14] bg-[rgba(241,196,15,0.8)] px-3 py-2 text-center font-[family-name:var(--font-handwritten)] text-[16px] leading-5 text-[#2A1A14]"
           role="status"
         >
-          You’re already on the VIP list!
+          You’re already on the waitlist.
         </p>
       ) : null}
       {formError === "unknown" ? (

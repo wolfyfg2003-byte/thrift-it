@@ -266,7 +266,7 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
           >
             <div role="region" aria-label="App waitlist gate">
               <p className="font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14]">
-                Join the VIP waitlist
+                Join the waitlist
               </p>
               <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[#6B4A3A]">
                 The live closet is not public yet. Leave your details and we will

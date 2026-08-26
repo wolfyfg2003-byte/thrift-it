@@ -10,7 +10,7 @@ export function HomeEditorial() {
       <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
         Dubai contemporary resale with escrow and a courier label — not a
         classified meetup. Watch a sale play inside the phone, then join the
-        VIP waitlist.
+        waitlist.
       </p>
 
       <div id="waitlist" className="mt-8 scroll-mt-28 lg:mt-10 lg:scroll-mt-24">

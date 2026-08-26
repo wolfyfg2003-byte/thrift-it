@@ -48,7 +48,7 @@ export function Header() {
             className="shrink-0 border border-[#2A1A14] bg-[#D8829D] px-3 py-2 text-[12px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] lg:px-5 lg:py-2.5 lg:text-[14px]"
             style={{ transitionTimingFunction: EASE }}
           >
-            Join VIP Waitlist
+            Join waitlist
           </Link>
         </div>
         <nav
