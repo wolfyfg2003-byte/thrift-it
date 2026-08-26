@@ -14,8 +14,8 @@ import {
 } from "@/lib/waitlist-store";
 import { useEffect, useId, useState, useTransition, type FormEvent } from "react";
 
-const EASE = "cubic-bezier(0.25, 1, 0.5, 1)";
-const GOLD = "#E5D9C4";
+const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
+const LINE = "#2A1A14";
 
 type FieldErrors = {
   email?: string;
@@ -43,6 +43,7 @@ export function WaitlistForm({
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    if (variant === "drawer") return;
     const sync = () => {
       const existing = readWaitlist();
       if (!existing) return;
@@ -53,7 +54,7 @@ export function WaitlistForm({
     sync();
     window.addEventListener("thrift-waitlist", sync);
     return () => window.removeEventListener("thrift-waitlist", sync);
-  }, []);
+  }, [variant]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,16 +83,12 @@ export function WaitlistForm({
   const compact = variant === "drawer";
   const shell = compact
     ? ""
-    : "rounded-[1.5rem] border bg-[oklch(0.97_0.012_82)] px-5 py-6";
+    : "relative border border-[#2A1A14] bg-[#F4EFE6] px-5 py-6 shadow-[4px_4px_0_0_#2A1A14]";
 
   if (joined) {
     return (
-      <div
-        className={shell}
-        style={compact ? undefined : { borderColor: GOLD }}
-        role="status"
-      >
-        <p className="font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)] lg:text-[20px]">
+      <div className={shell} role="status">
+        <p className="font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14] lg:text-[20px]">
           You’re on the list. We’ll write when the closet opens.
         </p>
       </div>
@@ -99,16 +96,11 @@ export function WaitlistForm({
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className={shell}
-      style={compact ? undefined : { borderColor: GOLD }}
-    >
+    <form onSubmit={onSubmit} noValidate className={shell}>
       <div>
         <label
           htmlFor={emailId}
-          className="block text-[14px] leading-5 text-[oklch(0.22_0.025_55)]"
+          className="block text-[14px] leading-5 text-[#2A1A14]"
         >
           Email
         </label>
@@ -125,11 +117,11 @@ export function WaitlistForm({
             setErrors((prev) => ({ ...prev, email: undefined }));
             setFormError(null);
           }}
-          className="mt-1.5 h-12 w-full rounded-2xl border bg-[#FDFBF7] px-4 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)] disabled:opacity-60"
-          style={{ borderColor: errors.email ? "oklch(0.55 0.12 25)" : GOLD }}
+          className="mt-1.5 h-12 w-full border bg-[#F9F6F0] px-4 text-[16px] text-[#2A1A14] outline-none focus:border-[#4B6584] disabled:opacity-60"
+          style={{ borderColor: errors.email ? "#8B3A32" : LINE }}
         />
         {errors.email ? (
-          <p className="mt-1.5 text-[14px] leading-5 text-[oklch(0.5_0.1_25)]">
+          <p className="mt-1.5 text-[14px] leading-5 text-[#8B3A32]">
             {errors.email}
           </p>
         ) : null}
@@ -138,15 +130,15 @@ export function WaitlistForm({
       <div className="mt-4">
         <label
           htmlFor={mobileId}
-          className="block text-[14px] leading-5 text-[oklch(0.22_0.025_55)]"
+          className="block text-[14px] leading-5 text-[#2A1A14]"
         >
           UAE mobile
         </label>
         <div
-          className="mt-1.5 flex h-12 overflow-hidden rounded-2xl border bg-[#FDFBF7]"
-          style={{ borderColor: errors.mobile ? "oklch(0.55 0.12 25)" : GOLD }}
+          className="mt-1.5 flex h-12 overflow-hidden border bg-[#F9F6F0]"
+          style={{ borderColor: errors.mobile ? "#8B3A32" : LINE }}
         >
-          <span className="grid place-items-center px-3 text-[14px] text-[oklch(0.42_0.03_55)]">
+          <span className="grid place-items-center px-3 text-[14px] text-[#6B4A3A]">
             +971
           </span>
           <input
@@ -163,11 +155,11 @@ export function WaitlistForm({
               setFormError(null);
             }}
             placeholder="50 123 4567"
-            className="min-w-0 flex-1 bg-transparent pr-4 text-[16px] text-[oklch(0.22_0.025_55)] outline-none disabled:opacity-60"
+            className="min-w-0 flex-1 bg-transparent pr-4 text-[16px] text-[#2A1A14] outline-none disabled:opacity-60"
           />
         </div>
         {errors.mobile ? (
-          <p className="mt-1.5 text-[14px] leading-5 text-[oklch(0.5_0.1_25)]">
+          <p className="mt-1.5 text-[14px] leading-5 text-[#8B3A32]">
             {errors.mobile}
           </p>
         ) : null}
@@ -175,15 +167,14 @@ export function WaitlistForm({
 
       {formError === "already_registered" ? (
         <p
-          className="mt-4 rounded-full border px-3 py-2 text-center text-[14px] leading-5 font-semibold text-[oklch(0.48_0.12_52)]"
-          style={{ borderColor: GOLD }}
+          className="mt-4 border border-[#2A1A14] bg-[rgba(241,196,15,0.8)] px-3 py-2 text-center font-[family-name:var(--font-handwritten)] text-[16px] leading-5 text-[#2A1A14]"
           role="status"
         >
           You’re already on the VIP list!
         </p>
       ) : null}
       {formError === "unknown" ? (
-        <p className="mt-4 text-[14px] leading-5 text-[oklch(0.5_0.1_25)]" role="alert">
+        <p className="mt-4 text-[14px] leading-5 text-[#8B3A32]" role="alert">
           Oops, something went wrong. Please try again.
         </p>
       ) : null}
@@ -191,7 +182,7 @@ export function WaitlistForm({
       <button
         type="submit"
         disabled={isPending}
-        className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7] transition-colors duration-200 hover:text-[oklch(0.82_0.1_78)] disabled:opacity-70"
+        className={`${compact ? "mt-4" : "mt-6"} flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] disabled:opacity-70`}
         style={{ transitionTimingFunction: EASE }}
       >
         {isPending ? "Securing your spot..." : submitLabel}
