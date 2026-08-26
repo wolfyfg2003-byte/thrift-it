@@ -20,7 +20,7 @@ export function WaitlistQr({ href, size = 220 }: WaitlistQrProps) {
       return QR.toDataURL(target, {
         margin: 1,
         width: size,
-        color: { dark: "#3a2a1c", light: "#FDFBF7" },
+        color: { dark: "#3a2a1c", light: "#F9F6F0" },
       }).then((data: string) => {
         if (!cancelled) setSrc(data);
       });
@@ -31,10 +31,7 @@ export function WaitlistQr({ href, size = 220 }: WaitlistQrProps) {
   }, [href, size]);
 
   return (
-    <figure
-      className="rounded-[1.15rem] border bg-[#FDFBF7] p-3"
-      style={{ borderColor: "#E5D9C4" }}
-    >
+    <figure className="border border-[#2A1A14] bg-[#F4EFE6] p-3 shadow-[4px_4px_0_0_#2A1A14]">
       {src ? (
         <img
           src={src}
@@ -44,11 +41,11 @@ export function WaitlistQr({ href, size = 220 }: WaitlistQrProps) {
         />
       ) : (
         <div
-          className="mx-auto rounded-lg bg-[oklch(0.96_0.012_82)]"
+          className="mx-auto bg-[#E4D5C1]"
           style={{ width: size * 0.69, height: size * 0.69 }}
         />
       )}
-      <figcaption className="mt-2 text-center text-[12px] leading-4 text-[oklch(0.5_0.02_55)]">
+      <figcaption className="mt-2 text-center font-[family-name:var(--font-handwritten)] text-[12px] leading-4 text-[#6B4A3A]">
         Scan to open this waitlist on your phone. Not an app-store listing.
       </figcaption>
       <p className="sr-only">{label}</p>

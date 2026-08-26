@@ -1,5 +1,7 @@
 "use client";
 
+import { StampBadge } from "@/components/brand/StampBadge";
+import { WashiTape } from "@/components/brand/WashiTape";
 import {
   useCallback,
   useEffect,
@@ -16,7 +18,7 @@ export const OFFER_FLOOR_ERROR =
   "To respect our sellers' time, offers must be at least 80% of the asking price.";
 
 const ACCEPTANCE_WINDOW_HOURS = 24;
-const EASE_OUT_EXPO = "cubic-bezier(0.16, 1, 0.3, 1)";
+const EASE_OUT_EXPO = "cubic-bezier(0.19, 1, 0.22, 1)";
 
 export type OfferStatus =
   | "pending"
@@ -98,6 +100,7 @@ export default function OfferModal({
   const [resolution, setResolution] = useState<SubmittedOffer | null>(null);
   const [counterDraft, setCounterDraft] = useState<number | null>(null);
   const [counterOpen, setCounterOpen] = useState(false);
+  const [floorPulse, setFloorPulse] = useState(0);
 
   const range = Math.max(asking - floor, 1);
   const fillPct = useMemo(() => {
@@ -140,7 +143,11 @@ export default function OfferModal({
       const next = clampOffer(raw, floor, asking);
       setOffer(next);
       if (raw < floor) {
-        setError(OFFER_FLOOR_ERROR);
+        setError(null);
+        setFloorPulse((value) => (value === 0 ? 1 : value));
+      } else if (next > floor) {
+        setError(null);
+        setFloorPulse(0);
       } else {
         setError(null);
       }
@@ -228,8 +235,7 @@ export default function OfferModal({
       onCancel={(event) => {
         if (phase === "sending") event.preventDefault();
       }}
-      className="fixed inset-0 z-50 m-0 hidden h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[oklch(0.22_0.02_55/0.46)] [&::backdrop]:backdrop-blur-[2px]"
-      style={{ fontFamily: '"Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif' }}
+      className="fixed inset-0 z-50 m-0 hidden h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[#2A1A14]/45"
     >
       <button
         type="button"
@@ -240,14 +246,16 @@ export default function OfferModal({
       />
 
       <div
-        className="relative z-10 flex max-h-[min(92vh,44rem)] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-[oklch(0.86_0.025_72)] bg-[oklch(0.965_0.012_78)] shadow-[0_18px_40px_-12px_oklch(0.22_0.03_55/0.28)] sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
+        className="cardboard-sheet relative z-10 flex max-h-[min(92vh,44rem)] w-full flex-col overflow-hidden border border-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] sm:max-w-[26.5rem]"
         style={{ transitionTimingFunction: EASE_OUT_EXPO }}
       >
+        <WashiTape tone="mustard" corner="tl" />
+        <WashiTape tone="rose" corner="tr" />
         <div className="flex items-start justify-between gap-4 px-6 pt-6 pb-3">
           <div className="min-w-0">
             <h2
               id={titleId}
-              className="text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]"
+              className="font-[family-name:var(--font-typewriter)] text-[20px] leading-7 text-[#2A1A14]"
             >
               {phase === "bargain" || phase === "sending"
                 ? "Make an offer"
@@ -255,7 +263,7 @@ export default function OfferModal({
                   ? "Offer sent"
                   : "Seller replied"}
             </h2>
-            <p className="mt-1 max-w-[38ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+            <p className="mt-1 max-w-[38ch] text-[16px] leading-6 text-[#6B4A3A]">
               {phase === "bargain" || phase === "sending"
                 ? "Slide to a price the seller will actually see. Anything below 80% of asking is blocked."
                 : phase === "notified"
@@ -269,14 +277,14 @@ export default function OfferModal({
             onClick={closeIfIdle}
             disabled={phase === "sending"}
             aria-label="Close"
-            className="grid size-10 shrink-0 place-items-center rounded-full text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.93_0.016_72)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(0.5_0.11_52)] disabled:opacity-40"
+            className="grid size-10 shrink-0 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] transition-colors duration-200 hover:bg-[#E4D5C1] disabled:opacity-40"
             style={{ transitionTimingFunction: EASE_OUT_EXPO }}
           >
             <CloseIcon />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-6 [scrollbar-color:oklch(0.72_0.03_55)_transparent]">
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-6 [scrollbar-color:#C9B8A4_transparent]">
           <ListingStrip listing={listing} asking={asking} garment={garment} meta={meta} />
 
           {phase === "bargain" || phase === "sending" ? (
@@ -292,6 +300,7 @@ export default function OfferModal({
               sliderId={sliderId}
               liveId={liveId}
               sending={phase === "sending"}
+              floorPulse={floorPulse}
               onOfferChange={applyOffer}
               onSubmit={submitOffer}
             />
@@ -334,6 +343,7 @@ function BargainPanel({
   sliderId,
   liveId,
   sending,
+  floorPulse,
   onOfferChange,
   onSubmit,
 }: {
@@ -348,67 +358,69 @@ function BargainPanel({
   sliderId: string;
   liveId: string;
   sending: boolean;
+  floorPulse: number;
   onOfferChange: (value: number) => number;
   onSubmit: () => void;
 }) {
+  const atFloor = offer <= floor;
   return (
     <div className="mt-5">
       <p
         id={liveId}
-        className="text-[32px] leading-none font-semibold tracking-[-0.035em] text-[oklch(0.22_0.025_55)] tabular-nums"
+        className="font-[family-name:var(--font-handwritten)] text-[32px] leading-none text-[#2A1A14] tabular-nums"
         aria-live="polite"
       >
         {formatAed(offer)}
       </p>
-      <p className="mt-2 text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-2 text-[14px] leading-5 text-[#6B4A3A]">
         {belowAsking === 0
           ? `Full asking · ${formatAed(asking)}`
           : `${formatAed(belowAsking)} under asking · ${discountPct}% off`}
       </p>
 
       <div className="mt-6">
-        <div className="mb-2 flex items-end justify-between text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+        <div className="mb-2 flex items-end justify-between text-[12px] leading-4 text-[#6B4A3A]">
           <span className="tabular-nums">{formatAed(floor)} floor</span>
-          <label htmlFor={sliderId} className="text-[14px] text-[oklch(0.22_0.025_55)]">
+          <label htmlFor={sliderId} className="text-[14px] text-[#2A1A14]">
             Your offer
           </label>
           <span className="tabular-nums">{formatAed(asking)} ask</span>
         </div>
 
-        <input
+        <HaggleSlider
           id={sliderId}
-          type="range"
-          min={floor}
-          max={asking}
-          step={1}
+          floor={floor}
+          asking={asking}
           value={offer}
+          fillPct={fillPct}
           disabled={sending}
-          aria-valuemin={floor}
-          aria-valuemax={asking}
-          aria-valuenow={offer}
-          aria-valuetext={formatAed(offer)}
-          aria-invalid={error ? true : undefined}
-          aria-errormessage={error ? errorId : undefined}
-          onChange={(event) => onOfferChange(Number(event.target.value))}
-          className="h-8 w-full cursor-pointer appearance-none bg-transparent disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:size-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-[oklch(0.965_0.012_78)] [&::-moz-range-thumb]:bg-[oklch(0.48_0.12_52)] [&::-moz-range-thumb]:shadow-[0_4px_10px_-2px_oklch(0.35_0.08_52/0.45)] [&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:-mt-[9px] [&::-webkit-slider-thumb]:size-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[oklch(0.965_0.012_78)] [&::-webkit-slider-thumb]:bg-[oklch(0.48_0.12_52)] [&::-webkit-slider-thumb]:shadow-[0_4px_10px_-2px_oklch(0.35_0.08_52/0.45)]"
-          style={{
-            background: `linear-gradient(to right, oklch(0.48 0.12 52) 0%, oklch(0.48 0.12 52) ${fillPct}%, oklch(0.88 0.02 72) ${fillPct}%, oklch(0.88 0.02 72) 100%)`,
-            backgroundSize: "100% 6px",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
+          error={error}
+          errorId={errorId}
+          onChange={onOfferChange}
         />
       </div>
 
-      <p className="mt-3 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
-        Floor is 80% of asking. Lower amounts never leave this screen.
+      {atFloor ? (
+        <div
+          className={`mt-4 ${floorPulse > 0 ? "floor-lock-shake" : ""}`}
+          style={{ transitionTimingFunction: EASE_OUT_EXPO }}
+        >
+          <StampBadge
+            key={floorPulse}
+            label="Seller protection floor"
+          />
+        </div>
+      ) : null}
+
+      <p className="mt-3 text-[12px] leading-4 text-[#6B4A3A]">
+        Floor is 80% of asking. The handle locks there — lower amounts never leave this screen.
       </p>
 
       {error ? (
         <p
           id={errorId}
           role="alert"
-          className="mt-3 rounded-2xl bg-[oklch(0.93_0.04_45)] px-3.5 py-3 text-[14px] leading-5 text-[oklch(0.38_0.09_40)]"
+          className="mt-3 border border-[#2A1A14] bg-[#E4D5C1] px-3.5 py-3 text-[14px] leading-5 text-[#2A1A14]"
         >
           {error}
         </p>
@@ -418,11 +430,122 @@ function BargainPanel({
         type="button"
         onClick={onSubmit}
         disabled={sending || Boolean(error) || offer < floor}
-        className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold tracking-[-0.01em] text-[oklch(0.98_0.01_78)] transition-[background-color,transform] duration-200 hover:bg-[oklch(0.42_0.12_52)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(0.48_0.12_52)] active:bg-[oklch(0.38_0.11_52)] disabled:bg-[oklch(0.82_0.02_72)] disabled:text-[oklch(0.5_0.02_55)]"
+        className="mt-6 flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] transition-colors duration-200 hover:bg-[#c9738e] disabled:bg-[#C9B8A4] disabled:text-[#6B4A3A] disabled:shadow-none"
         style={{ transitionTimingFunction: EASE_OUT_EXPO }}
       >
         {sending ? "Sending offer…" : `Send ${formatAed(offer)} offer`}
       </button>
+    </div>
+  );
+}
+
+function HaggleSlider({
+  id,
+  floor,
+  asking,
+  value,
+  fillPct,
+  disabled,
+  error,
+  errorId,
+  onChange,
+}: {
+  id: string;
+  floor: number;
+  asking: number;
+  value: number;
+  fillPct: number;
+  disabled: boolean;
+  error: string | null;
+  errorId: string;
+  onChange: (value: number) => number;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [overdrag, setOverdrag] = useState(0);
+  const dragging = useRef(false);
+
+  const readRaw = (clientX: number) => {
+    const track = trackRef.current;
+    if (!track) return value;
+    const rect = track.getBoundingClientRect();
+    const t = (clientX - rect.left) / Math.max(rect.width, 1);
+    return floor + t * Math.max(asking - floor, 1);
+  };
+
+  const applyPointer = (clientX: number, releasing: boolean) => {
+    const raw = readRaw(clientX);
+    if (raw < floor) {
+      const extra = Math.min(12, ((floor - raw) / Math.max(asking - floor, 1)) * 48);
+      setOverdrag(-extra);
+      onChange(raw);
+    } else {
+      setOverdrag(0);
+      onChange(raw);
+    }
+    if (releasing) setOverdrag(0);
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      className={`relative h-8 w-full ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+      onPointerDown={(event) => {
+        if (disabled) return;
+        dragging.current = true;
+        event.currentTarget.setPointerCapture(event.pointerId);
+        applyPointer(event.clientX, false);
+      }}
+      onPointerMove={(event) => {
+        if (!dragging.current || disabled) return;
+        applyPointer(event.clientX, false);
+      }}
+      onPointerUp={(event) => {
+        if (!dragging.current) return;
+        dragging.current = false;
+        applyPointer(event.clientX, true);
+        try {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        } catch {
+          /* already released */
+        }
+      }}
+      onPointerCancel={() => {
+        dragging.current = false;
+        setOverdrag(0);
+      }}
+    >
+      <input
+        id={id}
+        type="range"
+        min={floor}
+        max={asking}
+        step={1}
+        value={value}
+        disabled={disabled}
+        aria-valuemin={floor}
+        aria-valuemax={asking}
+        aria-valuenow={value}
+        aria-valuetext={formatAed(value)}
+        aria-invalid={error ? true : undefined}
+        aria-errormessage={error ? errorId : undefined}
+        onChange={(event) => onChange(Number(event.target.value))}
+        className="sr-only"
+      />
+      <div
+        className="absolute top-1/2 right-0 left-0 h-1.5 -translate-y-1/2 rounded-full"
+        style={{
+          background: `linear-gradient(to right, #D8829D 0%, #D8829D ${fillPct}%, #C9B8A4 ${fillPct}%, #C9B8A4 100%)`,
+        }}
+      />
+      <div
+        className="absolute top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 border-2 border-[#F4EFE6] bg-[#D8829D] shadow-[3px_3px_0_0_#2A1A14]"
+        style={{
+          left: `calc(${fillPct}% + ${overdrag}px)`,
+          transition: dragging.current
+            ? "none"
+            : `left 420ms ${EASE_OUT_EXPO}`,
+        }}
+      />
     </div>
   );
 }
@@ -456,11 +579,11 @@ function SellerPush({
 }) {
   return (
     <div className="mt-5">
-      <article className="rounded-[1.35rem] bg-[oklch(0.935_0.016_72)] px-4 py-4">
-        <h3 className="text-[16px] leading-6 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+      <article className="border border-[#2A1A14] bg-[#F4EFE6] px-4 py-4 shadow-[3px_3px_0_0_#2A1A14]">
+        <h3 className="font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
           New offer on {brand}
         </h3>
-        <p className="mt-1 max-w-[40ch] text-[14px] leading-5 text-[oklch(0.38_0.03_55)]">
+        <p className="mt-1 max-w-[40ch] text-[14px] leading-5 text-[#6B4A3A]">
           A buyer offered {formatAed(offer)} on your {formatAed(asking)} listing.
         </p>
 
@@ -468,7 +591,7 @@ function SellerPush({
           <div className="mt-4">
             <label
               htmlFor="counter-amount"
-              className="text-[14px] leading-5 text-[oklch(0.22_0.025_55)]"
+              className="text-[14px] leading-5 text-[#2A1A14]"
             >
               Counter amount
             </label>
@@ -480,20 +603,20 @@ function SellerPush({
               step={1}
               value={counterDraft ?? ""}
               onChange={(event) => onCounterDraft(Number(event.target.value))}
-              className="mt-2 h-12 w-full rounded-2xl border border-[oklch(0.84_0.025_72)] bg-[oklch(0.965_0.012_78)] px-3.5 text-[16px] text-[oklch(0.22_0.025_55)] tabular-nums caret-[oklch(0.48_0.12_52)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+              className="mt-2 h-12 w-full border border-[#2A1A14] bg-[#F9F6F0] px-3.5 text-[16px] text-[#2A1A14] tabular-nums caret-[#D8829D] outline-none focus:border-[#4B6584]"
             />
             <div className="mt-3 grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={onCancelCounter}
-                className="h-11 rounded-full border border-[oklch(0.84_0.025_72)] text-[14px] font-semibold text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.91_0.016_72)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(0.48_0.12_52)]"
+                className="h-11 border border-[#2A1A14] bg-[#F4EFE6] text-[14px] font-semibold text-[#2A1A14] hover:bg-[#E4D5C1]"
               >
                 Back
               </button>
               <button
                 type="button"
                 onClick={onSendCounter}
-                className="h-11 rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.01_78)] transition-colors duration-200 hover:bg-[oklch(0.42_0.12_52)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(0.48_0.12_52)]"
+                className="h-11 border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
               >
                 Send counter
               </button>
@@ -521,11 +644,11 @@ function TapButton({
   tone: "primary" | "quiet";
 }) {
   const base =
-    "h-11 rounded-full text-[14px] font-semibold transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[oklch(0.48_0.12_52)]";
+    "h-11 text-[14px] font-semibold transition-colors duration-200 border border-[#2A1A14]";
   const styles =
     tone === "primary"
-      ? "bg-[oklch(0.48_0.12_52)] text-[oklch(0.98_0.01_78)] hover:bg-[oklch(0.42_0.12_52)] active:bg-[oklch(0.38_0.11_52)]"
-      : "bg-[oklch(0.965_0.012_78)] text-[oklch(0.22_0.025_55)] hover:bg-[oklch(0.91_0.016_72)] active:bg-[oklch(0.88_0.02_72)]";
+      ? "bg-[#D8829D] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
+      : "bg-[#F4EFE6] text-[#2A1A14]";
 
   return (
     <button type="button" onClick={onClick} className={`${base} ${styles}`}>
@@ -544,12 +667,12 @@ function ResolutionCard({
   if (!resolution) return null;
 
   return (
-    <div className="mt-5 rounded-[1.35rem] bg-[oklch(0.935_0.016_72)] px-4 py-4">
-      <p className="text-[16px] leading-6 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+    <div className="mt-5 border border-[#2A1A14] bg-[#F4EFE6] px-4 py-4 shadow-[3px_3px_0_0_#2A1A14]">
+      <p className="font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
         {resolutionCopy(resolution, asking)}
       </p>
       {resolution.status === "accepted" ? (
-        <p className="mt-2 max-w-[40ch] text-[14px] leading-5 text-[oklch(0.38_0.03_55)]">
+        <p className="mt-2 max-w-[40ch] text-[14px] leading-5 text-[#6B4A3A]">
           Listing locks to offer_accepted. Unpaid offers return to active after{" "}
           {ACCEPTANCE_WINDOW_HOURS} hours.
         </p>
@@ -589,24 +712,24 @@ function ListingStrip({
         <img
           src={listing.original_photo_url}
           alt=""
-          className="size-[4.25rem] shrink-0 rounded-2xl object-cover"
+          className="size-[4.25rem] shrink-0 border border-[#2A1A14] object-cover"
         />
       ) : (
         <div
           aria-hidden="true"
-          className="grid size-[4.25rem] shrink-0 place-items-center rounded-2xl bg-[oklch(0.9_0.03_62)] text-[20px] font-semibold text-[oklch(0.38_0.05_52)]"
+          className="grid size-[4.25rem] shrink-0 place-items-center border border-[#2A1A14] bg-[#E4D5C1] font-[family-name:var(--font-display)] text-[20px] text-[#2A1A14]"
         >
           {listing.brand.slice(0, 1).toUpperCase()}
         </div>
       )}
       <div className="min-w-0">
-        <p className="truncate text-[16px] leading-6 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <p className="truncate font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
           {garment}
         </p>
         {meta ? (
-          <p className="mt-0.5 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">{meta}</p>
+          <p className="mt-0.5 text-[12px] leading-4 text-[#6B4A3A]">{meta}</p>
         ) : null}
-        <p className="mt-1 text-[14px] leading-5 text-[oklch(0.22_0.025_55)] tabular-nums">
+        <p className="mt-1 font-[family-name:var(--font-handwritten)] text-[16px] leading-5 text-[#2A1A14]">
           Asking {formatAed(asking)}
         </p>
       </div>

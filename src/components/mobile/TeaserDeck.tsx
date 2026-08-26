@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  InPhonePolaroidWell,
+  PolaroidCaption,
+  PolaroidShell,
+} from "@/components/brand/PolaroidShell";
+import { TapedPanel } from "@/components/brand/WashiTape";
 import { WaitlistForm } from "@/components/web/WaitlistForm";
 import { formatAed } from "@/lib/checkout";
 import type { PreviewPlate, TeaserDeckData } from "@/lib/listings";
@@ -16,7 +22,6 @@ import {
 const EASE = "cubic-bezier(0.25, 1, 0.5, 1)";
 const THRESHOLD = 88;
 const EXIT_MS = 340;
-const GOLD = "#E5D9C4";
 
 type TeaserDeckProps = {
   deck: TeaserDeckData;
@@ -159,31 +164,50 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
   return (
     <div
       ref={rootRef}
-      className="relative flex min-h-0 flex-1 flex-col justify-center px-1 pb-4"
+      className="relative flex min-h-0 flex-1 flex-col px-1 pb-3"
     >
-      <div className="relative mx-auto w-full max-w-[22.5rem] pb-5">
-        <div className="relative aspect-[3/4]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[1.5rem] shadow-[0_22px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
-          />
+      <InPhonePolaroidWell>
           {next === "gate" || onGate ? (
             <MysteryCard photo={deck.mysteryPhoto} />
           ) : next ? (
-            <article
-              aria-hidden
-              className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+            <PolaroidShell
+              tilt={-1}
+              className="absolute inset-0"
+              caption={
+                <PolaroidCaption
+                  title={`${next.brand} ${next.title}`}
+                  price={formatAed(next.price)}
+                  retail={
+                    next.original_retail_price
+                      ? formatAed(next.original_retail_price)
+                      : undefined
+                  }
+                />
+              }
             >
               <PlateCover plate={next} />
-            </article>
+            </PolaroidShell>
           ) : null}
 
           {current ? (
-            <article
-              ref={cardRef}
-              className="absolute inset-0 touch-none overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+            <PolaroidShell
+              articleRef={cardRef}
+              tilt={1}
+              className="absolute inset-0 touch-none"
+              caption={
+                <PolaroidCaption
+                  title={`${current.brand} ${current.title}`}
+                  price={formatAed(current.price)}
+                  retail={
+                    current.original_retail_price
+                      ? formatAed(current.original_retail_price)
+                      : undefined
+                  }
+                  likes={intent > 0.18 ? "♥ like" : undefined}
+                />
+              }
               style={{
-                transform: `translateX(${dx}px) rotate(${dx / 22}deg)`,
+                transform: `translateX(${dx}px) rotate(${dx / 22 + 1}deg)`,
                 transition:
                   rotating && !dragging ? `transform ${EXIT_MS}ms ${EASE}` : "none",
               }}
@@ -193,34 +217,22 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
               onPointerCancel={onPointerUp}
             >
               <PlateCover plate={current} />
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    intent > 0
-                      ? `oklch(0.52 0.08 145 / ${Math.abs(intent) * 0.28})`
-                      : intent < 0
-                        ? `oklch(0.62 0.1 72 / ${Math.abs(intent) * 0.28})`
-                        : "transparent",
-                }}
-              />
               {Math.abs(intent) > 0.18 ? (
                 <p
-                  className={`absolute top-5 rounded-[0.55rem] border-2 px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase ${
+                  className={`pointer-events-none absolute top-4 font-[family-name:var(--font-handwritten)] text-[28px] leading-none ${
                     intent > 0
-                      ? "right-5 rotate-12 border-[oklch(0.52_0.08_145)] text-[oklch(0.98_0.012_85)]"
-                      : "left-5 -rotate-12 border-[oklch(0.62_0.1_72)] text-[oklch(0.98_0.012_85)]"
+                      ? "right-3 rotate-12 text-[#D8829D]"
+                      : "left-3 -rotate-12 text-[#4B6584]"
                   }`}
                 >
-                  {intent > 0 ? "Like" : "Pass"}
+                  {intent > 0 ? "Like!" : "Pass"}
                 </p>
               ) : null}
-            </article>
+            </PolaroidShell>
           ) : null}
-        </div>
-      </div>
+      </InPhonePolaroidWell>
 
-      <div className="mt-1 flex items-center justify-center gap-4">
+      <div className="mt-2 flex shrink-0 items-center justify-center gap-3">
         <RoundButton label="Backtrack" onClick={rewind} disabled={index === 0}>
           <RotateCcw size={18} strokeWidth={1.6} />
         </RoundButton>
@@ -243,29 +255,28 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
         </RoundButton>
       </div>
 
-      <p className="mt-4 px-1 text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-3 shrink-0 px-1 font-[family-name:var(--font-handwritten)] text-[14px] leading-5 text-[#6B4A3A]">
         Swipe, tap Pass or Like, or use the arrow keys. Demonstration plates.
       </p>
 
       {gate ? (
-        <div className="absolute inset-x-0 bottom-0 z-30 px-3 pb-3 pt-8">
-          <div
-            className="max-h-[min(70%,28rem)] overflow-y-auto rounded-[1.35rem] border bg-[#FDFBF7] px-4 py-5 motion-safe:animate-[teaser-drawer_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
-            style={{ borderColor: GOLD }}
-            role="region"
-            aria-label="App waitlist gate"
+        <div className="absolute inset-x-0 top-2 bottom-0 z-30 flex min-h-0 flex-col bg-[#F9F6F0]/90 px-2 pb-2 pt-3">
+          <TapedPanel
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto px-3 py-4 motion-safe:animate-[teaser-drawer_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
           >
-            <p className="text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
-              Join the VIP waitlist
-            </p>
-            <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
-              The live closet is not public yet. Leave your details and we will
-              write when it opens.
-            </p>
-            <div className="mt-4">
-              <WaitlistForm variant="drawer" />
+            <div role="region" aria-label="App waitlist gate">
+              <p className="font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14]">
+                Join the VIP waitlist
+              </p>
+              <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[#6B4A3A]">
+                The live closet is not public yet. Leave your details and we will
+                write when it opens.
+              </p>
+              <div className="mt-3">
+                <WaitlistForm variant="drawer" />
+              </div>
             </div>
-          </div>
+          </TapedPanel>
         </div>
       ) : null}
     </div>
@@ -274,28 +285,32 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
 
 function MysteryCard({ photo }: { photo: string }) {
   return (
-    <article className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]">
+    <PolaroidShell
+      tilt={1.5}
+      className="absolute inset-0"
+      caption={
+        <p className="font-[family-name:var(--font-typewriter)] text-[15px] text-[#2A1A14]">
+          Coming soon
+        </p>
+      }
+    >
       <img
         src={photo}
         alt=""
-        className="size-full object-cover blur-[18px] scale-110"
+        className="size-full scale-110 object-cover blur-[18px]"
       />
-      <div className="absolute inset-0 bg-[oklch(0.48_0.12_52/0.28)]" />
-      <div className="absolute inset-0 grid place-items-center px-6 text-center">
-        <div
-          className="w-full rounded-[1.25rem] border bg-[oklch(0.97_0.012_82/0.78)] px-5 py-6 backdrop-blur-md"
-          style={{ borderColor: GOLD }}
-        >
+      <div className="absolute inset-0 grid place-items-center bg-[#4B6584]/25 px-6 text-center">
+        <div className="w-full border border-[#2A1A14] bg-[#F4EFE6] px-5 py-6 shadow-[3px_3px_0_0_#2A1A14]">
           <LockMark />
-          <p className="mt-3 text-[12px] font-semibold tracking-[0.16em] text-[oklch(0.38_0.03_55)] uppercase">
+          <p className="mt-3 font-[family-name:var(--font-handwritten)] text-[14px] text-[#6B4A3A]">
             Coming soon
           </p>
-          <p className="mt-2 font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <p className="mt-2 font-[family-name:var(--font-typewriter)] text-[18px] leading-7 text-[#2A1A14]">
             Join the waitlist
           </p>
         </div>
       </div>
-    </article>
+    </PolaroidShell>
   );
 }
 
@@ -306,33 +321,11 @@ function PlateCover({ plate }: { plate: PreviewPlate }) {
         src={plate.original_photo_url}
         alt=""
         draggable={false}
-        className="size-full object-cover"
+        className="size-full object-cover object-[center_18%]"
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[48%] bg-[linear-gradient(to_top,oklch(0.2_0.03_55/0.88),oklch(0.2_0.03_55/0))]" />
-      <p className="absolute top-4 left-4 inline-flex max-w-[min(100%-2rem,20rem)] items-center gap-1.5 rounded-full border border-[oklch(0.88_0.02_80/0.55)] bg-[oklch(0.97_0.012_82/0.94)] px-3 py-1.5 text-[12px] leading-4 font-semibold tracking-[0.01em] text-[oklch(0.22_0.025_55)]">
+      <p className="absolute top-3 left-3 max-w-[min(100%-1.5rem,14rem)] truncate bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2">
         {plate.location}
       </p>
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="mb-3 inline-flex items-baseline gap-2 rounded-full bg-[oklch(0.48_0.12_52/0.92)] px-3 py-1.5">
-          <span className="text-[14px] font-semibold tabular-nums text-[oklch(0.98_0.012_85)]">
-            {formatAed(plate.price)}
-          </span>
-          {plate.original_retail_price ? (
-            <span className="text-[12px] tabular-nums text-[oklch(0.92_0.03_80)] line-through">
-              {formatAed(plate.original_retail_price)}
-            </span>
-          ) : null}
-        </div>
-        <p className="text-[28px] leading-none font-semibold tracking-[-0.03em] text-[oklch(0.98_0.012_85)]">
-          {plate.brand}
-        </p>
-        <p className="mt-2 text-[16px] leading-6 text-[oklch(0.95_0.02_85)]">
-          {plate.title}
-        </p>
-        <p className="mt-1 text-[12px] leading-4 text-[oklch(0.9_0.03_80)]">
-          {plate.size}
-        </p>
-      </div>
     </>
   );
 }
@@ -354,8 +347,8 @@ function RoundButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="grid size-12 place-items-center rounded-full border bg-[#FDFBF7] text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.96_0.012_82)] disabled:opacity-35 lg:size-14"
-      style={{ borderColor: GOLD, transitionTimingFunction: EASE }}
+      className="grid size-12 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] transition-colors duration-200 hover:bg-[#E4D5C1] disabled:opacity-35"
+      style={{ transitionTimingFunction: EASE }}
     >
       {children}
     </button>
@@ -370,7 +363,7 @@ function LockMark() {
       viewBox="0 0 28 28"
       fill="none"
       aria-hidden
-      className="mx-auto text-[oklch(0.48_0.12_52)]"
+      className="mx-auto text-[#4B6584]"
     >
       <rect
         x="6.5"

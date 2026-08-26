@@ -6,8 +6,8 @@ import type { Listing } from "@/lib/listings";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-const GOLD = "#E5D9C4";
-const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const GOLD = "#2A1A14";
+const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 
 type TransactionSidebarProps = {
   listing: Listing;
@@ -20,10 +20,10 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
 
   return (
     <aside className="lg:col-span-5 lg:sticky lg:top-[5.5rem] lg:self-start">
-      <p className="text-[12px] font-semibold tracking-[0.18em] text-[oklch(0.42_0.03_55)] uppercase">
+      <p className="font-[family-name:var(--font-handwritten)] text-[14px] text-[#6B4A3A]">
         {listing.brand}
       </p>
-      <h1 className="mt-3 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+      <h1 className="mt-3 font-[family-name:var(--font-typewriter)] text-[28px] leading-none text-[#2A1A14]">
         {listing.title}
       </h1>
 
@@ -34,10 +34,10 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
           onClick={() => setOpenQuote((on) => !on)}
           className="flex w-full items-baseline justify-between gap-4 text-left"
         >
-          <span className="text-[20px] font-semibold tabular-nums text-[oklch(0.22_0.025_55)]">
+          <span className="font-[family-name:var(--font-handwritten)] text-[22px] tabular-nums text-[#2A1A14]">
             {formatAed(listing.price)}
           </span>
-          <span className="text-[14px] font-medium text-[oklch(0.48_0.12_52)]">
+          <span className="text-[14px] font-medium text-[#4B6584]">
             {openQuote ? "Hide total" : "See total"}
           </span>
         </button>
@@ -51,32 +51,32 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
           <div className="overflow-hidden">
             <dl className="mt-5 space-y-3 text-[14px] leading-5">
               <div className="flex justify-between gap-4">
-                <dt className="text-[oklch(0.42_0.03_55)]">List price</dt>
-                <dd className="tabular-nums text-[oklch(0.22_0.025_55)]">
+                <dt className="text-[#6B4A3A]">List price</dt>
+                <dd className="tabular-nums text-[#2A1A14]">
                   {formatAed(quote.item_price)}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-[oklch(0.42_0.03_55)]">
+                <dt className="text-[#6B4A3A]">
                   Buyer protection fee (20%)
                 </dt>
-                <dd className="tabular-nums text-[oklch(0.22_0.025_55)]">
+                <dd className="tabular-nums text-[#2A1A14]">
                   {formatAed(quote.buyer_protection_fee)}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-[oklch(0.42_0.03_55)]">
+                <dt className="text-[#6B4A3A]">
                   Courier delivery (flat)
                 </dt>
-                <dd className="tabular-nums text-[oklch(0.22_0.025_55)]">
+                <dd className="tabular-nums text-[#2A1A14]">
                   {formatAed(quote.shipping_fee)}
                 </dd>
               </div>
               <div className="flex justify-between gap-4 border-t border-[#E5D9C4] pt-3">
-                <dt className="font-semibold text-[oklch(0.22_0.025_55)]">
+                <dt className="font-semibold text-[#2A1A14]">
                   Total
                 </dt>
-                <dd className="font-semibold tabular-nums text-[oklch(0.22_0.025_55)]">
+                <dd className="font-semibold tabular-nums text-[#2A1A14]">
                   {formatAed(quote.total_charge)}
                 </dd>
               </div>
@@ -93,7 +93,7 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
       </dl>
 
       {listing.description ? (
-        <p className="mt-8 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+        <p className="mt-8 max-w-[36ch] text-[16px] leading-6 text-[#6B4A3A]">
           {listing.description}
         </p>
       ) : null}
@@ -101,7 +101,7 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
       <div className="mt-10 flex flex-col gap-3">
         <Link
           href={`/checkout/${listing.id}`}
-          className="flex h-12 items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7] transition-colors duration-200 hover:text-[oklch(0.82_0.1_78)]"
+          className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14]"
           style={{ transitionTimingFunction: EASE }}
         >
           Buy Now
@@ -109,7 +109,7 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
         <button
           type="button"
           onClick={() => setOfferOpen(true)}
-          className="flex h-12 items-center justify-center rounded-full border bg-[#FDFBF7] text-[14px] font-semibold tracking-[-0.01em] text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.97_0.012_82)]"
+          className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#F4EFE6] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
           style={{ borderColor: GOLD, transitionTimingFunction: EASE }}
         >
           Make an Offer
@@ -130,8 +130,10 @@ export function TransactionSidebar({ listing }: TransactionSidebarProps) {
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[12px] leading-4 text-[oklch(0.5_0.02_55)]">{label}</dt>
-      <dd className="mt-1 text-[16px] leading-6 text-[oklch(0.22_0.025_55)]">
+      <dt className="font-[family-name:var(--font-handwritten)] text-[12px] leading-4 text-[#6B4A3A]">
+        {label}
+      </dt>
+      <dd className="mt-1 font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
         {value}
       </dd>
     </div>

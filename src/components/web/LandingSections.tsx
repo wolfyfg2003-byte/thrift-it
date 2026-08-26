@@ -42,7 +42,7 @@ export function LandingSections({ deck }: LandingSectionsProps) {
     <div className="mx-auto w-full max-w-[72rem] py-16 lg:px-8">
       <section id="how-it-works" className="scroll-mt-28 lg:scroll-mt-24">
         <div className="px-5 lg:px-0">
-          <h2 className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="text-[20px] leading-7 text-[#2A1A14]">
             How It Works
           </h2>
           <Accordion items={STEPS} name="how-it-works" />
@@ -51,13 +51,10 @@ export function LandingSections({ deck }: LandingSectionsProps) {
         {deck ? (
           <div className="mt-16 grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-10">
             <div className="order-2 px-5 lg:order-1 lg:px-0">
-              <p className="text-[12px] font-semibold tracking-[0.14em] text-[oklch(0.42_0.03_55)] uppercase">
-                Your turn
-              </p>
-              <h3 className="font-figtree mt-3 text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+              <h3 className="text-[20px] leading-7 text-[#2A1A14]">
                 Now try it yourself
               </h3>
-              <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+              <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
                 Pass left, like right, or use the arrow keys. Demonstration
                 plates, then the waitlist form.
               </p>
@@ -72,7 +69,7 @@ export function LandingSections({ deck }: LandingSectionsProps) {
       </section>
 
       <section id="the-tech" className="mt-16 scroll-mt-28 px-5 lg:scroll-mt-24 lg:px-0">
-        <h2 className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <h2 className="text-[20px] leading-7 text-[#2A1A14]">
           The Tech
         </h2>
         <Accordion items={TECH} name="the-tech" />

@@ -9,7 +9,7 @@ export default function WebLayout({
   return (
     <>
       <Header />
-      <div id="main-content" className="pt-[5.75rem] lg:pt-[4.25rem]">
+      <div id="main-content" className="pt-[6.5rem] lg:pt-[4.75rem]">
         {children}
       </div>
       <Footer />

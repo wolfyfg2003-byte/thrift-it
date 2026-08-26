@@ -17,13 +17,17 @@ const GATES = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[oklch(0.88_0.018_80)] bg-[#FDFBF7]">
+    <footer className="relative border-t border-[#2A1A14] bg-[#F9F6F0]">
+      <span
+        aria-hidden
+        className="washi-grain pointer-events-none absolute top-[-0.4rem] left-10 h-3 w-24 -rotate-2 bg-[#D8829D]/80"
+      />
       <div className="mx-auto max-w-[72rem] px-5 pt-14 pb-10 lg:px-8 lg:pt-16">
-        <h2 className="font-figtree text-[24px] leading-none font-semibold tracking-[-0.03em] text-[oklch(0.22_0.025_55)] lg:text-[32px]">
+        <h2 className="text-[24px] leading-none text-[#2A1A14] lg:text-[32px]">
           How a Thrift It sale is protected
         </h2>
         <Accordion items={GATES} name="sale-protection" heading="h3" />
-        <p className="mt-12 text-[12px] leading-4 text-[oklch(0.5_0.02_55)] lg:mt-16">
+        <p className="mt-12 font-[family-name:var(--font-handwritten)] text-[14px] leading-4 text-[#6B4A3A] lg:mt-16">
           Thrift It · Dubai
         </p>
       </div>

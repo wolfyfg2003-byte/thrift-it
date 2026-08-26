@@ -1,5 +1,6 @@
 "use client";
 
+import { PolaroidCaption, PolaroidShell } from "@/components/brand/PolaroidShell";
 import { formatAed } from "@/lib/checkout";
 import type { PreviewPlate } from "@/lib/listings";
 import { Heart, Info, MapPin, RotateCcw, X } from "lucide-react";
@@ -107,27 +108,36 @@ export function SwipePreview({ plates }: SwipePreviewProps) {
         role="img"
         aria-label="Demonstration of passing left and liking right on a garment card."
       >
-        <div className="relative aspect-[3/4]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[1.5rem] shadow-[0_22px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
-          />
+        <div className="relative aspect-[3/4.25]">
           {behind ? (
-            <article
-              aria-hidden
-              className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+            <PolaroidShell
+              tilt={-1}
+              className="absolute inset-0"
+              caption={
+                <PolaroidCaption
+                  title={`${behind.brand} ${behind.title}`}
+                  price={formatAed(behind.price)}
+                />
+              }
             >
               <PlateCover plate={behind} />
-            </article>
+            </PolaroidShell>
           ) : null}
 
-          <article
-            aria-hidden
-            className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+          <PolaroidShell
+            tilt={1}
+            className="absolute inset-0"
+            caption={
+              <PolaroidCaption
+                title={`${front.brand} ${front.title}`}
+                price={formatAed(front.price)}
+                likes={offering && intent > 0.18 ? "♥ like" : undefined}
+              />
+            }
             style={{
               transform: reduced
                 ? undefined
-                : `translateX(${dx * dir}px) rotate(${(dx * dir) / 22}deg)`,
+                : `translateX(${dx * dir}px) rotate(${(dx * dir) / 22 + 1}deg)`,
               transition: moving
                 ? `transform ${duration}ms ${EASE}`
                 : "none",
@@ -135,28 +145,18 @@ export function SwipePreview({ plates }: SwipePreviewProps) {
             }}
           >
             <PlateCover plate={front} />
-            {!reduced ? (
-              <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background: offering
-                    ? `oklch(0.52 0.08 145 / ${intent * 0.28})`
-                    : `oklch(0.62 0.1 72 / ${intent * 0.28})`,
-                }}
-              />
-            ) : null}
             {!reduced && intent > 0.18 ? (
               <p
-                className={`absolute top-5 rounded-[0.55rem] border-2 px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase ${
+                className={`pointer-events-none absolute top-4 font-[family-name:var(--font-handwritten)] text-[28px] leading-none ${
                   offering
-                    ? "right-5 rotate-12 border-[oklch(0.52_0.08_145)] text-[oklch(0.98_0.012_85)]"
-                    : "left-5 -rotate-12 border-[oklch(0.62_0.1_72)] text-[oklch(0.98_0.012_85)]"
+                    ? "right-3 rotate-12 text-[#D8829D]"
+                    : "left-3 -rotate-12 text-[#4B6584]"
                 }`}
               >
-                {offering ? "Like" : "Pass"}
+                {offering ? "Like!" : "Pass"}
               </p>
             ) : null}
-          </article>
+          </PolaroidShell>
         </div>
       </div>
 
@@ -187,39 +187,17 @@ function PlateCover({ plate }: { plate: PreviewPlate }) {
         draggable={false}
         className="size-full object-cover"
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[48%] bg-[linear-gradient(to_top,oklch(0.2_0.03_55/0.88),oklch(0.2_0.03_55/0))]" />
-      <p className="absolute top-4 left-4 inline-flex max-w-[min(100%-2rem,20rem)] items-center gap-1.5 rounded-full border border-[oklch(0.88_0.02_80/0.55)] bg-[oklch(0.97_0.012_82/0.94)] px-3 py-1.5 text-[12px] leading-4 font-semibold tracking-[0.01em] text-[oklch(0.22_0.025_55)]">
+      <p className="absolute top-3 left-3 inline-flex max-w-[min(100%-1.5rem,14rem)] items-center gap-1 bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2">
         <MapPin size={12} strokeWidth={1.8} className="shrink-0" />
         <span className="truncate">{plate.location}</span>
       </p>
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="mb-3 inline-flex items-baseline gap-2 rounded-full bg-[oklch(0.48_0.12_52/0.92)] px-3 py-1.5">
-          <span className="text-[14px] font-semibold tabular-nums text-[oklch(0.98_0.012_85)]">
-            {formatAed(plate.price)}
-          </span>
-          {plate.original_retail_price ? (
-            <span className="text-[12px] tabular-nums text-[oklch(0.92_0.03_80)] line-through">
-              {formatAed(plate.original_retail_price)}
-            </span>
-          ) : null}
-        </div>
-        <p className="font-figtree text-[28px] leading-none font-semibold tracking-[-0.03em] text-[oklch(0.98_0.012_85)]">
-          {plate.brand}
-        </p>
-        <p className="mt-2 text-[16px] leading-6 text-[oklch(0.95_0.02_85)]">
-          {plate.title}
-        </p>
-        <p className="mt-1 text-[12px] leading-4 text-[oklch(0.9_0.03_80)]">
-          {plate.size}
-        </p>
-      </div>
     </>
   );
 }
 
 function GhostRound({ children }: { children: ReactNode }) {
   return (
-    <span className="grid size-12 place-items-center rounded-full border border-[#E5D9C4] bg-[#FDFBF7] text-[oklch(0.22_0.025_55)] lg:size-14">
+    <span className="grid size-12 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] lg:size-14">
       {children}
     </span>
   );

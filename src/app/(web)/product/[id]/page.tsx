@@ -31,7 +31,7 @@ export default async function ProductPage({ params }: PageProps) {
   if (!listing) notFound();
 
   return (
-    <main className="min-h-dvh bg-[#FDFBF7]">
+    <main className="min-h-dvh bg-[#F9F6F0]">
       <div className="mx-auto w-full max-w-[72rem] px-5 py-8 lg:px-8 lg:py-12">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14 lg:items-start">
           <div className="lg:col-span-7">

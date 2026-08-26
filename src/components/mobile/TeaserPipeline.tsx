@@ -1,11 +1,17 @@
 "use client";
 
+import {
+  InPhonePolaroidWell,
+  PolaroidCaption,
+  PolaroidShell,
+} from "@/components/brand/PolaroidShell";
+import { StampBadge } from "@/components/brand/StampBadge";
 import { formatAed, quoteCheckout } from "@/lib/checkout";
 import { Heart, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-const EASE = "cubic-bezier(0.25, 1, 0.5, 1)";
-const GOLD = "#E5D9C4";
+const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
+const GOLD = "#2A1A14";
 const DRIFT_MS = 520;
 const FLY_MS = 340;
 const DRIFT_PX = 78;
@@ -331,55 +337,52 @@ function SwipeStage({
   const passing = intent < 0;
   const loving = intent > 0;
   return (
-    <div className="flex min-h-0 flex-1 flex-col justify-center">
-      <div className="relative mx-auto w-full max-w-[22.5rem]">
-        <div className="relative aspect-[3/4]">
-          <div
-            aria-hidden
-            className="absolute inset-0 rounded-[1.5rem] shadow-[0_22px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
-          />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <InPhonePolaroidWell>
           {behind ? (
-            <article
-              aria-hidden
-              className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+            <PolaroidShell
+              tilt={-1}
+              className="absolute inset-0"
+              caption={
+                <PolaroidCaption
+                  title={`${behind.brand} ${behind.title}`}
+                  price={formatAed(behind.price)}
+                />
+              }
             >
               <GarmentCover plate={behind} />
-            </article>
+            </PolaroidShell>
           ) : null}
-          <article
-            aria-hidden
-            className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+          <PolaroidShell
+            tilt={1}
+            className="absolute inset-0"
+            caption={
+              <PolaroidCaption
+                title={`${front.brand} ${front.title}`}
+                price={formatAed(front.price)}
+                likes={loving ? "♥ like" : undefined}
+              />
+            }
             style={{
-              transform: `translateX(${dx}px) rotate(${dx / 22}deg)`,
+              transform: `translateX(${dx}px) rotate(${dx / 22 + 1}deg)`,
               transition: moving ? `transform ${motionMs(dx)}ms ${EASE}` : "none",
             }}
           >
             <GarmentCover plate={front} />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: loving
-                  ? `oklch(0.52 0.08 145 / ${Math.abs(intent) * 0.28})`
-                  : passing
-                    ? `oklch(0.62 0.1 72 / ${Math.abs(intent) * 0.28})`
-                    : "transparent",
-              }}
-            />
             {Math.abs(intent) > 0.18 ? (
               <p
-                className={`absolute top-5 rounded-[0.55rem] border-2 px-3 py-1 text-[12px] font-semibold tracking-[0.18em] uppercase ${
+                className={`pointer-events-none absolute top-4 font-[family-name:var(--font-handwritten)] text-[28px] leading-none ${
                   loving
-                    ? "right-5 rotate-12 border-[oklch(0.52_0.08_145)] text-[oklch(0.98_0.012_85)]"
-                    : "left-5 -rotate-12 border-[oklch(0.62_0.1_72)] text-[oklch(0.98_0.012_85)]"
+                    ? "right-3 rotate-12 text-[#D8829D]"
+                    : "left-3 -rotate-12 text-[#4B6584]"
                 }`}
               >
-                {loving ? "Love" : "Pass"}
+                {loving ? "Like!" : "Pass"}
               </p>
             ) : null}
-          </article>
-        </div>
-      </div>
-      <div className="mt-4 flex items-center justify-center gap-5" aria-hidden>
+          </PolaroidShell>
+      </InPhonePolaroidWell>
+      <div className="mt-3 flex shrink-0 items-center justify-center gap-4" aria-hidden>
         <GhostRound active={passing}>
           <X size={18} strokeWidth={1.7} />
         </GhostRound>
@@ -387,7 +390,7 @@ function SwipeStage({
           <Heart size={18} strokeWidth={1.6} />
         </GhostRound>
       </div>
-      <p className="mt-3 px-1 text-center text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-2 shrink-0 px-1 text-center font-[family-name:var(--font-handwritten)] text-[14px] leading-5 text-[#6B4A3A]">
         Pass left, love right. Demonstration loop.
       </p>
     </div>
@@ -413,41 +416,41 @@ function BargainStage({
     <div className="relative flex min-h-0 flex-1 flex-col">
       <div className="relative min-h-0 flex-1 overflow-hidden rounded-[1.25rem]">
         <img src={LOVE_PLATE.photo} alt="" className="size-full object-cover" />
-        <div className="absolute inset-0 bg-[oklch(0.2_0.03_55/0.28)]" />
+        <div className="absolute inset-0 bg-[#2A1A14]/30" />
       </div>
       <p
-        className="absolute top-1 right-1 left-1 z-10 flex items-center gap-2 rounded-full border bg-[#FDFBF7] px-3 py-2 text-[12px] leading-4 font-semibold text-[oklch(0.22_0.025_55)] motion-safe:animate-[teaser-match_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
+        className="absolute top-1 right-1 left-1 z-10 flex items-center gap-2 rounded-full border bg-[#F9F6F0] px-3 py-2 text-[12px] leading-4 font-semibold text-[#2A1A14] motion-safe:animate-[teaser-match_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
         style={{ borderColor: GOLD }}
       >
         <MatchMark />
         Match. The seller is online.
       </p>
       <div
-        className="absolute inset-x-0 bottom-0 z-10 rounded-t-[1.35rem] border bg-[oklch(0.97_0.012_82)] px-4 pt-5 pb-4 motion-safe:animate-[teaser-drawer_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
+        className="cardboard-sheet absolute inset-x-0 bottom-0 z-10 border-t border-[#2A1A14] px-4 pt-5 pb-4 shadow-[0_-4px_0_0_#2A1A14] motion-safe:animate-[teaser-drawer_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
         style={{ borderColor: GOLD }}
       >
         {phase === "sending" ? (
           <div className="grid place-items-center py-8">
-            <span className="size-8 rounded-full border-2 border-[oklch(0.88_0.018_80)] border-t-[oklch(0.48_0.12_52)] motion-safe:animate-[teaser-spin_700ms_linear_infinite]" />
-            <p className="mt-4 text-[14px] text-[oklch(0.42_0.03_55)]">
+            <span className="size-8 rounded-full border-2 border-[#E4D5C1] border-t-[#4B6584] motion-safe:animate-[teaser-spin_700ms_linear_infinite]" />
+            <p className="mt-4 text-[14px] text-[#6B4A3A]">
               Opening seller chat…
             </p>
           </div>
         ) : (
           <>
-            <p className="font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+            <p className="font-[family-name:var(--font-typewriter)] text-[16px] font-semibold tracking-[-0.02em] text-[#2A1A14]">
               Make an Offer
             </p>
-            <p className="mt-1 text-[13px] text-[oklch(0.42_0.03_55)]">
+            <p className="mt-1 text-[13px] text-[#6B4A3A]">
               {LOVE_PLATE.brand} {LOVE_PLATE.title} · asking {formatAed(ASKING)}
             </p>
-            <p className="mt-4 font-figtree text-[32px] leading-none font-semibold tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
+            <p className="mt-4 font-[family-name:var(--font-typewriter)] text-[32px] leading-none font-semibold tracking-[-0.03em] tabular-nums text-[#2A1A14]">
               {formatAed(offer)}
             </p>
             <div className="mt-5">
-              <div className="mb-2 flex items-end justify-between text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+              <div className="mb-2 flex items-end justify-between text-[12px] leading-4 text-[#6B4A3A]">
                 <span className="tabular-nums">{formatAed(FLOOR)}</span>
-                <span className="text-[14px] text-[oklch(0.22_0.025_55)]">
+                <span className="text-[14px] text-[#2A1A14]">
                   Your offer
                 </span>
                 <span className="tabular-nums">{formatAed(ASKING)}</span>
@@ -455,31 +458,28 @@ function BargainStage({
               <div
                 className="relative h-8 w-full"
                 style={{
-                  background: `linear-gradient(to right, oklch(0.48 0.12 52) 0%, oklch(0.48 0.12 52) ${fillPct}%, oklch(0.88 0.02 72) ${fillPct}%, oklch(0.88 0.02 72) 100%)`,
+                  background: `linear-gradient(to right, #4B6584 0%, #4B6584 ${fillPct}%, #E4D5C1 ${fillPct}%, #E4D5C1 100%)`,
                   backgroundSize: "100% 6px",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                 }}
               >
                 <span
-                  className="absolute top-[5px] size-6 rounded-full border-2 border-[#FDFBF7] bg-[oklch(0.48_0.12_52)]"
+                  className="absolute top-[5px] size-6 border-2 border-[#F9F6F0] bg-[#D8829D] shadow-[2px_2px_0_0_#2A1A14]"
                   style={{ left: `${fillPct}%`, transform: "translateX(-50%)" }}
                 />
               </div>
               {atFloor ? (
-                <p
-                  className="mt-2 inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold tracking-[0.04em] text-[oklch(0.48_0.12_52)]"
-                  style={{ borderColor: GOLD }}
-                >
-                  Thrift It Protection Floor
-                </p>
+                <div className="mt-3">
+                  <StampBadge label="Protection floor" />
+                </div>
               ) : (
-                <p className="mt-2 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+                <p className="mt-2 text-[12px] leading-4 text-[#6B4A3A]">
                   Offers cannot drop below 80% of asking.
                 </p>
               )}
             </div>
-            <div className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7]">
+            <div className="mt-5 flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]">
               Submit Offer
             </div>
           </>
@@ -501,10 +501,10 @@ function ChatStage({
   const visible = CHAT.slice(0, count);
   return (
     <div className="flex min-h-0 flex-1 flex-col px-1 pt-1">
-      <p className="font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+      <p className="font-[family-name:var(--font-typewriter)] text-[16px] font-semibold tracking-[-0.02em] text-[#2A1A14]">
         Chat with @amna-m
       </p>
-      <p className="mt-1 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-1 text-[12px] leading-4 text-[#6B4A3A]">
         {LOVE_PLATE.brand} {LOVE_PLATE.title} · demonstration thread
       </p>
       <div className="mt-4 flex min-h-0 flex-1 flex-col gap-2.5">
@@ -519,14 +519,13 @@ function ChatStage({
             return (
               <div
                 key={label}
-                className={`flex h-10 items-center justify-center rounded-full text-[12px] font-semibold tracking-[-0.01em] ${
+                className={`flex h-10 items-center justify-center border border-[#2A1A14] text-[12px] font-semibold tracking-[-0.01em] shadow-[2px_2px_0_0_#2A1A14] ${
                   primary
-                    ? "bg-[oklch(0.22_0.025_55)] text-[#FDFBF7]"
-                    : "border text-[oklch(0.22_0.025_55)]"
+                    ? "bg-[#D8829D] text-[#2A1A14]"
+                    : "bg-[#F4EFE6] text-[#2A1A14]"
                 }`}
                 style={{
-                  borderColor: primary ? undefined : GOLD,
-                  color: primary && acceptPulse ? "oklch(0.82 0.1 78)" : undefined,
+                  color: primary && acceptPulse ? "#4B6584" : undefined,
                   transition: `color 300ms ${EASE}`,
                 }}
               >
@@ -549,7 +548,7 @@ function ChatBubble({
 }) {
   if (from === "system") {
     return (
-      <p className="self-center rounded-full bg-[oklch(0.96_0.012_82)] px-3 py-1.5 text-center text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+      <p className="self-center rounded-full bg-[#E4D5C1] px-3 py-1.5 text-center text-[12px] leading-4 text-[#6B4A3A]">
         {text}
       </p>
     );
@@ -560,8 +559,8 @@ function ChatBubble({
       <p
         className={`max-w-[85%] rounded-[1.1rem] px-3.5 py-2.5 text-[14px] leading-5 ${
           mine
-            ? "rounded-br-sm bg-[oklch(0.22_0.025_55)] text-[oklch(0.98_0.012_85)]"
-            : "rounded-bl-sm border bg-[oklch(0.97_0.012_82)] text-[oklch(0.22_0.025_55)]"
+            ? "rounded-br-sm bg-[#2A1A14] text-[#F9F6F0]"
+            : "rounded-bl-sm border bg-[#F4EFE6] text-[#2A1A14]"
         }`}
         style={mine ? undefined : { borderColor: GOLD }}
       >
@@ -590,10 +589,10 @@ function CheckoutStage({
   return (
     <div className="flex min-h-0 flex-1 flex-col justify-between px-1 pt-2 pb-1">
       <div>
-        <p className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <p className="font-[family-name:var(--font-typewriter)] text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[#2A1A14]">
           Checkout
         </p>
-        <p className="mt-2 text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
+        <p className="mt-2 text-[13px] leading-5 text-[#6B4A3A]">
           {LOVE_PLATE.brand} {LOVE_PLATE.title} · demonstration quote
         </p>
         <dl className="mt-6">
@@ -603,29 +602,29 @@ function CheckoutStage({
               className="flex items-baseline justify-between gap-4 border-b py-3.5"
               style={{ borderColor: GOLD }}
             >
-              <dt className="text-[14px] leading-6 text-[oklch(0.42_0.03_55)]">
+              <dt className="text-[14px] leading-6 text-[#6B4A3A]">
                 {row.label}
               </dt>
-              <dd className="text-[14px] leading-6 font-semibold tabular-nums text-[oklch(0.22_0.025_55)]">
+              <dd className="text-[14px] leading-6 font-semibold tabular-nums text-[#2A1A14]">
                 {row.value}
               </dd>
             </div>
           ))}
           <div className="flex items-baseline justify-between gap-4 pt-4">
-            <dt className="text-[16px] leading-7 font-semibold text-[oklch(0.22_0.025_55)]">
+            <dt className="text-[16px] leading-7 font-semibold text-[#2A1A14]">
               Total payable
             </dt>
-            <dd className="font-figtree text-[20px] leading-7 font-semibold tabular-nums text-[oklch(0.22_0.025_55)]">
+            <dd className="font-[family-name:var(--font-typewriter)] text-[20px] leading-7 font-semibold tabular-nums text-[#2A1A14]">
               {formatAed(quote.total_charge)}
             </dd>
           </div>
         </dl>
       </div>
       <div
-        className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7] transition-colors duration-300"
+        className="mt-6 flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] transition-colors duration-300"
         style={{
           transitionTimingFunction: EASE,
-          color: pulse ? "oklch(0.82 0.1 78)" : undefined,
+          color: pulse ? "#4B6584" : undefined,
         }}
       >
         Pay into escrow
@@ -644,10 +643,10 @@ function TimelineStage({ track }: { track: number }) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col px-1 pt-2">
-      <p className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+      <p className="font-[family-name:var(--font-typewriter)] text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[#2A1A14]">
         Escrow timeline
       </p>
-      <p className="mt-2 text-[13px] leading-5 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-2 text-[13px] leading-5 text-[#6B4A3A]">
         Escrow holds the funds. Courier is on the way.
       </p>
       <ol className="mt-6 flex flex-col">
@@ -659,8 +658,8 @@ function TimelineStage({ track }: { track: number }) {
                 <span
                   className={`mt-0.5 size-2.5 rounded-full transition-colors duration-300 ${
                     active
-                      ? "bg-[oklch(0.48_0.12_52)]"
-                      : "bg-[oklch(0.88_0.018_80)]"
+                      ? "bg-[#4B6584]"
+                      : "bg-[#E4D5C1]"
                   }`}
                   style={{ transitionTimingFunction: EASE }}
                 />
@@ -674,8 +673,8 @@ function TimelineStage({ track }: { track: number }) {
               <p
                 className={`pb-4 text-[14px] leading-5 transition-colors duration-300 ${
                   active
-                    ? "font-semibold text-[oklch(0.22_0.025_55)]"
-                    : "text-[oklch(0.5_0.02_55)]"
+                    ? "font-semibold text-[#2A1A14]"
+                    : "text-[#6B4A3A]"
                 }`}
                 style={{ transitionTimingFunction: EASE }}
               >
@@ -701,27 +700,27 @@ function InspectStage({
   return (
     <div className="flex min-h-0 flex-1 flex-col justify-between px-1 pt-2 pb-1">
       <div>
-        <p className="font-figtree text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <p className="font-[family-name:var(--font-typewriter)] text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[#2A1A14]">
           48-hour inspection
         </p>
-        <p className="mt-3 max-w-[34ch] text-[14px] leading-6 text-[oklch(0.42_0.03_55)]">
+        <p className="mt-3 max-w-[34ch] text-[14px] leading-6 text-[#6B4A3A]">
           Delivered. Escrow still holds the money. The buyer must Accept item
           to release payout, or Reject & dispute to freeze it.
         </p>
         <p
-          className="mt-4 inline-flex rounded-full border px-3 py-1.5 text-[12px] font-semibold tracking-[0.04em] text-[oklch(0.48_0.12_52)]"
+          className="mt-4 inline-flex border border-[#2A1A14] bg-[rgba(241,196,15,0.8)] px-3 py-1.5 font-[family-name:var(--font-handwritten)] text-[12px] text-[#2A1A14]"
           style={{ borderColor: GOLD }}
         >
           Escrow held · {formatAed(held)}
         </p>
       </div>
       {phase === "accept" ? (
-        <div className="rounded-[1.25rem] border bg-[oklch(0.97_0.012_82)] px-4 py-5" style={{ borderColor: GOLD }}>
+        <div className="border bg-[#F4EFE6] px-4 py-5 shadow-[3px_3px_0_0_#2A1A14]" style={{ borderColor: GOLD }}>
           <CheckMark />
-          <p className="mt-3 font-figtree text-[16px] font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <p className="mt-3 font-[family-name:var(--font-typewriter)] text-[16px] font-semibold tracking-[-0.02em] text-[#2A1A14]">
             Item accepted
           </p>
-          <p className="mt-2 text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
+          <p className="mt-2 text-[14px] leading-5 text-[#6B4A3A]">
             Escrow released to the seller. A rejection would have frozen payout
             and opened a dispute.
           </p>
@@ -729,16 +728,16 @@ function InspectStage({
       ) : (
         <div className="grid gap-3">
           <div
-            className="flex h-12 items-center justify-center rounded-full border text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+            className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#F4EFE6] text-[14px] font-semibold text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
             style={{ borderColor: GOLD }}
           >
             Reject & dispute
           </div>
           <div
-            className="flex h-12 items-center justify-center rounded-full bg-[oklch(0.22_0.025_55)] text-[14px] font-semibold tracking-[-0.01em] text-[#FDFBF7] transition-colors duration-300"
+            className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] transition-colors duration-300"
             style={{
               transitionTimingFunction: EASE,
-              color: pulse ? "oklch(0.82 0.1 78)" : undefined,
+              color: pulse ? "#4B6584" : undefined,
             }}
           >
             Accept item
@@ -752,24 +751,15 @@ function InspectStage({
 function GarmentCover({ plate }: { plate: DemoPlate }) {
   return (
     <>
-      <img src={plate.photo} alt="" draggable={false} className="size-full object-cover" />
-      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-[linear-gradient(to_top,oklch(0.2_0.03_55/0.88),oklch(0.2_0.03_55/0))]" />
-      <p className="absolute top-4 left-4 rounded-full border border-[oklch(0.88_0.02_80/0.55)] bg-[oklch(0.97_0.012_82/0.94)] px-3 py-1.5 text-[12px] font-semibold text-[oklch(0.22_0.025_55)]">
+      <img
+        src={plate.photo}
+        alt=""
+        draggable={false}
+        className="size-full object-cover object-[center_18%]"
+      />
+      <p className="absolute top-3 left-3 bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2">
         {plate.condition}
       </p>
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="mb-3 inline-flex rounded-full bg-[oklch(0.48_0.12_52/0.92)] px-3 py-1.5">
-          <span className="text-[14px] font-semibold tabular-nums text-[oklch(0.98_0.012_85)]">
-            {formatAed(plate.price)}
-          </span>
-        </div>
-        <p className="font-figtree text-[28px] leading-none font-semibold tracking-[-0.03em] text-[oklch(0.98_0.012_85)]">
-          {plate.brand}
-        </p>
-        <p className="mt-2 text-[16px] leading-6 text-[oklch(0.95_0.02_85)]">
-          {plate.title}
-        </p>
-      </div>
     </>
   );
 }
@@ -783,8 +773,8 @@ function GhostRound({
 }) {
   return (
     <span
-      className={`grid size-14 place-items-center rounded-full border bg-[#FDFBF7] text-[oklch(0.22_0.025_55)] transition-colors duration-300 ${
-        active ? "border-[oklch(0.48_0.12_52)]" : ""
+      className={`grid size-12 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] ${
+        active ? "bg-[#D8829D]" : ""
       }`}
       style={{
         borderColor: active ? undefined : GOLD,
@@ -798,7 +788,7 @@ function GhostRound({
 
 function MatchMark() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden className="shrink-0 text-[oklch(0.48_0.12_52)]">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden className="shrink-0 text-[#4B6584]">
       <circle cx="7" cy="7" r="5.4" stroke="currentColor" strokeWidth="1.4" />
       <path d="M4.4 7.1 6.2 8.8 9.6 5.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -807,7 +797,7 @@ function MatchMark() {
 
 function CheckMark() {
   return (
-    <svg width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden className="text-[oklch(0.48_0.12_52)]">
+    <svg width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden className="text-[#4B6584]">
       <circle cx="18" cy="18" r="14.5" stroke="currentColor" strokeWidth="1.8" />
       <path d="M11.5 18.2 16 22.5 24.5 13.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
