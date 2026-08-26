@@ -1,13 +1,13 @@
 import type { CSSProperties, PointerEventHandler, ReactNode, Ref } from "react";
 
-const TILTS = {
-  1: "rotate-1",
-  "-1": "-rotate-1",
-  1.5: "rotate-[1.5deg]",
-  "-1.5": "-rotate-[1.5deg]",
-} as const;
+export type PolaroidTilt = 1 | -1 | 1.5 | -1.5;
 
-export type PolaroidTilt = keyof typeof TILTS;
+const TILTS: Record<PolaroidTilt, string> = {
+  1: "rotate-1",
+  [-1]: "-rotate-1",
+  1.5: "rotate-[1.5deg]",
+  [-1.5]: "-rotate-[1.5deg]",
+};
 
 type PolaroidShellProps = {
   children: ReactNode;
