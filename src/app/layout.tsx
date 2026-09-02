@@ -1,6 +1,7 @@
 import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
 import { getRequestLocale } from "@/lib/i18n/server";
 import { rootMetadata } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import {
   Alfa_Slab_One,
@@ -91,6 +92,7 @@ export default async function RootLayout({
         */}
         <HtmlDirSync />
         {children}
+        <Analytics />
       </body>
     </html>
   );

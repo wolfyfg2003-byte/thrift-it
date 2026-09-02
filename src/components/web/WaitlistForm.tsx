@@ -1,6 +1,7 @@
 "use client";
 
 import { addToWaitlist } from "@/app/actions/waitlist";
+import { trackWaitlist } from "@/lib/analytics";
 import {
   formatUaeMobile,
   isVerifiedMobile,
@@ -55,8 +56,12 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
     startTransition(async () => {
       const result = await addToWaitlist(email, mobile);
       if (result.success) {
+        trackWaitlist("join", variant);
         setJoined(saveWaitlist(email, mobile));
         return;
+      }
+      if (result.error === "already_registered") {
+        trackWaitlist("already", variant);
       }
       setFormError(result.error);
     });

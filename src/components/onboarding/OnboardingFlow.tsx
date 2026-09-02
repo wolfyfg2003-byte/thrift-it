@@ -2,6 +2,7 @@
 
 import { saveTastePreferences } from "@/app/actions/taste";
 import { addToWaitlist } from "@/app/actions/waitlist";
+import { trackWaitlist } from "@/lib/analytics";
 import { AddressPin } from "@/components/onboarding/AddressPin";
 import { PhoneGate } from "@/components/onboarding/PhoneGate";
 import { TasteSelector } from "@/components/onboarding/TasteSelector";
@@ -48,6 +49,7 @@ export function OnboardingFlow() {
       setPhoneError("Could not save this number. Try again.");
       return;
     }
+    trackWaitlist(result.success ? "join" : "already", "onboarding");
     setStage("waitlist");
   }, [teaser]);
 
