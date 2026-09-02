@@ -27,9 +27,9 @@ export default function ChatsInbox({ rows }: { rows: InboxRow[] }) {
   }, [rows]);
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <header>
-        <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Inbox
         </h1>
         <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -70,7 +70,7 @@ export default function ChatsInbox({ rows }: { rows: InboxRow[] }) {
               >
                 <span
                   aria-hidden="true"
-                  className="grid size-11 shrink-0 place-items-center rounded-full bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[14px] text-[oklch(0.32_0.04_52)]"
+                  className="grid size-11 shrink-0 place-items-center rounded-full bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[14px] text-[oklch(0.32_0.04_52)]"
                 >
                   {person.initials}
                 </span>
@@ -101,7 +101,7 @@ export default function ChatsInbox({ rows }: { rows: InboxRow[] }) {
                 ) : (
                   <span
                     aria-hidden="true"
-                    className="grid size-14 shrink-0 place-items-center rounded-[0.85rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[16px] text-[oklch(0.38_0.05_52)]"
+                    className="grid size-14 shrink-0 place-items-center rounded-[0.85rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[16px] text-[oklch(0.38_0.05_52)]"
                   >
                     {listing?.brand.slice(0, 1) ?? "T"}
                   </span>
@@ -177,7 +177,7 @@ function TabButton({
       onClick={onClick}
       className={`h-10 rounded-full text-[14px] transition-colors duration-200 ${
         selected
-          ? "bg-[#FDFBF7] font-semibold text-[oklch(0.22_0.025_55)] shadow-[0_6px_16px_-10px_oklch(0.22_0.03_55/0.35)]"
+          ? "bg-[#F9F6F0] font-semibold text-[oklch(0.22_0.025_55)] shadow-[0_6px_16px_-10px_oklch(0.22_0.03_55/0.35)]"
           : "font-medium text-[oklch(0.5_0.03_55)]"
       }`}
       style={{ transitionTimingFunction: EASE }}

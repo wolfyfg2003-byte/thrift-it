@@ -216,9 +216,9 @@ export default function CheckoutScreen({
   const inspectionOpen = delivered && tx?.status === "escrow_held";
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pb-[calc(9.75rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pb-[calc(9.75rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <header className="max-w-[42ch]">
-        <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           {lostThisChat
             ? "Sold Out"
             : tx?.status === "completed"
@@ -269,7 +269,7 @@ export default function CheckoutScreen({
           <p className="text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
             Final total
           </p>
-          <p className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <p className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {formatAed(quote.total_charge)}
           </p>
         </div>
@@ -344,7 +344,7 @@ export default function CheckoutScreen({
             </div>
           </section>
 
-          <div className="fixed inset-x-0 bottom-[calc(4.15rem+env(safe-area-inset-bottom))] z-20 border-t border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 py-3">
+          <div className="fixed inset-x-0 bottom-[calc(4.15rem+env(safe-area-inset-bottom))] z-20 border-t border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-5 py-3">
             <div className="mx-auto max-w-[28rem]">
               <button
                 type="submit"
@@ -359,7 +359,7 @@ export default function CheckoutScreen({
         </form>
       ) : lostThisChat ? (
         <aside className="mt-6 rounded-[1.5rem] bg-[oklch(0.28_0.04_52)] px-5 py-5 text-[oklch(0.97_0.012_85)]">
-          <p className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em]">
+          <p className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em]">
             Missed Out!
           </p>
           <p className="mt-3 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.9_0.02_80)]">
@@ -488,7 +488,7 @@ export default function CheckoutScreen({
                   <button
                     type="button"
                     onClick={() => setDisputeOpen(true)}
-                    className="mt-4 flex h-12 w-full items-center justify-center rounded-full border border-[oklch(0.84_0.02_75)] bg-[#FDFBF7] text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+                    className="mt-4 flex h-12 w-full items-center justify-center rounded-full border border-[oklch(0.84_0.02_75)] bg-[#F9F6F0] text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
                   >
                     Report Issue / Open Dispute
                   </button>
@@ -538,7 +538,7 @@ function AutoReleaseClock({ remainingMs }: { remainingMs: number }) {
         />
       </svg>
       <div>
-        <p className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
+        <p className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
           {formatClockDigits(remainingMs)}
         </p>
         <p className="mt-1 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
@@ -589,9 +589,9 @@ function DisputeSheet({
       />
       <form
         onSubmit={submit}
-        className="relative z-10 w-full overflow-y-auto rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:mx-auto sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
+        className="relative z-10 w-full overflow-y-auto rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-5 pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:mx-auto sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
       >
-        <h2 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h2 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Report an issue
         </h2>
         <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -634,7 +634,7 @@ function DisputeSheet({
           value={details}
           onChange={(event) => setDetails(event.target.value)}
           rows={4}
-          className="mt-1.5 w-full resize-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 py-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+          className="mt-1.5 w-full resize-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 py-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
         />
         <button
           type="submit"
@@ -678,13 +678,13 @@ function ListingStrip({ listing }: { listing: Listing }) {
       ) : (
         <div
           aria-hidden="true"
-          className="grid size-[4.25rem] shrink-0 place-items-center rounded-2xl bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[22px] text-[oklch(0.38_0.05_52)]"
+          className="grid size-[4.25rem] shrink-0 place-items-center rounded-2xl bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[22px] text-[oklch(0.38_0.05_52)]"
         >
           {listing.brand.slice(0, 1)}
         </div>
       )}
       <div className="min-w-0">
-        <p className="truncate font-[family-name:var(--font-bodoni)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
+        <p className="truncate font-[family-name:var(--font-display)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
           {listing.brand}
         </p>
         <p className="truncate text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -754,7 +754,7 @@ function TextField({
         placeholder={placeholder}
         aria-invalid={error ? true : undefined}
         onChange={(event) => onChange(event.target.value)}
-        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#FDFBF7] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
+        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#F9F6F0] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
           error ? "border-[oklch(0.62_0.1_40)]" : "border-[oklch(0.88_0.018_80)]"
         }`}
       />

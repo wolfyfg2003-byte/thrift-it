@@ -32,7 +32,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
   const rest = liked.slice(1);
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[28rem] flex-col bg-[#FDFBF7] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(0.85rem,env(safe-area-inset-top))]">
+    <main className="mx-auto flex min-h-dvh w-full max-w-[28rem] flex-col bg-[#F9F6F0] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(0.85rem,env(safe-area-inset-top))]">
       <header className="relative motion-safe:animate-[profile-in_520ms_cubic-bezier(0.16,1,0.3,1)_both]">
         <Link
           href="/settings"
@@ -46,7 +46,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
           <span
             className={`block size-[6.75rem] overflow-hidden rounded-full ${
               plus.plusActive
-                ? "ring-1 ring-[oklch(0.72_0.08_72)] ring-offset-2 ring-offset-[#FDFBF7]"
+                ? "ring-1 ring-[oklch(0.72_0.08_72)] ring-offset-2 ring-offset-[#F9F6F0]"
                 : "border border-[oklch(0.86_0.02_80)]"
             }`}
           >
@@ -57,7 +57,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
             />
           </span>
 
-          <h1 className="mt-5 py-[0.12em] font-[family-name:var(--font-bodoni)] text-[32px] leading-[1.2] tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h1 className="mt-5 py-[0.12em] font-[family-name:var(--font-display)] text-[32px] leading-[1.2] tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             {BUYER_PROFILE.handle}
           </h1>
 
@@ -79,7 +79,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
           <dt className="text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
             Wardrobes Detoxed
           </dt>
-          <dd className="mt-2 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <dd className="mt-2 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {BUYER_PROFILE.wardrobesDetoxed}
           </dd>
         </div>
@@ -89,7 +89,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
         />
         <div className="min-w-0 flex-1">
           <dt className="text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">Gems Saved</dt>
-          <dd className="mt-2 font-[family-name:var(--font-bodoni)] text-[24px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <dd className="mt-2 font-[family-name:var(--font-display)] text-[24px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {BUYER_PROFILE.gemsSaved}
           </dd>
         </div>
@@ -99,7 +99,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
         />
         <div className="min-w-0 flex-1">
           <dt className="text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">Following</dt>
-          <dd className="mt-2 font-[family-name:var(--font-bodoni)] text-[24px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <dd className="mt-2 font-[family-name:var(--font-display)] text-[24px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {follows.usernames.length}
           </dd>
         </div>
@@ -109,7 +109,7 @@ export default function ProfileScreen({ listings }: { listings: Listing[] }) {
       </p>
 
       <section className="mt-9">
-        <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
           Buyer note
         </h2>
         <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.38_0.03_55)]">

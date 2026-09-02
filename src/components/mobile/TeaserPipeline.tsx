@@ -68,7 +68,38 @@ type BargainPhase = "offer" | "sending";
 type SwipeMotion = "hold" | "drift" | "fly";
 type InspectPhase = "choose" | "accept";
 
+const DEMO_LABEL =
+  "Demonstration of a Thrift It sale: pass left, love right, offer in chat, pay into escrow, then accept or reject on delivery.";
+
 export function TeaserPipeline() {
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    setLive(true);
+  }, []);
+
+  if (!live) {
+    return (
+      <div
+        className="pointer-events-none relative flex min-h-0 flex-1 flex-col overflow-hidden px-1 pb-3"
+        role="img"
+        aria-label={DEMO_LABEL}
+      >
+        <SwipeStage
+          front={PASS_PLATE}
+          behind={LOVE_PLATE}
+          dx={0}
+          moving={false}
+          intent={0}
+        />
+      </div>
+    );
+  }
+
+  return <TeaserPipelineLive />;
+}
+
+function TeaserPipelineLive() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<Step>("swipe");
   const [card, setCard] = useState(0);
@@ -282,7 +313,7 @@ export function TeaserPipeline() {
       ref={rootRef}
       className="pointer-events-none relative flex min-h-0 flex-1 flex-col overflow-hidden px-1 pb-3"
       role="img"
-      aria-label="Demonstration of a Thrift It sale: pass left, love right, offer in chat, pay into escrow, then accept or reject on delivery."
+      aria-label={DEMO_LABEL}
     >
       {step === "swipe" ? (
         <SwipeStage
@@ -456,6 +487,7 @@ function BargainStage({
                 <span className="tabular-nums">{formatAed(ASKING)}</span>
               </div>
               <div
+                suppressHydrationWarning
                 className="relative h-8 w-full"
                 style={{
                   background: `linear-gradient(to right, #4B6584 0%, #4B6584 ${fillPct}%, #E4D5C1 ${fillPct}%, #E4D5C1 100%)`,
@@ -757,7 +789,10 @@ function GarmentCover({ plate }: { plate: DemoPlate }) {
         draggable={false}
         className="size-full object-cover object-[center_18%]"
       />
-      <p className="absolute top-3 left-3 bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2">
+      <p
+        suppressHydrationWarning
+        className="absolute top-3 left-3 bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2"
+      >
         {plate.condition}
       </p>
     </>

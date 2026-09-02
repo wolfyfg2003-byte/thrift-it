@@ -28,7 +28,7 @@ export function DropCalendar({
   if (upcoming.length === 0) {
     return (
       <div className="pt-4">
-        <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <p className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
           Drop Calendar
         </p>
         <p className="mt-3 max-w-[38ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -42,20 +42,20 @@ export function DropCalendar({
 
   return (
     <div className="pt-4">
-      <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+      <p className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
         Drop Calendar
       </p>
 
       <article className="mt-4 flex items-center gap-3">
         <Thumb listing={lead} className="h-[4.6rem] w-[3.45rem]" />
         <div className="min-w-0 flex-1">
-          <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-6 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <p className="font-[family-name:var(--font-display)] text-[20px] leading-6 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             {lead.brand}
           </p>
           <p className="mt-1 truncate text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
             {lead.title} · {lead.size}
           </p>
-          <p className="mt-1.5 font-[family-name:var(--font-bodoni)] text-[20px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <p className="mt-1.5 font-[family-name:var(--font-display)] text-[20px] leading-none tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {formatUnlockCountdown(remainingDropMs(lead, now))}
           </p>
         </div>
@@ -99,7 +99,7 @@ function Thumb({ listing, className }: { listing: Listing; className: string }) 
     />
   ) : (
     <span
-      className={`grid shrink-0 place-items-center rounded-[0.75rem] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[16px] text-[oklch(0.38_0.05_52)] ${className}`}
+      className={`grid shrink-0 place-items-center rounded-[0.75rem] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[16px] text-[oklch(0.38_0.05_52)] ${className}`}
     >
       {listing.brand.slice(0, 1)}
     </span>

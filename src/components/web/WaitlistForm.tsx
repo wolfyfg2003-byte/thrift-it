@@ -5,6 +5,7 @@ import {
   formatUaeMobile,
   isVerifiedMobile,
 } from "@/lib/profile-store";
+import type { Dictionary } from "@/lib/i18n";
 import {
   isValidEmail,
   saveWaitlist,
@@ -22,13 +23,10 @@ type FieldErrors = {
 
 type WaitlistFormProps = {
   variant?: "page" | "drawer";
-  submitLabel?: string;
+  t: Dictionary;
 };
 
-export function WaitlistForm({
-  variant = "page",
-  submitLabel = "Join the waitlist",
-}: WaitlistFormProps) {
+export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
   const emailId = useId();
   const mobileId = useId();
   const [email, setEmail] = useState("");
@@ -45,10 +43,10 @@ export function WaitlistForm({
     const mobile = formatUaeMobile(mobileLocal);
     const next: FieldErrors = {};
     if (!isValidEmail(email)) {
-      next.email = "Enter an email we can reach when the closet opens.";
+      next.email = t.form.emailError;
     }
     if (!isVerifiedMobile(mobile)) {
-      next.mobile = "Enter a UAE mobile number after +971.";
+      next.mobile = t.form.mobileError;
     }
     setErrors(next);
     setFormError(null);
@@ -76,7 +74,7 @@ export function WaitlistForm({
           className="mb-4 font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14] lg:text-[20px]"
           role="status"
         >
-          You’re on the list. We’ll write when the closet opens.
+          {t.form.joined}
         </p>
       ) : null}
       <div>
@@ -84,11 +82,12 @@ export function WaitlistForm({
           htmlFor={emailId}
           className="block text-[14px] leading-5 text-[#2A1A14]"
         >
-          Email
+          {t.form.email}
         </label>
         <input
           id={emailId}
           type="email"
+          dir="ltr"
           autoComplete="email"
           inputMode="email"
           value={email}
@@ -114,9 +113,10 @@ export function WaitlistForm({
           htmlFor={mobileId}
           className="block text-[14px] leading-5 text-[#2A1A14]"
         >
-          UAE mobile
+          {t.form.mobile}
         </label>
         <div
+          dir="ltr"
           className="mt-1.5 flex h-12 overflow-hidden border bg-[#F9F6F0]"
           style={{ borderColor: errors.mobile ? "#8B3A32" : LINE }}
         >
@@ -137,7 +137,7 @@ export function WaitlistForm({
               setFormError(null);
             }}
             placeholder="50 123 4567"
-            className="min-w-0 flex-1 bg-transparent pr-4 text-[16px] text-[#2A1A14] outline-none disabled:opacity-60"
+            className="min-w-0 flex-1 bg-transparent pe-4 text-[16px] text-[#2A1A14] outline-none disabled:opacity-60"
           />
         </div>
         {errors.mobile ? (
@@ -152,12 +152,12 @@ export function WaitlistForm({
           className="mt-4 border border-[#2A1A14] bg-[rgba(241,196,15,0.8)] px-3 py-2 text-center font-[family-name:var(--font-handwritten)] text-[16px] leading-5 text-[#2A1A14]"
           role="status"
         >
-          You’re already on the waitlist.
+          {t.form.already}
         </p>
       ) : null}
       {formError === "unknown" ? (
         <p className="mt-4 text-[14px] leading-5 text-[#8B3A32]" role="alert">
-          Oops, something went wrong. Please try again.
+          {t.form.unknown}
         </p>
       ) : null}
 
@@ -167,7 +167,7 @@ export function WaitlistForm({
         className={`${compact ? "mt-4" : "mt-6"} flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] disabled:opacity-70`}
         style={{ transitionTimingFunction: EASE }}
       >
-        {isPending ? "Securing your spot..." : submitLabel}
+        {isPending ? t.form.pending : t.form.submit}
       </button>
     </form>
   );

@@ -18,6 +18,8 @@
   --font-typewriter: var(--font-elite), "Special Elite", ui-monospace, monospace;
   --font-handwritten: var(--font-architect), "Architects Daughter", cursive;
   --font-ui: var(--font-grotesk), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic-display: var(--font-amiri), "Amiri", serif;
+  --font-arabic-ui: var(--font-plex-arabic), "IBM Plex Sans Arabic", sans-serif;
 }
 
 @theme inline {
@@ -40,6 +42,19 @@ body {
   background: transparent;
   color: var(--ink);
   font-family: var(--font-ui);
+}
+
+html[dir="rtl"] {
+  --font-display: var(--font-arabic-display);
+  --font-typewriter: var(--font-arabic-ui);
+  --font-handwritten: var(--font-arabic-display);
+  --font-ui: var(--font-arabic-ui);
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3 {
+  line-height: 1.35;
 }
 
 h1,

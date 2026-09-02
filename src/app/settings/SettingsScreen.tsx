@@ -109,7 +109,7 @@ export default function SettingsScreen() {
   const hasApplePay = profile.cards.some((card) => card.brand === "Apple Pay");
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pt-[max(0.85rem,env(safe-area-inset-top))] pb-[calc(8.75rem+env(safe-area-inset-bottom))]">
+    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pt-[max(0.85rem,env(safe-area-inset-top))] pb-[calc(8.75rem+env(safe-area-inset-bottom))]">
       <header>
         <Link
           href="/profile"
@@ -118,7 +118,7 @@ export default function SettingsScreen() {
           <BackIcon />
           <span className="ml-1">Back to Profile</span>
         </Link>
-        <h1 className="mt-4 font-[family-name:var(--font-bodoni)] text-[32px] leading-[1.15] tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="mt-4 font-[family-name:var(--font-display)] text-[32px] leading-[1.15] tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Account Settings
         </h1>
         <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -129,7 +129,7 @@ export default function SettingsScreen() {
 
       <form onSubmit={onSave} noValidate className="mt-9">
         <section>
-          <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             Personal details
           </h2>
           <div className="mt-5 flex flex-col gap-5">
@@ -182,7 +182,7 @@ export default function SettingsScreen() {
                     setSaved(false);
                     setErrors((prev) => ({ ...prev, mobile: undefined }));
                   }}
-                  className={`h-12 w-full rounded-2xl border bg-[#FDFBF7] py-0 pr-[7.25rem] pl-[3.65rem] text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
+                  className={`h-12 w-full rounded-2xl border bg-[#F9F6F0] py-0 pr-[7.25rem] pl-[3.65rem] text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
                     errors.mobile
                       ? "border-[oklch(0.62_0.1_40)]"
                       : "border-[oklch(0.88_0.018_80)]"
@@ -231,7 +231,7 @@ export default function SettingsScreen() {
         </section>
 
         <section className="mt-10 rounded-[1.35rem] border border-[oklch(0.86_0.02_80)] px-4 py-5">
-          <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             UAE delivery address
           </h2>
           <p className="mt-2 max-w-[40ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -252,7 +252,7 @@ export default function SettingsScreen() {
         </section>
 
         <section className="mt-10 rounded-[1.35rem] border border-[oklch(0.86_0.02_80)] px-4 py-5">
-          <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             Payment cards
           </h2>
           <p className="mt-2 max-w-[40ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -308,7 +308,7 @@ export default function SettingsScreen() {
         </section>
 
         <section className="mt-10">
-          <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             Notifications
           </h2>
           <p className="mt-2 max-w-[42ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -346,7 +346,7 @@ export default function SettingsScreen() {
         </section>
 
         <div
-          className="fixed inset-x-0 z-20 border-t border-[oklch(0.86_0.02_80)] bg-[#FDFBF7] px-5 pt-3"
+          className="fixed inset-x-0 z-20 border-t border-[oklch(0.86_0.02_80)] bg-[#F9F6F0] px-5 pt-3"
           style={{ bottom: APP_DOCK_HEIGHT }}
         >
           <div className="mx-auto max-w-[28rem] pb-3">
@@ -403,7 +403,7 @@ function TextField({
         autoComplete={autoComplete}
         aria-invalid={error ? true : undefined}
         onChange={(event) => onChange(event.target.value)}
-        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#FDFBF7] px-3.5 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
+        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#F9F6F0] px-3.5 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
           error ? "border-[oklch(0.62_0.1_40)]" : "border-[oklch(0.88_0.018_80)]"
         }`}
       />
@@ -504,7 +504,7 @@ function AddCardForm({ onCancel }: { onCancel: () => void }) {
           onChange={(event) =>
             setBrand(event.target.value as Exclude<MamoCard["brand"], "Apple Pay">)
           }
-          className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+          className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
         >
           <option value="Visa">Visa</option>
           <option value="Mastercard">Mastercard</option>
@@ -524,7 +524,7 @@ function AddCardForm({ onCancel }: { onCancel: () => void }) {
           setLast4(event.target.value.replace(/\D/g, "").slice(0, 4));
           setError(null);
         }}
-        className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
+        className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
       />
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div>
@@ -537,7 +537,7 @@ function AddCardForm({ onCancel }: { onCancel: () => void }) {
             value={expMonth}
             placeholder="08"
             onChange={(event) => setExpMonth(event.target.value.replace(/\D/g, "").slice(0, 2))}
-            className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
+            className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
           />
         </div>
         <div>
@@ -550,7 +550,7 @@ function AddCardForm({ onCancel }: { onCancel: () => void }) {
             value={expYear}
             placeholder="28"
             onChange={(event) => setExpYear(event.target.value.replace(/\D/g, "").slice(0, 2))}
-            className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
+            className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 text-[16px] tabular-nums text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
           />
         </div>
       </div>

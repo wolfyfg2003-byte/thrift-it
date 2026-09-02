@@ -1,19 +1,29 @@
 "use client";
 
+import { PolaroidCaption, PolaroidShell } from "@/components/brand/PolaroidShell";
 import { DropLock } from "@/components/DropLock";
 import OfferModal from "@/components/OfferModal";
+import { applyTasteEvent } from "@/app/actions/taste";
 import { formatAed } from "@/lib/checkout";
 import { isDropLocked } from "@/lib/drop";
 import { listingProximityLabel, type GeoPoint } from "@/lib/geo";
 import type { Listing } from "@/lib/listings";
+import { listingCategory } from "@/lib/taste";
+import {
+  clearTasteSwipes,
+  getTaste,
+  hasCalibratedTaste,
+  recordTasteEvent,
+  undoTasteSwipe,
+} from "@/lib/taste-store";
 import { consumeBacktrack, isBoosted, openPlusPaywall, usePlusState } from "@/lib/plus-store";
 import { findSeller, sellerPath } from "@/lib/sellers";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
-const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 const THRESHOLD = 96;
-const EXIT_MS = 280;
+const EXIT_MS = 340;
 
 export default function SwipeDeck({
   listings,
@@ -45,11 +55,13 @@ export default function SwipeDeck({
   const plus = usePlusState();
   const startX = useRef(0);
   const pointer = useRef<number | null>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
 
   const [now, setNow] = useState(() => Date.now());
   const [insertPulse, setInsertPulse] = useState(false);
   const forcedIdRef = useRef<string | null>(null);
+  const restoreIdRef = useRef<string | null>(null);
+  const pendingRewindRef = useRef<string | null>(null);
   const current = listings[index] ?? null;
   const next = listings[index + 1] ?? null;
   const empty = index >= listings.length;
@@ -70,6 +82,13 @@ export default function SwipeDeck({
     setDx(0);
     setExit(null);
     setDragging(false);
+
+    const prefer = restoreIdRef.current;
+    if (prefer && nextIds.includes(prefer)) {
+      restoreIdRef.current = null;
+      setIndex(nextIds.indexOf(prefer));
+      return;
+    }
 
     const keepId = cursorIdRef.current;
     if (!keepId || nextIds.length === 0) {
@@ -110,6 +129,7 @@ export default function SwipeDeck({
   }, [listingIds, listings]);
 
   const replayDeck = () => {
+    clearTasteSwipes();
     setIndex(0);
     setPassedIds([]);
     setDx(0);
@@ -128,7 +148,21 @@ export default function SwipeDeck({
         if (direction === "left") {
           setPassedIds((stack) => [...stack, item.id]);
         }
-        setIndex((value) => value + 1);
+        recordTasteEvent({
+          listingId: item.id,
+          brand: item.brand,
+          category: listingCategory(item),
+          event: direction === "right" ? "like" : "pass",
+        });
+        void applyTasteEvent({
+          listingId: item.id,
+          brand: item.brand,
+          category: listingCategory(item),
+          event: direction === "right" ? "like" : "pass",
+        });
+        if (!hasCalibratedTaste(getTaste())) {
+          setIndex((value) => value + 1);
+        }
         setDx(0);
         setExit(null);
         setDragging(false);
@@ -138,39 +172,59 @@ export default function SwipeDeck({
     [current, exit],
   );
 
-  const hideWatched = () => {
+  const hideWatched = useCallback(
+    (direction: "left" | "right" = "right") => {
+      if (!current || exit) return;
+      setExit(direction);
+      setDx(direction === "right" ? window.innerWidth : -window.innerWidth);
+      window.setTimeout(() => {
+        const id = current.id;
+        setDx(0);
+        setExit(null);
+        setDragging(false);
+        onWatchHide?.(id);
+      }, EXIT_MS);
+    },
+    [current, exit, onWatchHide],
+  );
+
+  const skipLocked = () => {
     if (!current || exit) return;
     setExit("left");
     setDx(-window.innerWidth);
     window.setTimeout(() => {
-      const id = current.id;
+      setPassedIds((stack) => [...stack, current.id]);
+      setIndex((value) => value + 1);
       setDx(0);
       setExit(null);
       setDragging(false);
-      onWatchHide?.(id);
     }, EXIT_MS);
   };
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (exit || !current || currentLocked) return;
+  const onPointerDown = (event: PointerEvent<HTMLElement>) => {
+    if (exit || !current) return;
     pointer.current = event.pointerId;
     startX.current = event.clientX;
     setDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
     if (pointer.current !== event.pointerId || exit) return;
     setDx(event.clientX - startX.current);
   };
 
-  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+  const onPointerUp = (event: PointerEvent<HTMLElement>) => {
     if (pointer.current !== event.pointerId) return;
     pointer.current = null;
     setDragging(false);
-    if (dx > THRESHOLD) fly("right", true);
-    else if (dx < -THRESHOLD) fly("left", false);
-    else setDx(0);
+    if (dx > THRESHOLD) {
+      if (currentLocked) hideWatched("right");
+      else fly("right", true);
+    } else if (dx < -THRESHOLD) {
+      if (currentLocked) skipLocked();
+      else fly("left", false);
+    } else setDx(0);
     try {
       event.currentTarget.releasePointerCapture(event.pointerId);
     } catch {
@@ -188,35 +242,58 @@ export default function SwipeDeck({
     return () => node.removeEventListener("touchmove", prevent);
   }, [dragging]);
 
+  const completeRewind = useCallback(
+    (id: string) => {
+      restoreIdRef.current = id;
+      undoTasteSwipe(id);
+      setPassedIds((stack) => {
+        const at = stack.lastIndexOf(id);
+        if (at < 0) return stack;
+        return [...stack.slice(0, at), ...stack.slice(at + 1)];
+      });
+      const at = listings.findIndex((item) => item.id === id);
+      if (at >= 0) {
+        restoreIdRef.current = null;
+        setIndex(at);
+      }
+      setDx(0);
+      setExit(null);
+    },
+    [listings],
+  );
+
   const backtrack = () => {
     if (exit) return;
     if (passedIds.length === 0) return;
-    if (consumeBacktrack() === "paywall") return;
     const id = passedIds[passedIds.length - 1];
-    const restore = listings.findIndex((item) => item.id === id);
-    setPassedIds((stack) => stack.slice(0, -1));
-    if (restore >= 0) {
-      setIndex(restore);
-      setDx(0);
-      setExit(null);
+    if (consumeBacktrack() === "paywall") {
+      pendingRewindRef.current = id;
+      return;
     }
+    completeRewind(id);
   };
+
+  useEffect(() => {
+    if (plus.paywallOpen) return;
+    const id = pendingRewindRef.current;
+    if (!id) return;
+    pendingRewindRef.current = null;
+    if (plus.plusActive) completeRewind(id);
+  }, [plus.paywallOpen, plus.plusActive, completeRewind]);
 
   const needsPlus = passedIds.length > 0 && !plus.plusActive && plus.freeBacktracksLeft <= 0;
   const canRewind = passedIds.length > 0 && (plus.plusActive || plus.freeBacktracksLeft > 0);
   const backtrackEnabled = canRewind || needsPlus;
   const intent = Math.max(-1, Math.min(1, dx / 140));
   const rotating = dragging || Boolean(exit);
-  const freezeSwipe = currentLocked && !exit;
-
   if (empty) {
     if (listings.length === 0) {
       return (
         <div className="flex flex-1 flex-col justify-center px-1 py-8">
-          <h2 className="text-[20px] leading-7 font-semibold tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="text-[20px] leading-7 text-[#2A1A14]">
             {emptyTitle ?? (filtersActive ? "Nothing in this cut" : "The rail is empty")}
           </h2>
-          <p className="mt-3 max-w-[38ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+          <p className="mt-3 max-w-[38ch] text-[16px] leading-6 text-[#6B4A3A]">
             {emptyBody ??
               (filtersActive
                 ? "Clear filters to return to the mystery deck."
@@ -226,7 +303,7 @@ export default function SwipeDeck({
             <button
               type="button"
               onClick={onClearFilters}
-              className="mt-8 flex h-12 items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.012_85)]"
+              className="mt-8 flex h-12 items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14]"
             >
               Clear filters
             </button>
@@ -241,63 +318,93 @@ export default function SwipeDeck({
   return (
     <>
       <div className="flex flex-1 flex-col justify-center">
-      <div className="relative mx-auto w-full max-w-[22.5rem]">
-        <div className="relative aspect-[3/4]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[1.5rem] shadow-[0_22px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
-          />
+      <div className="relative mx-auto w-full max-w-[22.5rem] pr-1 pb-1">
+        <div className="relative aspect-[3/4.25]">
           {next ? (
-            <article
-              aria-hidden="true"
-              className="absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)]"
+            <PolaroidShell
+              tilt={-1}
+              className="absolute inset-0"
+              caption={
+                <PolaroidCaption
+                  title={`${next.brand} ${next.title}`}
+                  price={formatAed(next.price)}
+                  retail={
+                    next.original_retail_price
+                      ? formatAed(next.original_retail_price)
+                      : undefined
+                  }
+                />
+              }
             >
               <Cover listing={next} origin={buyerOrigin} />
               {nextLocked && next.dropTime ? (
                 <DropLock dropTime={next.dropTime} interactive={false} />
               ) : null}
-            </article>
+            </PolaroidShell>
           ) : null}
 
           {current ? (
-            <article
+            <PolaroidShell
               key={`${current.id}-${replayKey}`}
-              ref={cardRef}
-              className={`absolute inset-0 overflow-hidden rounded-[1.5rem] bg-[oklch(0.93_0.02_75)] ${
-                freezeSwipe ? "" : "touch-none"
-              } ${insertPulse && forceFrontId === current.id ? "motion-safe:animate-[drop-insert_420ms_cubic-bezier(0.16,1,0.3,1)_both]" : ""}`}
+              articleRef={cardRef}
+              tilt={1}
+              className={`absolute inset-0 touch-none ${insertPulse && forceFrontId === current.id ? "motion-safe:animate-[drop-insert_420ms_cubic-bezier(0.19,1,0.22,1)_both]" : ""}`}
+              caption={
+                <PolaroidCaption
+                  title={`${current.brand} ${current.title}`}
+                  price={formatAed(current.price)}
+                  retail={
+                    current.original_retail_price
+                      ? formatAed(current.original_retail_price)
+                      : undefined
+                  }
+                  likes={
+                    intent > 0.18
+                      ? currentLocked
+                        ? "notify"
+                        : "♥ like"
+                      : undefined
+                  }
+                />
+              }
               style={{
-                transform: freezeSwipe
-                  ? undefined
-                  : `translateX(${dx}px) rotate(${dx / 22}deg)`,
-                transition: rotating && !dragging ? `transform ${EXIT_MS}ms ${EASE}` : "none",
+                transform: `translateX(${dx}px) rotate(${dx / 22 + 1}deg)`,
+                opacity:
+                  intent < 0 ? 1 - Math.min(0.72, Math.abs(intent) * 0.72) : 1,
+                boxShadow:
+                  intent > 0
+                    ? `4px 4px 0px 0px #2A1A14, 10px 10px 0px 0px rgba(216,130,157,${intent * 0.55})`
+                    : "4px 4px 0px 0px #2A1A14",
+                transition:
+                  rotating && !dragging
+                    ? `transform ${EXIT_MS}ms ${EASE}, opacity ${EXIT_MS}ms ${EASE}, box-shadow ${EXIT_MS}ms ${EASE}`
+                    : "none",
               }}
-              onPointerDown={freezeSwipe ? undefined : onPointerDown}
-              onPointerMove={freezeSwipe ? undefined : onPointerMove}
-              onPointerUp={freezeSwipe ? undefined : onPointerUp}
-              onPointerCancel={freezeSwipe ? undefined : onPointerUp}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
             >
               <Cover listing={current} origin={buyerOrigin} />
               {currentLocked && current.dropTime ? (
                 <DropLock
                   dropTime={current.dropTime}
                   interactive
-                  onNotify={hideWatched}
+                  onNotify={() => hideWatched("right")}
                 />
-              ) : (
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      intent > 0
-                        ? `oklch(0.52 0.08 145 / ${Math.abs(intent) * 0.28})`
-                        : intent < 0
-                          ? `oklch(0.62 0.1 72 / ${Math.abs(intent) * 0.28})`
-                          : "transparent",
-                  }}
-                />
-              )}
-            </article>
+              ) : null}
+              {Math.abs(intent) > 0.18 ? (
+                <p
+                  className={`pointer-events-none absolute top-4 z-30 font-[family-name:var(--font-handwritten)] text-[28px] leading-none ${
+                    intent > 0
+                      ? "right-3 rotate-12 text-[#D8829D]"
+                      : "left-3 -rotate-12 text-[#4B6584]"
+                  }`}
+                >
+                  {intent > 0 ? (currentLocked ? "Notify!" : "Like!") : "Pass"}
+                </p>
+              ) : null}
+            </PolaroidShell>
           ) : null}
         </div>
       </div>
@@ -320,9 +427,8 @@ export default function SwipeDeck({
         <RoundButton
           label="Pass"
           onClick={() => {
-            if (currentLocked && current) {
-              setPassedIds((stack) => [...stack, current.id]);
-              setIndex((value) => value + 1);
+            if (currentLocked) {
+              skipLocked();
               return;
             }
             fly("left", false);
@@ -348,6 +454,20 @@ export default function SwipeDeck({
           open
           listing={offerFor}
           onClose={() => setOfferFor(null)}
+          onOfferSubmitted={() => {
+            recordTasteEvent({
+              listingId: offerFor.id,
+              brand: offerFor.brand,
+              category: listingCategory(offerFor),
+              event: "offer",
+            });
+            void applyTasteEvent({
+              listingId: offerFor.id,
+              brand: offerFor.brand,
+              category: listingCategory(offerFor),
+              event: "offer",
+            });
+          }}
         />
       ) : null}
 
@@ -369,28 +489,29 @@ function DetoxCompleted({
     <div className="flex flex-1 flex-col items-center justify-center px-3 py-10 text-center motion-safe:animate-[detox-in_520ms_cubic-bezier(0.16,1,0.3,1)_both]">
       <span
         aria-hidden="true"
-        className="grid size-16 place-items-center rounded-full bg-[oklch(0.945_0.025_70)] text-[oklch(0.42_0.1_52)]"
+        className="grid size-16 place-items-center border border-[#2A1A14] bg-[#E4D5C1] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
       >
         <HangerMark />
       </span>
-      <h2 className="mt-7 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+      <h2 className="mt-7 text-[32px] leading-none text-[#2A1A14]">
         Detox Completed
       </h2>
-      <p className="mt-4 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+      <p className="mt-4 max-w-[36ch] font-[family-name:var(--font-handwritten)] text-[18px] leading-6 text-[#6B4A3A]">
         You have detoxed the catalog! Check back soon for fresh closets.
       </p>
       {!plusActive ? (
-        <div className="mt-8 w-full max-w-[18.5rem] rounded-[1.35rem] bg-[oklch(0.96_0.018_78)] px-4 py-5 text-left">
-          <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+        <div className="relative mt-8 w-full max-w-[18.5rem] border border-[#2A1A14] bg-[#F4EFE6] px-4 py-5 text-left shadow-[4px_4px_0_0_#2A1A14]">
+          <span aria-hidden className="washi-grain pointer-events-none absolute -top-2 left-5 h-4 w-16 -rotate-6 bg-[rgba(241,196,15,0.8)]" />
+          <p className="font-[family-name:var(--font-typewriter)] text-[18px] leading-7 text-[#2A1A14]">
             Thrift It Plus
           </p>
-          <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
+          <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[#6B4A3A]">
             Unlimited backtracks so the next closet doesn’t cost you a pass.
           </p>
           <button
             type="button"
-            onClick={openPlusPaywall}
-            className="mt-4 flex h-11 w-full items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.012_85)]"
+            onClick={() => openPlusPaywall("plus")}
+            className="mt-4 flex h-11 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
             style={{ transitionTimingFunction: EASE }}
           >
             Unlock Plus
@@ -401,14 +522,14 @@ function DetoxCompleted({
         <button
           type="button"
           onClick={onReplay}
-          className="flex h-12 items-center justify-center rounded-full border border-[oklch(0.78_0.04_72)] bg-[#FDFBF7] text-[14px] font-semibold text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.96_0.012_82)]"
+          className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#F4EFE6] text-[14px] font-semibold text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
           style={{ transitionTimingFunction: EASE }}
         >
           Replay Deck
         </button>
         <Link
           href="/sell"
-          className="flex h-12 items-center justify-center rounded-full border border-[oklch(0.84_0.02_75)] text-[14px] font-semibold text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.96_0.012_82)]"
+          className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#4B6584] text-[14px] font-semibold text-[#F9F6F0] shadow-[3px_3px_0_0_#2A1A14]"
           style={{ transitionTimingFunction: EASE }}
         >
           Clean Out Your Closet
@@ -468,52 +589,31 @@ function Cover({
           className="size-full object-cover"
         />
       ) : (
-        <div className="grid size-full place-items-center bg-[oklch(0.9_0.03_62)] font-[family-name:var(--font-bodoni)] text-[48px] text-[oklch(0.38_0.05_52)]">
+        <div className="grid size-full place-items-center bg-[#E4D5C1] font-[family-name:var(--font-display)] text-[48px] text-[#2A1A14]">
           {listing.brand.slice(0, 1)}
         </div>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[48%] bg-[linear-gradient(to_top,oklch(0.2_0.03_55/0.88),oklch(0.2_0.03_55/0))]" />
-      <p className="absolute top-4 left-4 inline-flex max-w-[min(100%-2rem,20rem)] items-center gap-1.5 rounded-full border border-[oklch(0.88_0.02_80/0.55)] bg-[oklch(0.97_0.012_82/0.94)] px-3 py-1.5 text-[12px] leading-4 font-semibold tracking-[0.01em] text-[oklch(0.22_0.025_55)]">
+      <p className="absolute top-3 left-3 inline-flex max-w-[min(100%-1.5rem,14rem)] items-center gap-1 bg-[rgba(241,196,15,0.8)] px-2 py-1 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] -rotate-2">
         <PinIcon />
         <span className="truncate" suppressHydrationWarning>
           {place}
         </span>
       </p>
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <div className="mb-3 inline-flex items-baseline gap-2 rounded-full bg-[oklch(0.48_0.12_52/0.92)] px-3 py-1.5">
-          <span className="text-[14px] font-semibold tabular-nums text-[oklch(0.98_0.012_85)]">
-            {formatAed(listing.price)}
-          </span>
-          {listing.original_retail_price ? (
-            <span className="text-[12px] tabular-nums text-[oklch(0.92_0.03_80)] line-through">
-              {formatAed(listing.original_retail_price)}
-            </span>
-          ) : null}
-        </div>
-        <h2 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.98_0.012_85)]">
-          {listing.brand}
-        </h2>
-        <p className="mt-2 text-[16px] leading-6 text-[oklch(0.95_0.02_85)]">
-          {listing.title}
-        </p>
-        <p className="mt-1 text-[12px] leading-4 text-[oklch(0.9_0.03_80)]">
-          {listing.size}
-        </p>
+      <div className="absolute right-2 bottom-2 left-2 flex items-end justify-between gap-2">
         {seller ? (
           <Link
             href={sellerPath(listing.sellerUsername)}
             onPointerDown={(event) => event.stopPropagation()}
-            className="relative z-10 mt-2 inline-block text-[12px] leading-4 text-[oklch(0.92_0.03_80)] underline decoration-[oklch(0.78_0.04_80)] underline-offset-2"
+            className="relative z-10 bg-[#F4EFE6]/90 px-1.5 font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#2A1A14] underline decoration-[#4B6584] underline-offset-2"
           >
             {seller.handle}
           </Link>
-        ) : null}
+        ) : (
+          <span />
+        )}
         {isBoosted(listing.id) ? (
-          <p className="mt-2 text-[12px] leading-4 text-[oklch(0.92_0.03_80)]">Boosted</p>
-        ) : null}
-        {listing.description ? (
-          <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[oklch(0.93_0.02_85)]">
-            {listing.description}
+          <p className="font-[family-name:var(--font-handwritten)] text-[13px] leading-4 text-[#D8829D]">
+            Boosted
           </p>
         ) : null}
       </div>
@@ -540,12 +640,12 @@ function RoundButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="relative grid size-14 place-items-center rounded-full border border-[oklch(0.86_0.02_80)] bg-[#FDFBF7] text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.96_0.012_82)] disabled:opacity-35"
+      className="relative grid size-14 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] transition-colors duration-200 hover:bg-[#E4D5C1] disabled:opacity-35"
       style={{ transitionTimingFunction: EASE }}
     >
       {children}
       {badge !== null ? (
-        <span className="absolute -top-0.5 -right-0.5 grid size-5 place-items-center rounded-full bg-[oklch(0.93_0.018_72)] text-[12px] leading-none tabular-nums text-[oklch(0.32_0.04_52)]">
+        <span className="absolute -top-1 -right-1 grid size-5 place-items-center border border-[#2A1A14] bg-[#D8829D] font-[family-name:var(--font-handwritten)] text-[12px] leading-none tabular-nums text-[#2A1A14]">
           {badge}
         </span>
       ) : null}
@@ -573,7 +673,7 @@ function DetailsSheet({
     <dialog
       ref={dialogRef}
       onClose={onClose}
-      className="fixed inset-0 z-50 m-0 hidden h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[oklch(0.22_0.02_55/0.46)]"
+      className="fixed inset-0 z-50 m-0 hidden h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[#2A1A14]/45"
     >
       <button
         type="button"
@@ -582,37 +682,38 @@ function DetailsSheet({
         onClick={onClose}
         tabIndex={-1}
       />
-      <div className="relative z-10 max-h-[min(86vh,40rem)] w-full overflow-y-auto rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:mx-auto sm:max-w-[26.5rem] sm:rounded-[1.75rem]">
+      <div className="cardboard-sheet relative z-10 max-h-[min(86vh,40rem)] w-full overflow-y-auto border border-[#2A1A14] px-5 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[4px_4px_0_0_#2A1A14] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:mx-auto sm:max-w-[26.5rem]">
+        <span aria-hidden className="washi-grain pointer-events-none absolute -top-2 left-8 h-4 w-[4.5rem] -rotate-6 bg-[rgba(241,196,15,0.8)]" />
         {listing.original_photo_url ? (
           <img
             src={listing.original_photo_url}
             alt=""
-            className="aspect-[4/5] w-full rounded-[1.25rem] object-cover"
+            className="aspect-[4/5] w-full border border-[#2A1A14] object-cover"
           />
         ) : null}
-        <h2 className="mt-4 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h2 className="mt-4 font-[family-name:var(--font-typewriter)] text-[24px] leading-none text-[#2A1A14]">
           {listing.brand}
         </h2>
-        <p className="mt-2 text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
+        <p className="mt-2 text-[16px] leading-6 text-[#6B4A3A]">
           {listing.title} · {listing.size} · {listing.condition}
         </p>
         {seller ? (
           <Link
             href={sellerPath(listing.sellerUsername)}
-            className="mt-3 inline-block text-[14px] font-semibold text-[oklch(0.22_0.025_55)] underline decoration-[oklch(0.48_0.12_52)] underline-offset-2"
+            className="mt-3 inline-block font-[family-name:var(--font-handwritten)] text-[16px] text-[#2A1A14] underline decoration-[#4B6584] underline-offset-2"
           >
             {seller.handle}
           </Link>
         ) : null}
         {listing.description ? (
-          <p className="mt-3 max-w-[42ch] text-[16px] leading-6 text-[oklch(0.38_0.03_55)]">
+          <p className="mt-3 max-w-[42ch] text-[16px] leading-6 text-[#6B4A3A]">
             {listing.description}
           </p>
         ) : null}
-        <p className="mt-4 text-[20px] font-semibold tabular-nums text-[oklch(0.22_0.025_55)]">
+        <p className="mt-4 font-[family-name:var(--font-handwritten)] text-[22px] text-[#2A1A14]">
           {formatAed(listing.price)}
           {listing.original_retail_price ? (
-            <span className="ml-2 text-[14px] font-normal text-[oklch(0.42_0.03_55)] line-through">
+            <span className="ml-2 text-[14px] text-[#6B4A3A] line-through">
               {formatAed(listing.original_retail_price)}
             </span>
           ) : null}
@@ -620,20 +721,20 @@ function DetailsSheet({
         <div className="mt-6 flex flex-col gap-2">
           <Link
             href={`/checkout/${listing.id}`}
-            className="flex h-12 items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.012_85)]"
+            className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
           >
             Pay into escrow
           </Link>
           <Link
             href={`/product/${listing.id}`}
-            className="flex h-12 items-center justify-center rounded-full text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+            className="flex h-12 items-center justify-center border border-[#2A1A14] bg-[#F4EFE6] text-[14px] font-semibold text-[#2A1A14]"
           >
             View lookbook
           </Link>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-12 items-center justify-center rounded-full text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+            className="flex h-12 items-center justify-center text-[14px] font-semibold text-[#2A1A14]"
           >
             Close
           </button>

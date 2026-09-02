@@ -1,5 +1,7 @@
 "use client";
 
+import { StampBadge } from "@/components/brand/StampBadge";
+import { WashiTape } from "@/components/brand/WashiTape";
 import { formatAed } from "@/lib/checkout";
 import {
   PLUS_MONTHLY_AED,
@@ -8,19 +10,18 @@ import {
 } from "@/lib/plus-store";
 import { useEffect, useId, useRef, useState } from "react";
 
-const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 
-const SPARKS = [
-  { x: "-2.6rem", y: "-3.4rem", delay: "0ms" },
-  { x: "2.4rem", y: "-3.1rem", delay: "40ms" },
-  { x: "3.4rem", y: "0.2rem", delay: "80ms" },
-  { x: "1.8rem", y: "3.2rem", delay: "50ms" },
-  { x: "-2.2rem", y: "3rem", delay: "90ms" },
-  { x: "-3.4rem", y: "0.4rem", delay: "20ms" },
+const PLUS_CLIPS = [
+  { ch: "P", fill: "bg-[#E4D5C1]", rot: -6 },
+  { ch: "L", fill: "bg-[#D8829D]", rot: 4 },
+  { ch: "U", fill: "bg-[#4B6584] text-[#F9F6F0]", rot: -3 },
+  { ch: "S", fill: "bg-[#E4D5C1]", rot: 7 },
 ] as const;
 
 export default function PlusPaywall() {
-  const { paywallOpen, plusActive, closePaywall, activatePlus } = usePlus();
+  const { paywallOpen, paywallReason, plusActive, closePaywall, activatePlus } =
+    usePlus();
   const titleId = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeTimer = useRef<number>(0);
@@ -38,7 +39,7 @@ export default function PlusPaywall() {
 
     if (paywallOpen && !dialog.open) {
       setPhase(plusActive ? "active" : "offer");
-      if (!dialog.open) dialog.showModal();
+      dialog.showModal();
     }
     if (!paywallOpen && dialog.open) {
       dialog.close();
@@ -81,7 +82,7 @@ export default function PlusPaywall() {
         closePaywall();
         setPhase("offer");
       }}
-      className="fixed inset-0 z-50 m-0 h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[oklch(0.22_0.02_55/0.5)]"
+      className="fixed inset-0 z-50 m-0 h-dvh max-h-dvh w-full max-w-none border-0 bg-transparent p-0 open:grid open:place-items-end open:sm:place-items-center [&::backdrop]:bg-[#2A1A14]/45"
     >
       <button
         type="button"
@@ -91,15 +92,17 @@ export default function PlusPaywall() {
         tabIndex={-1}
       />
       <div
-        className="relative z-10 flex max-h-[min(92dvh,42rem)] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] shadow-[0_-18px_48px_-28px_oklch(0.22_0.03_55/0.4)] motion-safe:animate-[sheet-up_240ms_cubic-bezier(0.16,1,0.3,1)_both] sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
+        className="cardboard-sheet relative z-10 flex max-h-[min(92dvh,42rem)] w-full flex-col overflow-hidden border border-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] motion-safe:animate-[sheet-up_240ms_cubic-bezier(0.19,1,0.22,1)_both] sm:max-w-[26.5rem]"
         role="document"
       >
+        <WashiTape tone="mustard" corner="tl" />
+        <WashiTape tone="rose" corner="tr" />
         <div className="flex items-center justify-end px-4 pt-3">
           <button
             type="button"
             aria-label="Close"
             onClick={dismiss}
-            className="grid size-10 place-items-center rounded-full text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.96_0.012_82)]"
+            className="grid size-10 place-items-center border border-[#2A1A14] bg-[#F4EFE6] text-[#2A1A14] shadow-[2px_2px_0_0_#2A1A14]"
             style={{ transitionTimingFunction: EASE }}
           >
             <CloseIcon />
@@ -111,24 +114,25 @@ export default function PlusPaywall() {
             <ThanksBurst />
           ) : phase === "active" ? (
             <>
+              <PlusMark />
               <h2
                 id={titleId}
-                className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
+                className="mt-5 text-[32px] leading-none text-[#2A1A14]"
               >
                 Thrift It Plus is on
               </h2>
-              <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-                Unlimited backtracks, and a Verify Profile badge on your closet.
+              <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
+                Unlimited rewinds, and a Verify Profile stamp on your closet.
                 Demonstration subscription — not a live charge.
               </p>
-              <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-[oklch(0.93_0.018_72)] px-3 py-1.5 text-[12px] leading-4 text-[oklch(0.32_0.04_52)]">
+              <p className="mt-6 inline-flex items-center gap-2 border border-dashed border-[#2A1A14] bg-[#F4EFE6] px-3 py-2 font-[family-name:var(--font-typewriter)] text-[12px] leading-4 text-[#2A1A14]">
                 <VerifyIcon />
                 Verify Profile
               </p>
               <button
                 type="button"
                 onClick={dismiss}
-                className="mt-8 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.012_85)]"
+                className="mt-8 flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14]"
                 style={{ transitionTimingFunction: EASE }}
               >
                 Back to the deck
@@ -136,38 +140,44 @@ export default function PlusPaywall() {
             </>
           ) : (
             <>
+              <PlusMark />
               <h2
                 id={titleId}
-                className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
+                className="mt-5 text-[32px] leading-none text-[#2A1A14]"
               >
                 Unlock Thrift It Plus
               </h2>
-              <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-                Three free backtracks a day. Plus restores every pass, and marks
-                your closet as verified.
+              <p className="mt-4 max-w-[40ch] font-[family-name:var(--font-handwritten)] text-[18px] leading-6 text-[#6B4A3A]">
+                {paywallReason === "rewind"
+                  ? "You used today’s three free rewinds. Plus puts every pass back on the rail."
+                  : "Three free rewinds a day. Plus restores every pass, and stamps your closet as verified."}
               </p>
-              <ul className="mt-6 border-y border-[oklch(0.88_0.018_80)] py-5">
-                <li className="text-[16px] leading-6 text-[oklch(0.22_0.025_55)]">
-                  Unlimited backtracks
+              <ul className="mt-6 border-y border-[#2A1A14] py-5">
+                <li className="relative font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
+                  <span
+                    aria-hidden
+                    className="washi-grain pointer-events-none absolute -left-2 top-0 h-5 w-28 -rotate-2 bg-[rgba(241,196,15,0.8)]"
+                  />
+                  <span className="relative">Unlimited rewinds</span>
                 </li>
-                <li className="mt-3 text-[16px] leading-6 text-[oklch(0.22_0.025_55)]">
-                  Verify Profile badge
+                <li className="mt-3 font-[family-name:var(--font-typewriter)] text-[16px] leading-6 text-[#2A1A14]">
+                  Verify Profile stamp
                 </li>
               </ul>
-              <p className="mt-5 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
+              <p className="mt-5 font-[family-name:var(--font-handwritten)] text-[32px] leading-none tabular-nums text-[#2A1A14]">
                 {formatAed(PLUS_MONTHLY_AED)}
-                <span className="ml-2 font-[family-name:var(--font-figtree)] text-[14px] font-normal text-[oklch(0.42_0.03_55)]">
+                <span className="ml-2 font-[family-name:var(--font-typewriter)] text-[14px] font-normal text-[#6B4A3A]">
                   / month
                 </span>
               </p>
-              <p className="mt-2 text-[12px] leading-4 text-[oklch(0.5_0.025_55)]">
+              <p className="mt-2 font-[family-name:var(--font-typewriter)] text-[12px] leading-4 text-[#6B4A3A]">
                 Simulated Mamo Pay checkout — not billed.
               </p>
               <button
                 type="button"
                 onClick={subscribe}
                 disabled={phase === "charging"}
-                className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[oklch(0.48_0.12_52)] text-[14px] font-semibold text-[oklch(0.98_0.012_85)] transition-colors duration-200 hover:bg-[oklch(0.42_0.12_52)] disabled:bg-[oklch(0.82_0.02_72)] disabled:text-[oklch(0.5_0.02_55)]"
+                className="mt-6 flex h-12 w-full items-center justify-center border border-[#2A1A14] bg-[#D8829D] text-[14px] font-semibold text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14] disabled:bg-[#C9B8A4] disabled:text-[#6B4A3A] disabled:shadow-none"
                 style={{ transitionTimingFunction: EASE }}
               >
                 {phase === "charging"
@@ -177,7 +187,7 @@ export default function PlusPaywall() {
               <button
                 type="button"
                 onClick={dismiss}
-                className="mt-2 flex h-12 w-full items-center justify-center rounded-full text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+                className="mt-2 flex h-12 w-full items-center justify-center text-[14px] font-semibold text-[#2A1A14]"
               >
                 Not now
               </button>
@@ -189,31 +199,31 @@ export default function PlusPaywall() {
   );
 }
 
+function PlusMark() {
+  return (
+    <span aria-hidden className="inline-flex items-center gap-[0.2rem]">
+      {PLUS_CLIPS.map((clip) => (
+        <span
+          key={clip.ch}
+          className={`inline-block border border-[#2A1A14] px-2 py-1 font-[family-name:var(--font-display)] text-[18px] leading-none text-[#2A1A14] shadow-[2px_2px_0_0_#2A1A14] ${clip.fill}`}
+          style={{ transform: `rotate(${clip.rot}deg)` }}
+        >
+          {clip.ch}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function ThanksBurst() {
   return (
     <div className="relative flex min-h-[16rem] flex-col items-center justify-center py-8 text-center">
-      <div className="relative grid size-16 place-items-center">
-        {SPARKS.map((spark, index) => (
-          <span
-            key={index}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[oklch(0.62_0.13_72)] motion-safe:animate-[plus-spark_720ms_cubic-bezier(0.16,1,0.3,1)_both]"
-            style={{
-              ["--spark-x" as string]: spark.x,
-              ["--spark-y" as string]: spark.y,
-              animationDelay: spark.delay,
-            }}
-          />
-        ))}
-        <span className="grid size-16 place-items-center rounded-full bg-[oklch(0.945_0.025_70)] text-[oklch(0.42_0.1_52)]">
-          <SparkleIcon />
-        </span>
-      </div>
-      <p className="mt-7 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+      <StampBadge label="PLUS" />
+      <p className="mt-7 text-[32px] leading-none text-[#2A1A14]">
         You’re on Plus
       </p>
-      <p className="mt-4 max-w-[32ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
-        Thank you. Unlimited backtracks are yours — back to the deck.
+      <p className="mt-4 max-w-[32ch] font-[family-name:var(--font-handwritten)] text-[18px] leading-6 text-[#6B4A3A]">
+        Unlimited rewinds are yours — back to the last pass.
       </p>
     </div>
   );
@@ -224,12 +234,10 @@ export function PlusBadge({ compact = false }: { compact?: boolean }) {
   return (
     <button
       type="button"
-      onClick={openPaywall}
+      onClick={() => openPaywall()}
       aria-label={plusActive ? "Thrift It Plus is on" : "Open Thrift It Plus"}
-      className={`flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-2.5 text-[12px] font-semibold leading-4 transition-colors duration-200 ${
-        plusActive
-          ? "border-[oklch(0.72_0.08_72)] bg-[oklch(0.93_0.04_72)] text-[oklch(0.36_0.08_52)]"
-          : "border-[oklch(0.84_0.04_72)] bg-[#FDFBF7] text-[oklch(0.38_0.08_52)] hover:bg-[oklch(0.96_0.02_80)]"
+      className={`flex h-10 shrink-0 items-center gap-1.5 border border-[#2A1A14] px-2.5 font-[family-name:var(--font-typewriter)] text-[12px] leading-4 shadow-[2px_2px_0_0_#2A1A14] ${
+        plusActive ? "bg-[#D8829D] text-[#2A1A14]" : "bg-[#F4EFE6] text-[#2A1A14]"
       }`}
       style={{ transitionTimingFunction: EASE }}
     >

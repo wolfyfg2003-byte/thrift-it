@@ -8,6 +8,7 @@ import {
 import { TapedPanel } from "@/components/brand/WashiTape";
 import { WaitlistForm } from "@/components/web/WaitlistForm";
 import { formatAed } from "@/lib/checkout";
+import type { Dictionary } from "@/lib/i18n";
 import type { PreviewPlate, TeaserDeckData } from "@/lib/listings";
 import { Heart, Info, RotateCcw, X } from "lucide-react";
 import {
@@ -25,9 +26,10 @@ const EXIT_MS = 340;
 
 type TeaserDeckProps = {
   deck: TeaserDeckData;
+  t: Dictionary;
 };
 
-export function TeaserDeck({ deck }: TeaserDeckProps) {
+export function TeaserDeck({ deck, t }: TeaserDeckProps) {
   const plates: PreviewPlate[] = [deck.first, deck.second];
   const [index, setIndex] = useState(0);
   const [dx, setDx] = useState(0);
@@ -168,7 +170,7 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
     >
       <InPhonePolaroidWell>
           {next === "gate" || onGate ? (
-            <MysteryCard photo={deck.mysteryPhoto} />
+            <MysteryCard photo={deck.mysteryPhoto} comingSoon={t.teaser.comingSoon} waitlist={t.teaser.gateTitle} />
           ) : next ? (
             <PolaroidShell
               tilt={-1}
@@ -256,7 +258,7 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
       </div>
 
       <p className="mt-3 shrink-0 px-1 font-[family-name:var(--font-handwritten)] text-[14px] leading-5 text-[#6B4A3A]">
-        Swipe, tap Pass or Like, or use the arrow keys. Demonstration plates.
+        {t.teaser.hint}
       </p>
 
       {gate ? (
@@ -264,16 +266,15 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
           <TapedPanel
             className="flex min-h-0 flex-1 flex-col overflow-y-auto px-3 py-4 motion-safe:animate-[teaser-drawer_420ms_cubic-bezier(0.25,1,0.5,1)_both]"
           >
-            <div role="region" aria-label="App waitlist gate">
+            <div role="region" aria-label={t.teaser.gateLabel}>
               <p className="font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14]">
-                Join the waitlist
+                {t.teaser.gateTitle}
               </p>
               <p className="mt-2 max-w-[34ch] text-[14px] leading-5 text-[#6B4A3A]">
-                The live closet is not public yet. Leave your details and we will
-                write when it opens.
+                {t.teaser.gateBody}
               </p>
               <div className="mt-3">
-                <WaitlistForm variant="drawer" />
+                <WaitlistForm variant="drawer" t={t} />
               </div>
             </div>
           </TapedPanel>
@@ -283,14 +284,22 @@ export function TeaserDeck({ deck }: TeaserDeckProps) {
   );
 }
 
-function MysteryCard({ photo }: { photo: string }) {
+function MysteryCard({
+  photo,
+  comingSoon,
+  waitlist,
+}: {
+  photo: string;
+  comingSoon: string;
+  waitlist: string;
+}) {
   return (
     <PolaroidShell
       tilt={1.5}
       className="absolute inset-0"
       caption={
         <p className="font-[family-name:var(--font-typewriter)] text-[15px] text-[#2A1A14]">
-          Coming soon
+          {comingSoon}
         </p>
       }
     >
@@ -303,10 +312,10 @@ function MysteryCard({ photo }: { photo: string }) {
         <div className="w-full border border-[#2A1A14] bg-[#F4EFE6] px-5 py-6 shadow-[3px_3px_0_0_#2A1A14]">
           <LockMark />
           <p className="mt-3 font-[family-name:var(--font-handwritten)] text-[14px] text-[#6B4A3A]">
-            Coming soon
+            {comingSoon}
           </p>
           <p className="mt-2 font-[family-name:var(--font-typewriter)] text-[18px] leading-7 text-[#2A1A14]">
-            Join the waitlist
+            {waitlist}
           </p>
         </div>
       </div>

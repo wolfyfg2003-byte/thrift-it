@@ -266,7 +266,7 @@ export default function SellPage() {
 
   return (
     <main
-      className={`mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pt-[max(1.25rem,env(safe-area-inset-top))] ${
+      className={`mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pt-[max(1.25rem,env(safe-area-inset-top))] ${
         dropEnabled
           ? "pb-[calc(22rem+env(safe-area-inset-bottom))]"
           : "pb-[calc(9.75rem+env(safe-area-inset-bottom))]"
@@ -310,7 +310,7 @@ export default function SellPage() {
       ) : null}
 
       <header className="max-w-[40ch]">
-        <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Seller Upload
         </h1>
         <p className="mt-3 text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -366,7 +366,7 @@ export default function SellPage() {
             ) : (
               <span className="flex size-full flex-col items-center justify-center px-8">
                 <Viewfinder />
-                <span className="mt-6 text-center font-[family-name:var(--font-bodoni)] text-[22px] leading-7 text-[oklch(0.22_0.025_55)]">
+                <span className="mt-6 text-center font-[family-name:var(--font-display)] text-[22px] leading-7 text-[oklch(0.22_0.025_55)]">
                   Drop a phone photo
                 </span>
                 <span className="mt-1 text-center text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -436,7 +436,7 @@ export default function SellPage() {
                   setCondition(event.target.value as Condition);
                   setErrors((prev) => ({ ...prev, condition: undefined }));
                 }}
-                className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+                className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
               >
                 <option value="">Select condition</option>
                 {CONDITIONS.map((item) => (
@@ -499,7 +499,7 @@ export default function SellPage() {
           <p className="text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
             {vip ? "VIP 50/50 profit split" : "0% seller commission"}
           </p>
-          <p className="mt-2 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
+          <p className="mt-2 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
             {formatAed(payout.seller_share)}
           </p>
           <p className="mt-2 max-w-[40ch] text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -538,14 +538,14 @@ export default function SellPage() {
             style={{ transitionTimingFunction: EASE }}
           >
             <span
-              className={`absolute top-0.5 left-0.5 size-6 rounded-full bg-[#FDFBF7] shadow-[0_4px_10px_-4px_oklch(0.22_0.03_55/0.35)] transition-transform duration-200 ${
+              className={`absolute top-0.5 left-0.5 size-6 rounded-full bg-[#F9F6F0] shadow-[0_4px_10px_-4px_oklch(0.22_0.03_55/0.35)] transition-transform duration-200 ${
                 vip ? "translate-x-5" : "translate-x-0"
               }`}
               style={{ transitionTimingFunction: EASE }}
             />
           </button>
           <label htmlFor={vipId} className="min-w-0 cursor-pointer">
-            <span className="block font-[family-name:var(--font-bodoni)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
+            <span className="block font-[family-name:var(--font-display)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
               Request Thrift It VIP Managed Closet Detox
             </span>
             {vip ? (
@@ -591,7 +591,7 @@ export default function SellPage() {
           </p>
         ) : null}
 
-        <div className="fixed inset-x-0 bottom-[calc(4.15rem+env(safe-area-inset-bottom))] z-20 border-t border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 py-3">
+        <div className="fixed inset-x-0 bottom-[calc(4.15rem+env(safe-area-inset-bottom))] z-20 border-t border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-5 py-3">
           <div className="mx-auto max-w-[28rem]">
             <button
               type="submit"
@@ -653,7 +653,7 @@ function Field({
         {label}
       </label>
       <div
-        className={`mt-1.5 flex h-12 items-center rounded-2xl border bg-[#FDFBF7] px-3.5 ${
+        className={`mt-1.5 flex h-12 items-center rounded-2xl border bg-[#F9F6F0] px-3.5 ${
           error ? "border-[oklch(0.62_0.1_40)]" : "border-[oklch(0.88_0.018_80)]"
         } focus-within:border-[oklch(0.48_0.12_52)]`}
       >

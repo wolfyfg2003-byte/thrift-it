@@ -1,5 +1,6 @@
 "use client";
 
+import { RansomLogo } from "@/components/brand/RansomLogo";
 import { PlusBadge } from "@/components/PlusPaywall";
 import { restoreProfile, useProfile } from "@/lib/profile-store";
 import { restorePlus } from "@/lib/plus-store";
@@ -19,11 +20,10 @@ export default function HomeHeader() {
   return (
     <header className="mb-4">
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
-            Thrift It
-          </h1>
-          <p className="mt-2 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
+        <div className="min-w-0 pt-1">
+          <h1 className="sr-only">Thrift It</h1>
+          <RansomLogo href="/app" size="nav" />
+          <p className="mt-3 font-[family-name:var(--font-handwritten)] text-[14px] leading-4 text-[#6B4A3A]">
             Demonstration closet — swipe right to offer, left to pass.
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function HomeHeader() {
           <Link
             href="/profile"
             aria-label="Your profile"
-            className="grid size-10 place-items-center rounded-full bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[13px] text-[oklch(0.32_0.04_52)]"
+            className="grid size-10 place-items-center border border-[#2A1A14] bg-[#E4D5C1] font-[family-name:var(--font-display)] text-[13px] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14]"
           >
             {initials}
           </Link>

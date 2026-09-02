@@ -55,6 +55,28 @@ export type UaeAddress = {
   instructions: string;
 };
 
+export type ShippingAddress = {
+  emirate: Emirate;
+  community: string;
+  street: string;
+  unit: string;
+  mobile: string;
+  building: string;
+  lat: number | null;
+  lng: number | null;
+};
+
+export const EMPTY_SHIPPING: ShippingAddress = {
+  emirate: "Dubai",
+  community: "",
+  street: "",
+  unit: "",
+  mobile: "",
+  building: "",
+  lat: null,
+  lng: null,
+};
+
 export type AddressErrors = Partial<Record<keyof UaeAddress, string>>;
 
 export const EMPTY_ADDRESS: UaeAddress = {
@@ -133,4 +155,45 @@ export function formatAddressLine(address: UaeAddress): string {
 
 export function isAddressComplete(address: UaeAddress): boolean {
   return Object.keys(validateAddress(address)).length === 0;
+}
+
+export function addressFromShipping(
+  shipping: ShippingAddress,
+  fallback: UaeAddress = EMPTY_ADDRESS,
+): UaeAddress {
+  const villa = /villa/i.test(`${shipping.unit} ${shipping.building}`);
+  return normalizeAddress(
+    {
+      emirate: shipping.emirate,
+      community: shipping.community,
+      dwelling: villa ? "villa" : "apartment",
+      building: shipping.building || fallback.building,
+      unit: shipping.unit,
+      street: shipping.street,
+      instructions: fallback.instructions,
+    },
+    fallback,
+  );
+}
+
+export function shippingFromParts(input: {
+  emirate: Emirate;
+  community: string;
+  street: string;
+  unit: string;
+  mobile: string;
+  building: string;
+  lat: number | null;
+  lng: number | null;
+}): ShippingAddress {
+  return {
+    emirate: input.emirate,
+    community: input.community.trim(),
+    street: input.street.trim(),
+    unit: input.unit.trim(),
+    mobile: input.mobile.trim(),
+    building: input.building.trim(),
+    lat: input.lat,
+    lng: input.lng,
+  };
 }

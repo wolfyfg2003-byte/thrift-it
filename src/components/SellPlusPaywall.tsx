@@ -84,7 +84,7 @@ export function SellPlusPaywall({ open, onClose, onUnlocked }: SellPlusPaywallPr
         tabIndex={-1}
       />
       <div
-        className="relative z-10 flex max-h-[min(94dvh,44rem)] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] shadow-[0_-18px_48px_-28px_oklch(0.22_0.03_55/0.4)] motion-safe:animate-[sheet-up_240ms_cubic-bezier(0.16,1,0.3,1)_both] sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
+        className="relative z-10 flex max-h-[min(94dvh,44rem)] w-full flex-col overflow-hidden rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] shadow-[0_-18px_48px_-28px_oklch(0.22_0.03_55/0.4)] motion-safe:animate-[sheet-up_240ms_cubic-bezier(0.16,1,0.3,1)_both] sm:max-w-[26.5rem] sm:rounded-[1.75rem]"
         role="document"
       >
         <div className="flex items-center justify-end px-4 pt-3">
@@ -106,7 +106,7 @@ export function SellPlusPaywall({ open, onClose, onUnlocked }: SellPlusPaywallPr
             <>
               <h2
                 id={titleId}
-                className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
+                className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
               >
                 Unlock Thrift It Plus
               </h2>
@@ -116,10 +116,10 @@ export function SellPlusPaywall({ open, onClose, onUnlocked }: SellPlusPaywallPr
               </p>
 
               <div className="mt-7">
-                <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.36_0.08_52)]">
+                <p className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.36_0.08_52)]">
                   Founding Member Special
                 </p>
-                <p className="mt-2 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
+                <p className="mt-2 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
                   {formatAed(PLUS_NOW)}
                   <span className="ml-2 font-[family-name:var(--font-figtree)] text-[14px] font-normal text-[oklch(0.42_0.03_55)]">
                     / month
@@ -154,7 +154,7 @@ export function SellPlusPaywall({ open, onClose, onUnlocked }: SellPlusPaywallPr
           )}
         </div>
         {phase === "offer" ? (
-          <div className="shrink-0 border-t border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="shrink-0 border-t border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <button
               type="button"
               onClick={unlock}
@@ -183,7 +183,7 @@ function UnlockBurst() {
       <span className="grid size-16 place-items-center rounded-full bg-[oklch(0.48_0.12_52)] text-[oklch(0.985_0.01_85)] motion-safe:animate-[drop-insert_420ms_cubic-bezier(0.16,1,0.3,1)_both]">
         <CheckIcon />
       </span>
-      <p className="mt-7 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+      <p className="mt-7 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
         You’re on Plus
       </p>
       <p className="mt-4 max-w-[32ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">

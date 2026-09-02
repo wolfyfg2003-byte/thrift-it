@@ -25,6 +25,7 @@ type RansomLogoProps = {
 export function RansomLogo({ href = "/", size = "nav" }: RansomLogoProps) {
   const mark = (
     <span
+      dir="ltr"
       aria-label="Thrift It"
       className={`inline-flex items-center ${size === "hero" ? "gap-1.5" : "gap-[0.2rem]"}`}
     >
@@ -32,7 +33,7 @@ export function RansomLogo({ href = "/", size = "nav" }: RansomLogoProps) {
         <span
           key={`${clip.ch}-${index}`}
           aria-hidden
-          className={`inline-block font-[family-name:var(--font-display)] leading-none shadow-[2px_2px_0_0_#2A1A14] ${
+          className={`inline-block font-[family-name:var(--font-alfa)] leading-none shadow-[2px_2px_0_0_#2A1A14] ${
             FILLS[clip.fill]
           } ${
             size === "hero"
@@ -52,7 +53,7 @@ export function RansomLogo({ href = "/", size = "nav" }: RansomLogoProps) {
   if (!href) return mark;
 
   return (
-    <Link href={href} className="shrink-0 no-underline">
+    <Link href={href} dir="ltr" className="shrink-0 no-underline">
       {mark}
     </Link>
   );

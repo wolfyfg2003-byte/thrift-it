@@ -36,7 +36,7 @@ export function SizeMatrix({
           aria-label="Sizing matrix"
           aria-labelledby={labelledBy}
           className={`flex w-max min-w-full gap-0.5 rounded-full border border-[oklch(0.86_0.02_80)] p-1 ${
-            surface === "page" ? "bg-[oklch(0.96_0.01_82)]" : "bg-[#FDFBF7]"
+            surface === "page" ? "bg-[oklch(0.96_0.01_82)]" : "bg-[#F9F6F0]"
           }`}
         >
           {SIZE_TABS.map((tab) => {
@@ -86,7 +86,7 @@ export function SizeMatrix({
               className={`h-9 min-w-10 rounded-full border px-3.5 text-[14px] tabular-nums transition-colors duration-200 ${
                 pressed
                   ? `border-[oklch(0.78_0.03_72)] font-semibold text-[oklch(0.22_0.025_55)] ${
-                      surface === "page" ? "bg-[oklch(0.96_0.01_82)]" : "bg-[#FDFBF7]"
+                      surface === "page" ? "bg-[oklch(0.96_0.01_82)]" : "bg-[#F9F6F0]"
                     }`
                   : "border-[oklch(0.86_0.02_80)] bg-transparent font-medium text-[oklch(0.38_0.03_55)] hover:bg-[oklch(0.94_0.012_82)]"
               }`}

@@ -1,0 +1,15 @@
+export const brand = {
+  canvas: "#F9F6F0",
+  ink: "#2A1A14",
+  muted: "#6B4A3A",
+  rose: "#D8829D",
+  denim: "#4B6584",
+  washi: "rgba(241, 196, 15, 0.8)",
+  polaroid: "#F4EFE6",
+  sand: "#E4D5C1",
+  cardboard: "#CDB892",
+  line: "#C9B8A4",
+  cream: "#F4EFE6",
+  shadow: "4px 4px 0px 0px #2A1A14",
+  ease: "cubic-bezier(0.19, 1, 0.22, 1)",
+} as const;

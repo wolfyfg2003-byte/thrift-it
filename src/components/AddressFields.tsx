@@ -43,7 +43,7 @@ export default function AddressFields({
               const emirate = event.target.value as Emirate;
               patch({ emirate, community: "" });
             }}
-            className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+            className="h-12 w-full appearance-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
           >
             {EMIRATES.map((item) => (
               <option key={item} value={item}>
@@ -136,7 +136,7 @@ export default function AddressFields({
                 className={`h-10 rounded-full px-3.5 text-[14px] font-semibold transition-colors duration-200 ${
                   selected
                     ? "bg-[oklch(0.48_0.12_52)] text-[oklch(0.98_0.012_85)]"
-                    : "border border-[oklch(0.84_0.02_75)] bg-[#FDFBF7] text-[oklch(0.22_0.025_55)] hover:bg-[oklch(0.96_0.012_82)]"
+                    : "border border-[oklch(0.84_0.02_75)] bg-[#F9F6F0] text-[oklch(0.22_0.025_55)] hover:bg-[oklch(0.96_0.012_82)]"
                 }`}
                 style={{ transitionTimingFunction: EASE }}
                 aria-pressed={selected}
@@ -153,7 +153,7 @@ export default function AddressFields({
           rows={3}
           placeholder="Gate code, tower, or who to call"
           onChange={(event) => patch({ instructions: event.target.value })}
-          className="mt-3 w-full resize-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3.5 py-3 text-[16px] leading-6 text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
+          className="mt-3 w-full resize-none rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3.5 py-3 text-[16px] leading-6 text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
         />
       </div>
 
@@ -256,7 +256,7 @@ function CommunityCombobox({
             }
             if (event.key === "Escape") setOpen(false);
           }}
-          className={`h-12 w-full rounded-2xl border bg-[#FDFBF7] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
+          className={`h-12 w-full rounded-2xl border bg-[#F9F6F0] px-3.5 pr-10 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
             error ? "border-[oklch(0.62_0.1_40)]" : "border-[oklch(0.88_0.018_80)]"
           }`}
         />
@@ -265,7 +265,7 @@ function CommunityCombobox({
           <ul
             id={listId}
             role="listbox"
-            className="absolute z-30 mt-1.5 max-h-56 w-full overflow-y-auto rounded-[1.15rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] py-1.5 shadow-[0_18px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
+            className="absolute z-30 mt-1.5 max-h-56 w-full overflow-y-auto rounded-[1.15rem] border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] py-1.5 shadow-[0_18px_40px_-24px_oklch(0.22_0.03_55/0.45)]"
           >
             {options.length === 0 ? (
               <li className="px-3.5 py-3 text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -341,7 +341,7 @@ function TextField({
         placeholder={placeholder}
         aria-invalid={error ? true : undefined}
         onChange={(event) => onChange(event.target.value)}
-        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#FDFBF7] px-3.5 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
+        className={`mt-1.5 h-12 w-full rounded-2xl border bg-[#F9F6F0] px-3.5 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] ${
           error ? "border-[oklch(0.62_0.1_40)]" : "border-[oklch(0.88_0.018_80)]"
         }`}
       />

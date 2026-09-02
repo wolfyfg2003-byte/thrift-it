@@ -18,10 +18,11 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const listing = await getListing(id);
-  if (!listing) return { title: "Lookbook" };
+  if (!listing) return { title: "Lookbook", robots: { index: false, follow: false } };
   return {
     title: `${listing.brand} ${listing.title}`,
     description: listing.description ?? `${listing.brand} on Thrift It.`,
+    robots: { index: false, follow: false },
   };
 }
 

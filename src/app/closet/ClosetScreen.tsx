@@ -28,9 +28,9 @@ export default function ClosetScreen({ listings }: { listings: Listing[] }) {
   const wardrobe = listings.filter((item) => item.escrow_status === "none");
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[28rem] flex-col bg-[#FDFBF7] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+    <main className="mx-auto flex min-h-dvh w-full max-w-[28rem] flex-col bg-[#F9F6F0] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Closet
         </h1>
         <Link
@@ -78,7 +78,7 @@ export default function ClosetScreen({ listings }: { listings: Listing[] }) {
                     className="size-16 shrink-0 rounded-[0.85rem] border border-[oklch(0.88_0.018_80)] object-cover"
                   />
                 ) : (
-                  <span className="grid size-16 shrink-0 place-items-center rounded-[0.85rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[16px] text-[oklch(0.38_0.05_52)]">
+                  <span className="grid size-16 shrink-0 place-items-center rounded-[0.85rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[16px] text-[oklch(0.38_0.05_52)]">
                     {item.brand.slice(0, 1)}
                   </span>
                 )}

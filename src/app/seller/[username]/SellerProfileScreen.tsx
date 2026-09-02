@@ -23,7 +23,7 @@ export default function SellerProfileScreen({
     : formatFollowers(seller.followers);
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(0.85rem,env(safe-area-inset-top))]">
+    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(0.85rem,env(safe-area-inset-top))]">
       <Link
         href="/"
         className="inline-flex h-10 items-center text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
@@ -36,12 +36,12 @@ export default function SellerProfileScreen({
         <div className="flex items-start gap-4">
           <span
             aria-hidden="true"
-            className="grid size-16 shrink-0 place-items-center rounded-full bg-[oklch(0.93_0.03_75)] font-[family-name:var(--font-bodoni)] text-[20px] text-[oklch(0.32_0.05_52)]"
+            className="grid size-16 shrink-0 place-items-center rounded-full bg-[oklch(0.93_0.03_75)] font-[family-name:var(--font-display)] text-[20px] text-[oklch(0.32_0.05_52)]"
           >
             {seller.initials}
           </span>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate py-[0.12em] font-[family-name:var(--font-bodoni)] text-[32px] leading-[1.2] tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+            <h1 className="truncate py-[0.12em] font-[family-name:var(--font-display)] text-[32px] leading-[1.2] tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
               {seller.handle}
             </h1>
             <p className="mt-2 text-[14px] leading-5 text-[oklch(0.42_0.03_55)]">
@@ -70,7 +70,7 @@ export default function SellerProfileScreen({
           aria-pressed={following}
           className={`mt-6 flex h-12 w-full items-center justify-center rounded-full text-[14px] font-semibold transition-colors duration-200 ${
             following
-              ? "border border-[oklch(0.78_0.04_72)] bg-[#FDFBF7] text-[oklch(0.32_0.05_52)] hover:bg-[oklch(0.96_0.012_82)]"
+              ? "border border-[oklch(0.78_0.04_72)] bg-[#F9F6F0] text-[oklch(0.32_0.05_52)] hover:bg-[oklch(0.96_0.012_82)]"
               : "bg-[oklch(0.52_0.14_72)] text-[oklch(0.98_0.012_85)] hover:bg-[oklch(0.46_0.13_72)]"
           }`}
           style={{ transitionTimingFunction: EASE }}
@@ -195,7 +195,7 @@ function TabButton({
       onClick={onClick}
       className={`h-10 rounded-full text-[14px] transition-colors duration-200 ${
         selected
-          ? "bg-[#FDFBF7] font-semibold text-[oklch(0.22_0.025_55)] shadow-[0_6px_16px_-10px_oklch(0.22_0.03_55/0.35)]"
+          ? "bg-[#F9F6F0] font-semibold text-[oklch(0.22_0.025_55)] shadow-[0_6px_16px_-10px_oklch(0.22_0.03_55/0.35)]"
           : "font-medium text-[oklch(0.5_0.03_55)]"
       }`}
       style={{ transitionTimingFunction: EASE }}

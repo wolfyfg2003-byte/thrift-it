@@ -40,3 +40,9 @@ export function saveWaitlist(email: string, mobile: string): WaitlistEntry {
 export function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
+
+/** Phone-only onboarding still needs an email column on public.waitlist. */
+export function waitlistEmailFromMobile(mobile: string): string {
+  const digits = mobile.replace(/\D/g, "");
+  return `${digits || "uae"}@waitlist.thrifit.ae`;
+}

@@ -29,7 +29,7 @@ export function LiveDropBanner({ title, onOpen, onDismiss }: LiveDropBannerProps
           <BoltIcon />
         </span>
         <button type="button" onClick={() => leave(onOpen)} className="min-w-0 flex-1 text-left">
-          <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-6 tracking-[-0.02em] text-[oklch(0.26_0.04_55)]">
+          <p className="font-[family-name:var(--font-display)] text-[20px] leading-6 tracking-[-0.02em] text-[oklch(0.26_0.04_55)]">
             LIVE DROP: The {title} is now unlocked!
           </p>
           <p className="mt-1 text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">

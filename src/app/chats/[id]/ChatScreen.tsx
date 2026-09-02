@@ -125,10 +125,10 @@ export default function ChatScreen({
 
   return (
     <div
-      className="mx-auto flex w-full max-w-[28rem] flex-col overflow-hidden bg-[#FDFBF7]"
+      className="mx-auto flex w-full max-w-[28rem] flex-col overflow-hidden bg-[#F9F6F0]"
       style={{ height: viewportH ?? "100dvh" }}
     >
-      <header className="shrink-0 border-b border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
+      <header className="shrink-0 border-b border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
         <div className="flex items-center gap-2">
           <Link
             href="/chats"
@@ -164,7 +164,7 @@ export default function ChatScreen({
           ) : (
             <span
               aria-hidden="true"
-              className="grid size-14 shrink-0 place-items-center rounded-[0.8rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-bodoni)] text-[16px] text-[oklch(0.38_0.05_52)]"
+              className="grid size-14 shrink-0 place-items-center rounded-[0.8rem] border border-[oklch(0.88_0.018_80)] bg-[oklch(0.93_0.02_75)] font-[family-name:var(--font-display)] text-[16px] text-[oklch(0.38_0.05_52)]"
             >
               {listing.brand.slice(0, 1)}
             </span>
@@ -244,7 +244,7 @@ export default function ChatScreen({
 
       <form
         onSubmit={send}
-        className="shrink-0 border-t border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-4 pt-3 pb-[max(0.85rem,env(safe-area-inset-bottom))]"
+        className="shrink-0 border-t border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-4 pt-3 pb-[max(0.85rem,env(safe-area-inset-bottom))]"
       >
         <div className="flex gap-2">
           <label htmlFor="composer" className="sr-only">
@@ -259,7 +259,7 @@ export default function ChatScreen({
             autoComplete="off"
             disabled={closed}
             aria-disabled={closed}
-            className="h-12 min-w-0 flex-1 rounded-full border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-4 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] disabled:cursor-not-allowed disabled:bg-[oklch(0.94_0.01_80)] disabled:text-[oklch(0.55_0.02_55)] disabled:placeholder:text-[oklch(0.58_0.02_55)]"
+            className="h-12 min-w-0 flex-1 rounded-full border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-4 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)] disabled:cursor-not-allowed disabled:bg-[oklch(0.94_0.01_80)] disabled:text-[oklch(0.55_0.02_55)] disabled:placeholder:text-[oklch(0.58_0.02_55)]"
           />
           <button
             type="submit"
@@ -329,7 +329,7 @@ function OfferCard({
       <p className="text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">
         {listing.brand} · listed {formatAed(asking)}
       </p>
-      <p className="mt-2 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
+      <p className="mt-2 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)] tabular-nums">
         Proposed: {formatAed(offer)}
       </p>
 
@@ -343,7 +343,7 @@ function OfferCard({
             type="button"
             onClick={onCounter}
             disabled={disabled}
-            className="h-11 rounded-full border border-[oklch(0.84_0.02_75)] bg-[#FDFBF7] text-[14px] font-semibold text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.93_0.016_80)] disabled:text-[oklch(0.5_0.02_55)]"
+            className="h-11 rounded-full border border-[oklch(0.84_0.02_75)] bg-[#F9F6F0] text-[14px] font-semibold text-[oklch(0.22_0.025_55)] transition-colors duration-200 hover:bg-[oklch(0.93_0.016_80)] disabled:text-[oklch(0.5_0.02_55)]"
             style={{ transitionTimingFunction: EASE }}
           >
             Counter
@@ -459,7 +459,7 @@ function OfferCard({
           </p>
           <Link
             href={checkoutHref}
-            className="mt-3 flex h-12 items-center justify-center rounded-full border border-[oklch(0.84_0.02_75)] bg-[#FDFBF7] text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
+            className="mt-3 flex h-12 items-center justify-center rounded-full border border-[oklch(0.84_0.02_75)] bg-[#F9F6F0] text-[14px] font-semibold text-[oklch(0.22_0.025_55)]"
           >
             Track with AJEX
           </Link>
@@ -490,7 +490,7 @@ function MissedOutNotice({ brand }: { brand: string }) {
           <BoltIcon />
         </span>
         <div className="min-w-0">
-          <p className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em]">
+          <p className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em]">
             Missed Out!
           </p>
           <p className="mt-3 max-w-[36ch] text-[16px] leading-6 text-[oklch(0.9_0.02_80)]">

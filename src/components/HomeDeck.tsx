@@ -23,11 +23,23 @@ import {
 import { stampDropSchedule, type Listing } from "@/lib/listings";
 import { usePlusState } from "@/lib/plus-store";
 import { restoreProfile, useProfile } from "@/lib/profile-store";
+import {
+  hasCalibratedTaste,
+  restoreTaste,
+  useTaste,
+} from "@/lib/taste-store";
+import { rankListingsByTaste } from "@/lib/taste";
 import { useEffect, useMemo, useState } from "react";
 
 const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
-export default function HomeDeck({ listings }: { listings: Listing[] }) {
+export default function HomeDeck({
+  listings,
+  preserveServerOrder = false,
+}: {
+  listings: Listing[];
+  preserveServerOrder?: boolean;
+}) {
   const [filters, setFilters] = useState<DeckFilters>(EMPTY_FILTERS);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [circle, setCircle] = useState<DeckCircle>("for-you");
@@ -44,9 +56,11 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
   const plus = usePlusState();
   const follow = useFollowState();
   const profile = useProfile();
+  const taste = useTaste();
 
   useEffect(() => {
     restoreProfile();
+    restoreTaste();
   }, []);
 
   useEffect(() => {
@@ -144,13 +158,21 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
       following: follow.usernames,
       origin,
     });
-    const ranked = rankDeck(cut, {
-      dressSize: profile.dressSizeCode,
-      dressSizeKey: profile.dressSizeKey,
-      community: profile.address.community,
-      origin,
-      mySizeOnly,
-    });
+    const ranked = hasCalibratedTaste(taste)
+      ? rankListingsByTaste(
+          cut,
+          taste.preferences,
+          new Set(taste.swipedIds),
+        )
+      : preserveServerOrder
+        ? cut
+        : rankDeck(cut, {
+            dressSize: profile.dressSizeCode,
+            dressSizeKey: profile.dressSizeKey,
+            community: profile.address.community,
+            origin,
+            mySizeOnly,
+          });
     const upcoming = ranked
       .filter((item) => isDropLocked(item))
       .sort((a, b) => remainingDropMs(a) - remainingDropMs(b));
@@ -177,7 +199,9 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
     mySizeOnly,
     origin,
     hiddenWatchIds,
+    preserveServerOrder,
     injectId,
+    taste,
   ]);
 
   useEffect(() => {
@@ -198,11 +222,17 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
   const active = filtersAreActive(filters);
   const followingEmpty = circle === "following" && filtered.length === 0;
   const sizeEmpty = mySizeOnly && filtered.length === 0 && !followingEmpty;
+  const tasteEmpty =
+    hasCalibratedTaste(taste) &&
+    filtered.length === 0 &&
+    !followingEmpty &&
+    !sizeEmpty;
   const radiusEmpty =
     filters.radiusKm != null &&
     filtered.length === 0 &&
     !followingEmpty &&
-    !sizeEmpty;
+    !sizeEmpty &&
+    !tasteEmpty;
 
   const clear = () => {
     setFilters(EMPTY_FILTERS);
@@ -250,7 +280,7 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
             placeholder="Search brands or pieces"
             autoComplete="off"
             enterKeyHint="search"
-            className="h-12 w-full rounded-full border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] pr-4 pl-11 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
+            className="h-12 w-full rounded-full border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] pr-4 pl-11 text-[16px] text-[oklch(0.22_0.025_55)] outline-none placeholder:text-[oklch(0.5_0.025_55)] focus:border-[oklch(0.48_0.12_52)]"
           />
         </label>
         <button
@@ -261,7 +291,7 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
           className={`grid size-12 shrink-0 place-items-center rounded-full border text-[oklch(0.22_0.025_55)] transition-colors duration-200 ${
             drawerOpen || active
               ? "border-[oklch(0.78_0.03_72)] bg-[oklch(0.96_0.01_82)]"
-              : "border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] hover:bg-[oklch(0.96_0.012_82)]"
+              : "border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] hover:bg-[oklch(0.96_0.012_82)]"
           }`}
           style={{ transitionTimingFunction: EASE }}
         >
@@ -365,9 +395,11 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
               : "Nothing from your circle"
             : sizeEmpty
               ? "Nothing in your size"
-              : radiusEmpty
-                ? "Nothing in this radius"
-                : undefined
+              : tasteEmpty
+                ? "Your closet is calibrated"
+                : radiusEmpty
+                  ? "Nothing in this radius"
+                  : undefined
         }
         emptyBody={
           followingEmpty
@@ -376,9 +408,11 @@ export default function HomeDeck({ listings }: { listings: Listing[] }) {
               : "Sellers you follow have nothing on the rail right now."
             : sizeEmpty
               ? "Turn off My Size Only to see the rest of the rail, or edit dress size in Account Settings."
-              : radiusEmpty
-                ? "Widen Distance Radius, or choose All UAE to see the rest of the rail."
-                : undefined
+              : tasteEmpty
+                ? "Every piece in your sizes has been swiped. Replay the rail to train it again."
+                : radiusEmpty
+                  ? "Widen Distance Radius, or choose All UAE to see the rest of the rail."
+                  : undefined
         }
       />
     </div>
@@ -398,8 +432,8 @@ function SlidersIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path d="M3 5.5h12M3 12.5h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="7" cy="5.5" r="1.7" fill="#FDFBF7" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="11" cy="12.5" r="1.7" fill="#FDFBF7" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="7" cy="5.5" r="1.7" fill="#F9F6F0" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="11" cy="12.5" r="1.7" fill="#F9F6F0" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );
 }

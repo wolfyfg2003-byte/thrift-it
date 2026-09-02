@@ -51,7 +51,7 @@ export function SellDropCard({
           <BoltIcon />
         </span>
         <div className="min-w-0 flex-1">
-          <h2 className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
+          <h2 className="font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)]">
             Schedule a Live Closet Drop
           </h2>
           <RoleStatus role={role} premiumUsed={premiumUsed} />
@@ -75,7 +75,7 @@ export function SellDropCard({
           style={{ transitionTimingFunction: EASE }}
         >
           <span
-            className={`absolute top-0.5 left-0.5 size-6 rounded-full bg-[#FDFBF7] shadow-[0_4px_10px_-4px_oklch(0.22_0.03_55/0.35)] transition-transform duration-200 ${
+            className={`absolute top-0.5 left-0.5 size-6 rounded-full bg-[#F9F6F0] shadow-[0_4px_10px_-4px_oklch(0.22_0.03_55/0.35)] transition-transform duration-200 ${
               enabled ? "translate-x-5" : "translate-x-0"
             }`}
             style={{ transitionTimingFunction: EASE }}
@@ -107,7 +107,7 @@ export function SellDropCard({
                   onChange={(event) =>
                     onDropAtChange(combineDropAt(event.target.value, stamp.time, bounds))
                   }
-                  className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+                  className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
                 />
               </label>
               <label className="min-w-0">
@@ -121,7 +121,7 @@ export function SellDropCard({
                   onChange={(event) =>
                     onDropAtChange(combineDropAt(stamp.date, event.target.value, bounds))
                   }
-                  className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
+                  className="mt-1.5 h-12 w-full rounded-2xl border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-3 text-[16px] text-[oklch(0.22_0.025_55)] outline-none focus:border-[oklch(0.48_0.12_52)]"
                 />
               </label>
             </div>

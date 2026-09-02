@@ -33,9 +33,9 @@ export default function VipClosetDashboard() {
   const [pickup, setPickup] = useState<"idle" | "booked">("idle");
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#FDFBF7] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.75rem,env(safe-area-inset-top))]">
+    <main className="mx-auto min-h-dvh w-full max-w-[28rem] bg-[#F9F6F0] px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[max(1.75rem,env(safe-area-inset-top))]">
       <header className="max-w-[40ch]">
-        <h1 className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]">
           Closet
         </h1>
         <p className="mt-3 text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
@@ -66,7 +66,7 @@ export default function VipClosetDashboard() {
               key={item.id}
               className="border-b border-[oklch(0.88_0.018_80)] py-7"
             >
-              <p className="font-[family-name:var(--font-bodoni)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
+              <p className="font-[family-name:var(--font-display)] text-[20px] leading-7 text-[oklch(0.22_0.025_55)]">
                 {item.label}
               </p>
               {item.status === "listed" ? (
@@ -133,7 +133,7 @@ function Metric({
   return (
     <div>
       <p className="text-[12px] leading-4 text-[oklch(0.42_0.03_55)]">{label}</p>
-      <p className="mt-2 font-[family-name:var(--font-bodoni)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
+      <p className="mt-2 font-[family-name:var(--font-display)] text-[20px] leading-7 tracking-[-0.02em] text-[oklch(0.22_0.025_55)] tabular-nums">
         {value}
       </p>
     </div>

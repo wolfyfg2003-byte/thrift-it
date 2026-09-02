@@ -22,21 +22,26 @@ export function DropLock({ dropTime, interactive, onNotify }: DropLockProps) {
   if (remaining <= 0) return null;
 
   return (
-    <div className="absolute inset-0 z-20 flex flex-col justify-center bg-[oklch(0.78_0.09_78_/_0.42)] px-5 py-8 backdrop-blur-[18px]">
-      <div className="pointer-events-none absolute inset-0 bg-[oklch(0.72_0.1_72_/_0.16)]" />
-      <div className="relative space-y-5">
-        <p className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.03_55)] tabular-nums">
+    <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-center bg-[#F4EFE6]/78 px-5 py-8 backdrop-blur-[8px]">
+      <div className="relative space-y-4">
+        <p className="font-[family-name:var(--font-display)] text-[32px] leading-none text-[#2A1A14] tabular-nums">
           Unlocks in {formatUnlockCountdown(remaining)}
         </p>
         {interactive ? (
-          <button
-            type="button"
-            onClick={onNotify}
-            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[oklch(0.48_0.12_52)] px-5 text-[14px] font-semibold text-[oklch(0.985_0.01_85)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98]"
-          >
-            <BellIcon />
-            Notify Me when Live
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={onNotify}
+              onPointerDown={(event) => event.stopPropagation()}
+              className="pointer-events-auto inline-flex min-h-12 w-full items-center justify-center gap-2 border border-[#2A1A14] bg-[#D8829D] px-5 text-[14px] font-semibold text-[#2A1A14] shadow-[4px_4px_0_0_#2A1A14]"
+            >
+              <BellIcon />
+              Notify Me when Live
+            </button>
+            <p className="font-[family-name:var(--font-handwritten)] text-[16px] leading-5 text-[#6B4A3A]">
+              or swipe right to watch
+            </p>
+          </>
         ) : null}
       </div>
     </div>

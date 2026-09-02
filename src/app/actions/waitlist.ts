@@ -1,5 +1,6 @@
 "use server";
 
+import { isProduction } from "@/lib/env";
 import { isValidEmail } from "@/lib/waitlist-store";
 import { createThriftAdminClient } from "@/lib/supabase/admin";
 
@@ -17,6 +18,11 @@ export async function addToWaitlist(
   const normalizedPhone = phone?.trim() ? phone.trim() : null;
 
   if (!isValidEmail(normalizedEmail)) {
+    return { success: false, error: "unknown" };
+  }
+
+  if (isProduction()) {
+    console.error("waitlist insert blocked: production environment");
     return { success: false, error: "unknown" };
   }
 

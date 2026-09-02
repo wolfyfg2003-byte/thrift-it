@@ -63,12 +63,12 @@ export default function BoostSheet({ listings }: { listings: Listing[] }) {
         onClick={dismiss}
         tabIndex={-1}
       />
-      <div className="relative z-10 w-full max-h-[min(92dvh,42rem)] overflow-y-auto overscroll-contain rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#FDFBF7] px-5 pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-18px_48px_-28px_oklch(0.22_0.03_55/0.4)] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:max-w-[26.5rem] sm:rounded-[1.75rem]">
+      <div className="relative z-10 w-full max-h-[min(92dvh,42rem)] overflow-y-auto overscroll-contain rounded-t-[1.75rem] border border-[oklch(0.88_0.018_80)] bg-[#F9F6F0] px-5 pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-18px_48px_-28px_oklch(0.22_0.03_55/0.4)] motion-safe:animate-[sheet-up_220ms_cubic-bezier(0.16,1,0.3,1)_both] sm:max-w-[26.5rem] sm:rounded-[1.75rem]">
         {phase === "done" ? (
           <>
             <h2
               id={titleId}
-              className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
+              className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
             >
               At the front of the deck
             </h2>
@@ -89,7 +89,7 @@ export default function BoostSheet({ listings }: { listings: Listing[] }) {
           <>
             <h2
               id={titleId}
-              className="font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
+              className="font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] text-[oklch(0.22_0.025_55)]"
             >
               Boost this listing
             </h2>
@@ -113,7 +113,7 @@ export default function BoostSheet({ listings }: { listings: Listing[] }) {
             <p className="mt-4 max-w-[40ch] text-[16px] leading-6 text-[oklch(0.42_0.03_55)]">
               Pin it to the top of every buyer’s deck for {BOOST_HOURS} hours.
             </p>
-            <p className="mt-5 font-[family-name:var(--font-bodoni)] text-[32px] leading-none tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
+            <p className="mt-5 font-[family-name:var(--font-display)] text-[32px] leading-none tracking-[-0.03em] tabular-nums text-[oklch(0.22_0.025_55)]">
               {formatAed(BOOST_AED)}
             </p>
             <p className="mt-2 text-[12px] leading-4 text-[oklch(0.5_0.025_55)]">

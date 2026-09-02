@@ -5,10 +5,13 @@ export const PLUS_MONTHLY_AED = 19;
 export const BOOST_AED = 15;
 export const BOOST_HOURS = 24;
 
+export type PlusReason = "plus" | "rewind";
+
 export type PlusState = {
   freeBacktracksLeft: number;
   plusActive: boolean;
   paywallOpen: boolean;
+  paywallReason: PlusReason;
   boosts: Record<string, number>;
   boostListingId: string | null;
 };
@@ -20,6 +23,7 @@ let state: PlusState = {
   freeBacktracksLeft: FREE_BACKTRACKS,
   plusActive: false,
   paywallOpen: false,
+  paywallReason: "plus",
   boosts: {},
   boostListingId: null,
 };
@@ -27,6 +31,7 @@ const SERVER_PLUS: PlusState = {
   freeBacktracksLeft: FREE_BACKTRACKS,
   plusActive: false,
   paywallOpen: false,
+  paywallReason: "plus",
   boosts: {},
   boostListingId: null,
 };
@@ -90,8 +95,11 @@ export function subscribePlus(listener: () => void) {
   return () => listeners.delete(listener);
 }
 
-export function openPlusPaywall() {
-  setState({ paywallOpen: true });
+export function openPlusPaywall(reason: PlusReason = "plus") {
+  setState({
+    paywallOpen: true,
+    paywallReason: reason === "rewind" ? "rewind" : "plus",
+  });
 }
 
 export function closePlusPaywall() {
@@ -109,7 +117,7 @@ export function consumeBacktrack(): "ok" | "paywall" {
     setState({ freeBacktracksLeft: state.freeBacktracksLeft - 1 });
     return "ok";
   }
-  setState({ paywallOpen: true });
+  setState({ paywallOpen: true, paywallReason: "rewind" });
   return "paywall";
 }
 

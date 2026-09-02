@@ -1,7 +1,12 @@
+import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
+import { getRequestLocale } from "@/lib/i18n/server";
+import { rootMetadata } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
 import {
   Alfa_Slab_One,
+  Amiri,
   Architects_Daughter,
+  IBM_Plex_Sans_Arabic,
   Space_Grotesk,
   Special_Elite,
 } from "next/font/google";
@@ -35,14 +40,23 @@ const architect = Architects_Daughter({
   weight: "400",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Thrift It",
-    template: "%s · Thrift It",
-  },
-  description:
-    "Photograph and list contemporary fashion for escrow-backed sale in Dubai.",
-};
+const amiri = Amiri({
+  subsets: ["arabic", "latin"],
+  display: "swap",
+  variable: "--font-amiri",
+  weight: ["400", "700"],
+});
+
+const plexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  display: "swap",
+  variable: "--font-plex-arabic",
+  weight: ["400", "500", "600", "700"],
+});
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = rootMetadata;
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -51,19 +65,22 @@ export const viewport: Viewport = {
   interactiveWidget: "resizes-content",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getRequestLocale();
+  const arabic = locale === "ar";
+
   return (
     <html
-      lang="en"
-      className={`${grotesk.variable} ${alfa.variable} ${elite.variable} ${architect.variable}`}
+      lang={arabic ? "ar-AE" : "en-AE"}
+      dir={arabic ? "rtl" : "ltr"}
+      suppressHydrationWarning
+      className={`${grotesk.variable} ${alfa.variable} ${elite.variable} ${architect.variable} ${amiri.variable} ${plexArabic.variable}`}
     >
-      <body
-        className={`${grotesk.className} min-h-dvh bg-[#F9F6F0] text-[#2A1A14] antialiased`}
-      >
+      <body className="min-h-dvh bg-[#F9F6F0] text-[#2A1A14] antialiased">
         {/*
           THESIS: Thrift It is a cut-and-paste closet, not a SaaS feed — Polaroids, ransom type, and escrow stamps.
           OWN-WORLD: Parchment #F9F6F0, espresso #2A1A14, dusty rose, faded denim, mustard washi; Alfa Slab / Special Elite / Architects Daughter / Space Grotesk; hard 4px ink offsets.
@@ -72,6 +89,7 @@ export default function RootLayout({
           FORM: Analog Y2K scrapbook collage. Seed skipped — user-pinned tokens and treatments.
           FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
         */}
+        <HtmlDirSync />
         {children}
       </body>
     </html>

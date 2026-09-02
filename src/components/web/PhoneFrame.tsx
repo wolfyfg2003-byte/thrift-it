@@ -11,7 +11,10 @@ export function PhoneFrame({
   label = "App preview",
 }: PhoneFrameProps) {
   return (
-    <div className="flex w-full items-center justify-center px-5 lg:mt-0 lg:h-full lg:px-0">
+    <div
+      dir="ltr"
+      className="flex w-full items-center justify-center px-5 lg:mt-0 lg:h-full lg:px-0"
+    >
       <div
         className="mx-auto w-full max-w-[24.5rem] rotate-1 border border-[#2A1A14] bg-[#E4D5C1] p-[0.65rem] shadow-[4px_4px_0_0_#2A1A14]"
         data-phone-preview={label}
