@@ -1,5 +1,6 @@
 import { track } from "@vercel/analytics";
 import type { Locale } from "@/lib/i18n";
+import { trackMetaLead } from "@/lib/meta-pixel";
 
 export type WaitlistSurface = "page" | "drawer" | "onboarding";
 
@@ -17,4 +18,7 @@ export function trackWaitlist(
     locale: currentLocale(),
     surface,
   });
+  if (outcome === "join") {
+    trackMetaLead(surface);
+  }
 }

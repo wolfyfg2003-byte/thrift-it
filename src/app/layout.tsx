@@ -1,4 +1,5 @@
 import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
+import { MetaPixel } from "@/components/web/MetaPixel";
 import { getRequestLocale } from "@/lib/i18n/server";
 import { rootMetadata } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
@@ -92,6 +93,7 @@ export default async function RootLayout({
         */}
         <HtmlDirSync />
         {children}
+        <MetaPixel />
         <Analytics />
       </body>
     </html>
