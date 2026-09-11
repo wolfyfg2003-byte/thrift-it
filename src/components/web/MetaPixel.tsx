@@ -1,5 +1,6 @@
 "use client";
 
+import { isWebsitePixelPath } from "@/lib/meta-pixel";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
@@ -12,6 +13,7 @@ export function MetaPixel() {
   const skipFirstView = useRef(true);
 
   useEffect(() => {
+    if (!isWebsitePixelPath(pathname)) return;
     if (skipFirstView.current) {
       skipFirstView.current = false;
       return;

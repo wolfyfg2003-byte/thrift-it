@@ -6,6 +6,7 @@ export function MetaPixelHead() {
 
   return (
     <>
+      {/* Meta Pixel Code */}
       <script
         dangerouslySetInnerHTML={{ __html: metaPixelHeadScript(META_PIXEL_ID) }}
       />
@@ -18,6 +19,7 @@ export function MetaPixelHead() {
           alt=""
         />
       </noscript>
+      {/* End Meta Pixel Code */}
     </>
   );
 }

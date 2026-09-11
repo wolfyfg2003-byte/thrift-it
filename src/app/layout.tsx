@@ -2,7 +2,9 @@ import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
 import { MetaPixel } from "@/components/web/MetaPixel";
 import { MetaPixelHead } from "@/components/web/MetaPixelHead";
 import { getRequestLocale } from "@/lib/i18n/server";
+import { isWebsitePixelPath } from "@/lib/meta-pixel";
 import { rootMetadata } from "@/lib/seo";
+import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import {
@@ -75,6 +77,8 @@ export default async function RootLayout({
 }>) {
   const locale = await getRequestLocale();
   const arabic = locale === "ar";
+  const pathname = (await headers()).get("x-pathname") ?? "/";
+  const onWebsite = isWebsitePixelPath(pathname);
 
   return (
     <html
@@ -83,9 +87,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${grotesk.variable} ${alfa.variable} ${elite.variable} ${architect.variable} ${amiri.variable} ${plexArabic.variable}`}
     >
-      <head>
-        <MetaPixelHead />
-      </head>
+      <head>{onWebsite ? <MetaPixelHead /> : null}</head>
       <body className="min-h-dvh bg-[#F9F6F0] text-[#2A1A14] antialiased">
         {/*
           THESIS: Thrift It is a cut-and-paste closet, not a SaaS feed — Polaroids, ransom type, and escrow stamps.
@@ -97,7 +99,7 @@ export default async function RootLayout({
         */}
         <HtmlDirSync />
         {children}
-        <MetaPixel />
+        {onWebsite ? <MetaPixel /> : null}
         <Analytics />
       </body>
     </html>

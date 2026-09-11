@@ -1,6 +1,16 @@
+import { ROBOTS_DISALLOW } from "@/lib/seo";
+
 export const META_PIXEL_ID = (
   process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "2005054940202593"
 ).replace(/\D/g, "");
+
+/** Waitlist landers only. App, signup, and checkout stay out. */
+export function isWebsitePixelPath(pathname: string): boolean {
+  const path = pathname.split("?")[0] || "/";
+  return !ROBOTS_DISALLOW.some(
+    (prefix) => path === prefix || path.startsWith(`${prefix}/`),
+  );
+}
 
 /** Inline <head> bootstrap so Meta's crawler sees fbq without running Next.js chunks. */
 export function metaPixelHeadScript(pixelId: string): string {
