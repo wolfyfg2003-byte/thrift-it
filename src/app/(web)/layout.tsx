@@ -2,6 +2,8 @@ import { Footer } from "@/components/web/Footer";
 import { Header } from "@/components/web/Header";
 import { getDictionary } from "@/lib/i18n";
 import { getRequestLocale } from "@/lib/i18n/server";
+import { sendMetaCapiEvent } from "@/lib/meta-capi";
+import { after } from "next/server";
 
 export default async function WebLayout({
   children,
@@ -10,6 +12,12 @@ export default async function WebLayout({
 }>) {
   const locale = await getRequestLocale();
   const dictionary = getDictionary(locale);
+  after(() =>
+    sendMetaCapiEvent({
+      eventName: "PageView",
+      eventId: crypto.randomUUID(),
+    }),
+  );
 
   return (
     <>

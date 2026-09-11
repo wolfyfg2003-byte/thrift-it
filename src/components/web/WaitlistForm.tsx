@@ -56,7 +56,7 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
     startTransition(async () => {
       const result = await addToWaitlist(email, mobile);
       if (result.success) {
-        trackWaitlist("join", variant);
+        trackWaitlist("join", variant, result.eventId);
         setJoined(saveWaitlist(email, mobile));
         return;
       }

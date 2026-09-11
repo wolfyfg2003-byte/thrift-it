@@ -13,12 +13,13 @@ function currentLocale(): Locale {
 export function trackWaitlist(
   outcome: "join" | "already",
   surface: WaitlistSurface,
+  eventId?: string,
 ): void {
   track(outcome === "join" ? "waitlist_join" : "waitlist_already", {
     locale: currentLocale(),
     surface,
   });
   if (outcome === "join") {
-    trackMetaLead(surface);
+    trackMetaLead(surface, eventId);
   }
 }

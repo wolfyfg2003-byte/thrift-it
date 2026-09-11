@@ -49,7 +49,7 @@ export function OnboardingFlow() {
       setPhoneError("Could not save this number. Try again.");
       return;
     }
-    trackWaitlist(result.success ? "join" : "already", "onboarding");
+    trackWaitlist(result.success ? "join" : "already", "onboarding", result.success ? result.eventId : undefined);
     setStage("waitlist");
   }, [teaser]);
 

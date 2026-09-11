@@ -1,13 +1,15 @@
 "use server";
 
 import { isProduction } from "@/lib/env";
+import { sendMetaCapiEvent } from "@/lib/meta-capi";
 import { isValidEmail } from "@/lib/waitlist-store";
 import { createThriftAdminClient } from "@/lib/supabase/admin";
+import { after } from "next/server";
 
 export type WaitlistError = "already_registered" | "unknown";
 
 export type WaitlistResult =
-  | { success: true }
+  | { success: true; eventId: string }
   | { success: false; error: WaitlistError };
 
 export async function addToWaitlist(
@@ -34,7 +36,16 @@ export async function addToWaitlist(
     });
 
     if (!error) {
-      return { success: true };
+      const eventId = crypto.randomUUID();
+      after(() =>
+        sendMetaCapiEvent({
+          eventName: "Lead",
+          eventId,
+          email: normalizedEmail,
+          phone: normalizedPhone,
+        }),
+      );
+      return { success: true, eventId };
     }
 
     if (error.code === "23505") {

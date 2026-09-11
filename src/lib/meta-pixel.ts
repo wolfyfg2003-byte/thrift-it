@@ -35,12 +35,17 @@ declare global {
   }
 }
 
-export function trackMetaLead(surface: string): void {
+export function trackMetaLead(surface: string, eventId?: string): void {
   if (typeof window === "undefined" || typeof window.fbq !== "function") {
     return;
   }
-  window.fbq("track", "Lead", {
+  const params = {
     content_name: "waitlist",
     content_category: surface,
-  });
+  };
+  if (eventId) {
+    window.fbq("track", "Lead", params, { eventID: eventId });
+    return;
+  }
+  window.fbq("track", "Lead", params);
 }
