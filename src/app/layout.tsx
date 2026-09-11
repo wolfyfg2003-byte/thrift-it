@@ -1,5 +1,6 @@
 import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
 import { MetaPixel } from "@/components/web/MetaPixel";
+import { MetaPixelHead } from "@/components/web/MetaPixelHead";
 import { getRequestLocale } from "@/lib/i18n/server";
 import { rootMetadata } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
@@ -82,6 +83,9 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${grotesk.variable} ${alfa.variable} ${elite.variable} ${architect.variable} ${amiri.variable} ${plexArabic.variable}`}
     >
+      <head>
+        <MetaPixelHead />
+      </head>
       <body className="min-h-dvh bg-[#F9F6F0] text-[#2A1A14] antialiased">
         {/*
           THESIS: Thrift It is a cut-and-paste closet, not a SaaS feed — Polaroids, ransom type, and escrow stamps.
