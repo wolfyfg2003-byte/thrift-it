@@ -29,6 +29,8 @@ export type Dictionary = {
   home: {
     hero: string;
     lede: string;
+    brands: string;
+    proofLine: string;
     benefitCommission: string;
     benefitInspect: string;
     benefitShipping: string;
@@ -41,9 +43,11 @@ export type Dictionary = {
   };
   form: {
     email: string;
+    emailPlaceholder: string;
     mobile: string;
     submit: string;
     pending: string;
+    hint: string;
     joined: string;
     already: string;
     unknown: string;

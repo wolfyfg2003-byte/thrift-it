@@ -89,7 +89,7 @@ export default function OpenGraphImage() {
                 boxShadow: "6px 6px 0 #2A1A14",
               }}
             >
-              Join the waitlist
+              Claim early access
             </div>
             <div
               style={{

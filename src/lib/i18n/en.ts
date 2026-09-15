@@ -23,7 +23,7 @@ export const en: Dictionary = {
     onPage: "On this page",
     how: "How It Works",
     tech: "The Tech",
-    waitlist: "Join waitlist",
+    waitlist: "Early access",
   },
   lang: {
     group: "Language",
@@ -31,8 +31,11 @@ export const en: Dictionary = {
     ar: "عربي",
   },
   home: {
-    hero: "Keep the selling price. Or hand us the closet.",
-    lede: "Pre-loved luxury in Dubai — sustainable contemporary resale with escrow and a courier label, not a classified meetup. Watch a sale play inside the phone, then join the waitlist.",
+    hero: "Sell your closet. 0% commission.",
+    lede: "Pre-loved fashion in Dubai. You photograph, you price, you keep every dirham.",
+    brands:
+      "From closets like Zimmermann, Self-Portrait, House of CB, and Rat & Boa.",
+    proofLine: "48-hour inspect-at-home · Flat AED 20 UAE shipping",
     benefitCommission: "0% commission on self-listed fashion resale in Dubai.",
     benefitInspect: "48-hour inspect-at-home. Escrow holds until that window closes.",
     benefitShipping: "Flat AED 20 tracked shipping across the UAE.",
@@ -47,9 +50,11 @@ export const en: Dictionary = {
   },
   form: {
     email: "Email",
+    emailPlaceholder: "you@email.com",
     mobile: "UAE mobile",
-    submit: "Join the waitlist",
+    submit: "Claim early access",
     pending: "Securing your spot...",
+    hint: "We’ll email when the closet opens. No spam.",
     joined: "You’re on the list. We’ll write when the closet opens.",
     already: "You’re already on the waitlist.",
     unknown: "Oops, something went wrong. Please try again.",
@@ -115,17 +120,17 @@ export const en: Dictionary = {
   teaser: {
     hint: "Swipe, tap Pass or Like, or use the arrow keys. Demonstration plates.",
     gateLabel: "App waitlist gate",
-    gateTitle: "Join the waitlist",
+    gateTitle: "Claim early access",
     gateBody:
-      "The live closet is not public yet. Leave your details and we will write when it opens.",
+      "The live closet is not public yet. Leave your email and we will write when it opens.",
     comingSoon: "Coming soon",
   },
   jsonLd: {
-    slogan: "Keep the selling price. Or hand us the closet.",
+    slogan: "Sell your closet. 0% commission.",
     waitlistName: "Thrift It waitlist",
     waitlistDescription:
       "Waitlist for pre-loved luxury in Dubai. Self-list at 0% seller commission, 48-hour inspect-at-home escrow after delivery, and flat AED 20 UAE shipping when the closet opens.",
-    offerName: "Join the waitlist",
+    offerName: "Claim early access",
     inspectName: "48-hour inspect-at-home",
     inspectDescription:
       "After delivery, payment stays in escrow for 48 hours. If no dispute is opened, funds release to the seller.",

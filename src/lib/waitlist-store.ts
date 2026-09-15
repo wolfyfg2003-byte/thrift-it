@@ -26,7 +26,7 @@ export function readWaitlist(): WaitlistEntry | null {
   }
 }
 
-export function saveWaitlist(email: string, mobile: string): WaitlistEntry {
+export function saveWaitlist(email: string, mobile = ""): WaitlistEntry {
   const entry: WaitlistEntry = {
     email: email.trim().toLowerCase(),
     mobile,

@@ -2,7 +2,7 @@ import { Footer } from "@/components/web/Footer";
 import { Header } from "@/components/web/Header";
 import { getDictionary } from "@/lib/i18n";
 import { getRequestLocale } from "@/lib/i18n/server";
-import { sendMetaCapiEvent } from "@/lib/meta-capi";
+import { captureMetaCapiVisitor, sendMetaCapiEvent } from "@/lib/meta-capi";
 import { after } from "next/server";
 
 export default async function WebLayout({
@@ -12,17 +12,21 @@ export default async function WebLayout({
 }>) {
   const locale = await getRequestLocale();
   const dictionary = getDictionary(locale);
+  const visitor = await captureMetaCapiVisitor();
   after(() =>
-    sendMetaCapiEvent({
-      eventName: "PageView",
-      eventId: crypto.randomUUID(),
-    }),
+    sendMetaCapiEvent(
+      {
+        eventName: "PageView",
+        eventId: crypto.randomUUID(),
+      },
+      visitor,
+    ),
   );
 
   return (
     <>
       <Header locale={locale} t={dictionary} />
-      <div id="main-content" className="pt-[6.5rem] lg:pt-[4.75rem]">
+      <div id="main-content" className="pt-[4.25rem] lg:pt-[4.75rem]">
         {children}
       </div>
       <Footer />

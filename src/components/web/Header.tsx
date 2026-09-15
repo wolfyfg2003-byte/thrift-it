@@ -68,21 +68,6 @@ export function Header({ locale, t }: HeaderProps) {
             </Link>
           </div>
         </div>
-        <nav
-          aria-label={t.nav.onPage}
-          className="flex h-9 items-center justify-center gap-8 border-t border-[#2A1A14] font-[family-name:var(--font-typewriter)] text-[12px] lg:hidden"
-        >
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[#6B4A3A] transition-colors duration-200 hover:text-[#2A1A14]"
-              style={{ transitionTimingFunction: EASE }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
       </header>
     </div>
   );

@@ -4,7 +4,6 @@ import { isProduction } from "@/lib/env";
 import { sendMetaCapiEvent } from "@/lib/meta-capi";
 import { isValidEmail } from "@/lib/waitlist-store";
 import { createThriftAdminClient } from "@/lib/supabase/admin";
-import { after } from "next/server";
 
 export type WaitlistError = "already_registered" | "unknown";
 
@@ -37,14 +36,12 @@ export async function addToWaitlist(
 
     if (!error) {
       const eventId = crypto.randomUUID();
-      after(() =>
-        sendMetaCapiEvent({
-          eventName: "Lead",
-          eventId,
-          email: normalizedEmail,
-          phone: normalizedPhone,
-        }),
-      );
+      await sendMetaCapiEvent({
+        eventName: "Lead",
+        eventId,
+        email: normalizedEmail,
+        phone: normalizedPhone,
+      });
       return { success: true, eventId };
     }
 

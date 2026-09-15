@@ -1,3 +1,4 @@
+import { TapedPanel } from "@/components/brand/WashiTape";
 import { TeaserDeck } from "@/components/mobile/TeaserDeck";
 import { Accordion } from "@/components/web/Accordion";
 import { PhoneFrame } from "@/components/web/PhoneFrame";
@@ -13,7 +14,27 @@ type LandingSectionsProps = {
 export function LandingSections({ deck, locale, t }: LandingSectionsProps) {
   return (
     <div className="mx-auto w-full max-w-[72rem] py-16 lg:px-8">
-      <section id="how-it-works" className="scroll-mt-28 lg:scroll-mt-24">
+      <section className="px-5 lg:px-0">
+        <TapedPanel className="px-6 py-6">
+          <p className="font-[family-name:var(--font-handwritten)] text-[40px] leading-none text-[#2A1A14]">
+            {t.home.zero}
+          </p>
+          <p className="mt-3 max-w-[36ch] text-[16px] leading-6 text-[#6B4A3A]">
+            {t.home.zeroBody}
+          </p>
+          <p className="mt-3 font-[family-name:var(--font-typewriter)] text-[12px] leading-4 text-[#6B4A3A]">
+            {t.home.proofLine}
+          </p>
+        </TapedPanel>
+        <p className="mt-8 font-[family-name:var(--font-typewriter)] text-[20px] leading-7 text-[#2A1A14]">
+          {t.home.vipTitle}
+        </p>
+        <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
+          {t.home.vipBody}
+        </p>
+      </section>
+
+      <section id="how-it-works" className="mt-16 scroll-mt-28 lg:scroll-mt-24">
         <div className="px-5 lg:px-0">
           <h2 className="text-[20px] leading-7 text-[#2A1A14]">
             {t.how.title}

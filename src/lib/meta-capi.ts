@@ -3,8 +3,6 @@ import { cookies, headers } from "next/headers";
 import { META_PIXEL_ID } from "@/lib/meta-pixel";
 import { SITE_URL } from "@/lib/seo";
 
-type CapiEventName = "PageView" | "Lead";
-
 type CapiLeadInput = {
   eventName: "Lead";
   eventId: string;
@@ -15,6 +13,14 @@ type CapiLeadInput = {
 type CapiPageViewInput = {
   eventName: "PageView";
   eventId: string;
+};
+
+export type MetaCapiVisitor = {
+  ip?: string;
+  userAgent?: string;
+  fbp?: string;
+  fbc?: string;
+  sourceUrl: string;
 };
 
 function sha256(value: string): string {
@@ -36,13 +42,7 @@ function hashPhone(phone: string): string | null {
   return sha256(e164);
 }
 
-async function visitorContext(): Promise<{
-  ip?: string;
-  userAgent?: string;
-  fbp?: string;
-  fbc?: string;
-  sourceUrl: string;
-}> {
+async function visitorContext(): Promise<MetaCapiVisitor> {
   const headerList = await headers();
   const jar = await cookies();
   const forwarded = headerList.get("x-forwarded-for");
@@ -57,19 +57,29 @@ async function visitorContext(): Promise<{
   };
 }
 
+export async function captureMetaCapiVisitor(): Promise<MetaCapiVisitor | undefined> {
+  try {
+    return await visitorContext();
+  } catch {
+    return undefined;
+  }
+}
+
 /** Browser pixel is not enough for Ads Manager “active”. Server events need META_CAPI_ACCESS_TOKEN. */
 export async function sendMetaCapiEvent(
   input: CapiLeadInput | CapiPageViewInput,
+  visitor?: MetaCapiVisitor,
 ): Promise<void> {
   const token = accessToken();
   if (!token || !META_PIXEL_ID) return;
 
-  const visitor = await visitorContext();
+  const resolved = visitor ?? (await captureMetaCapiVisitor());
+  const sourceUrl = resolved?.sourceUrl ?? `${SITE_URL}/`;
   const userData: Record<string, string | string[]> = {};
-  if (visitor.ip) userData.client_ip_address = visitor.ip;
-  if (visitor.userAgent) userData.client_user_agent = visitor.userAgent;
-  if (visitor.fbp) userData.fbp = visitor.fbp;
-  if (visitor.fbc) userData.fbc = visitor.fbc;
+  if (resolved?.ip) userData.client_ip_address = resolved.ip;
+  if (resolved?.userAgent) userData.client_user_agent = resolved.userAgent;
+  if (resolved?.fbp) userData.fbp = resolved.fbp;
+  if (resolved?.fbc) userData.fbc = resolved.fbc;
 
   if (input.eventName === "Lead") {
     userData.em = [hashEmail(input.email)];
@@ -84,7 +94,7 @@ export async function sendMetaCapiEvent(
         event_time: Math.floor(Date.now() / 1000),
         event_id: input.eventId,
         action_source: "website",
-        event_source_url: visitor.sourceUrl,
+        event_source_url: sourceUrl,
         user_data: userData,
         custom_data:
           input.eventName === "Lead"
@@ -100,7 +110,7 @@ export async function sendMetaCapiEvent(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(2500),
+      signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) {
       console.error("meta capi failed", response.status);
