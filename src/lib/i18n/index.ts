@@ -19,3 +19,8 @@ export function localePath(locale: Locale, hash?: string): string {
 export function localeHome(locale: Locale): string {
   return locale === "ar" ? "/ar" : "/";
 }
+
+export function localePage(locale: Locale, path: string): string {
+  const slug = path.replace(/^\//, "");
+  return locale === "ar" ? `/ar/${slug}` : `/${slug}`;
+}

@@ -25,13 +25,15 @@ export function LandingSections({ deck, locale, t }: LandingSectionsProps) {
           <p className="mt-3 font-[family-name:var(--font-typewriter)] text-[12px] leading-4 text-[#6B4A3A]">
             {t.home.proofLine}
           </p>
+          <div className="mt-5 border-t border-[#2A1A14] pt-4">
+            <p className="text-[16px] leading-6 font-semibold tracking-[-0.01em] text-[#2A1A14]">
+              {t.home.vipTitle}
+            </p>
+            <p className="mt-2 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
+              {t.home.vipBody}
+            </p>
+          </div>
         </TapedPanel>
-        <p className="mt-8 font-[family-name:var(--font-typewriter)] text-[20px] leading-7 text-[#2A1A14]">
-          {t.home.vipTitle}
-        </p>
-        <p className="mt-3 max-w-[40ch] text-[16px] leading-6 text-[#6B4A3A]">
-          {t.home.vipBody}
-        </p>
       </section>
 
       <section id="how-it-works" className="mt-16 scroll-mt-28 lg:scroll-mt-24">

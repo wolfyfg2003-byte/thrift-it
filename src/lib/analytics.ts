@@ -23,3 +23,11 @@ export function trackWaitlist(
     trackMetaLead(surface, eventId);
   }
 }
+
+export function trackInstagramFollow(): void {
+  track("instagram_follow", { locale: currentLocale() });
+  if (typeof window === "undefined" || typeof window.fbq !== "function") {
+    return;
+  }
+  window.fbq("trackCustom", "InstagramFollow");
+}

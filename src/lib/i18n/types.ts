@@ -54,6 +54,13 @@ export type Dictionary = {
     emailError: string;
     mobileError: string;
   };
+  welcome: {
+    stamp: string;
+    title: string;
+    lede: string;
+    cta: string;
+    handle: string;
+  };
   how: {
     title: string;
     tryTitle: string;

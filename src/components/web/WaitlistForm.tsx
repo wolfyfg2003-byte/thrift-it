@@ -2,12 +2,12 @@
 
 import { addToWaitlist } from "@/app/actions/waitlist";
 import { trackWaitlist } from "@/lib/analytics";
-import type { Dictionary } from "@/lib/i18n";
+import { localePage, type Dictionary } from "@/lib/i18n";
 import {
   isValidEmail,
   saveWaitlist,
-  type WaitlistEntry,
 } from "@/lib/waitlist-store";
+import { useRouter } from "next/navigation";
 import { useId, useState, useTransition, type FormEvent } from "react";
 
 const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
@@ -20,9 +20,9 @@ type WaitlistFormProps = {
 
 export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
   const emailId = useId();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | undefined>();
-  const [joined, setJoined] = useState<WaitlistEntry | null>(null);
   const [formError, setFormError] = useState<"already_registered" | "unknown" | null>(
     null,
   );
@@ -40,13 +40,21 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
 
     startTransition(async () => {
       const result = await addToWaitlist(email);
+      const welcome = localePage(
+        document.documentElement.lang.startsWith("ar") ? "ar" : "en",
+        "welcome",
+      );
       if (result.success) {
         trackWaitlist("join", variant, result.eventId);
-        setJoined(saveWaitlist(email));
+        saveWaitlist(email);
+        router.push(welcome);
         return;
       }
       if (result.error === "already_registered") {
         trackWaitlist("already", variant);
+        saveWaitlist(email);
+        router.push(welcome);
+        return;
       }
       setFormError(result.error);
     });
@@ -56,14 +64,6 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
 
   return (
     <form onSubmit={onSubmit} noValidate>
-      {joined ? (
-        <p
-          className="mb-4 font-[family-name:var(--font-typewriter)] text-[16px] text-[#2A1A14] lg:text-[20px]"
-          role="status"
-        >
-          {t.form.joined}
-        </p>
-      ) : null}
       <div>
         <label
           htmlFor={emailId}
@@ -120,11 +120,9 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
       >
         {isPending ? t.form.pending : t.form.submit}
       </button>
-      {!joined ? (
-        <p className="mt-2.5 text-[12px] leading-4 text-[#6B4A3A]">
+      <p className="mt-2.5 text-[12px] leading-4 text-[#6B4A3A]">
           {t.form.hint}
         </p>
-      ) : null}
     </form>
   );
 }

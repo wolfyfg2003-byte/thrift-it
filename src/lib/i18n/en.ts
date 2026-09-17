@@ -42,9 +42,9 @@ export const en: Dictionary = {
     zero: "0%",
     zeroBody:
       "Seller commission on self-listed sales. You photograph, you price, you keep 100% of the selling price.",
-    vipTitle: "50% VIP Managed Consignment",
+    vipTitle: "We shoot it. 50/50.",
     vipBody:
-      "Closet Detox is 50/50. We pick up, photograph, list, and store. The sale splits once it clears 48-hour escrow — for wardrobes you will not shoot yourself.",
+      "Closet Detox is the other door: pickup, photos, listing, storage. You keep half after 48-hour escrow. Photograph it yourself and you still keep every dirham.",
     saleWorks: "How a sale works",
     saleDemo: "Sale demonstration",
   },
@@ -60,6 +60,13 @@ export const en: Dictionary = {
     unknown: "Oops, something went wrong. Please try again.",
     emailError: "Enter an email we can reach when the closet opens.",
     mobileError: "Enter a UAE mobile number after +971.",
+  },
+  welcome: {
+    stamp: "On the list",
+    title: "You’re in.",
+    lede: "We’ll email when the closet opens. Follow @thriftitae so the note doesn’t land in a quiet inbox.",
+    cta: "Follow @thriftitae",
+    handle: "@thriftitae",
   },
   how: {
     title: "How It Works",
