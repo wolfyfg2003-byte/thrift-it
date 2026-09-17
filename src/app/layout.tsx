@@ -1,3 +1,5 @@
+import { Clarity } from "@/components/web/Clarity";
+import { ClarityHead } from "@/components/web/ClarityHead";
 import { HtmlDirSync } from "@/components/i18n/HtmlDirSync";
 import { MetaPixel } from "@/components/web/MetaPixel";
 import { MetaPixelHead } from "@/components/web/MetaPixelHead";
@@ -87,7 +89,14 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${grotesk.variable} ${alfa.variable} ${elite.variable} ${architect.variable} ${amiri.variable} ${plexArabic.variable}`}
     >
-      <head>{onWebsite ? <MetaPixelHead /> : null}</head>
+      <head>
+        {onWebsite ? (
+          <>
+            <MetaPixelHead />
+            <ClarityHead />
+          </>
+        ) : null}
+      </head>
       <body className="min-h-dvh bg-[#F9F6F0] text-[#2A1A14] antialiased">
         {/*
           THESIS: Thrift It is a cut-and-paste closet, not a SaaS feed — Polaroids, ransom type, and escrow stamps.
@@ -100,6 +109,7 @@ export default async function RootLayout({
         <HtmlDirSync />
         {children}
         {onWebsite ? <MetaPixel /> : null}
+        {onWebsite ? <Clarity /> : null}
         <Analytics />
       </body>
     </html>

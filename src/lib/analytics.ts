@@ -1,4 +1,5 @@
 import { track } from "@vercel/analytics";
+import { trackClarityEvent } from "@/lib/clarity";
 import type { Locale } from "@/lib/i18n";
 import { trackMetaLead } from "@/lib/meta-pixel";
 
@@ -19,6 +20,7 @@ export function trackWaitlist(
     locale: currentLocale(),
     surface,
   });
+  trackClarityEvent(outcome === "join" ? "waitlist_join" : "waitlist_already");
   if (outcome === "join") {
     trackMetaLead(surface, eventId);
   }
@@ -26,6 +28,7 @@ export function trackWaitlist(
 
 export function trackInstagramFollow(): void {
   track("instagram_follow", { locale: currentLocale() });
+  trackClarityEvent("instagram_follow");
   if (typeof window === "undefined" || typeof window.fbq !== "function") {
     return;
   }

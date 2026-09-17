@@ -88,6 +88,7 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
             setEmailError(undefined);
             setFormError(null);
           }}
+          data-clarity-mask="true"
           className="mt-1.5 h-12 w-full border bg-[#F9F6F0] px-4 text-[16px] text-[#2A1A14] outline-none placeholder:text-[#6B4A3A] focus:border-[#4B6584] disabled:opacity-60"
           style={{ borderColor: emailError ? "#8B3A32" : LINE }}
         />
