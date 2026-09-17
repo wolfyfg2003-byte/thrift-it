@@ -1,7 +1,10 @@
 "use client";
 
 import { WashiTape } from "@/components/brand/WashiTape";
-import { trackInstagramFollow } from "@/lib/analytics";
+import {
+  InstagramFollowLink,
+  InstagramGlyph,
+} from "@/components/web/InstagramFollowLink";
 import type { Dictionary } from "@/lib/i18n";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -10,7 +13,6 @@ import { useRef } from "react";
 gsap.registerPlugin(useGSAP);
 
 const EXPO = "expo.out";
-export const INSTAGRAM_URL = "https://www.instagram.com/thriftitae/";
 
 type WelcomeSceneProps = {
   t: Dictionary;
@@ -146,17 +148,14 @@ export function WelcomeScene({ t }: WelcomeSceneProps) {
       >
         {copy.lede}
       </p>
-      <a
+      <InstagramFollowLink
         data-welcome-copy=""
         data-welcome-cta=""
-        href={INSTAGRAM_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => trackInstagramFollow()}
-        className="welcome-follow mt-6 flex h-14 w-full items-center justify-center border border-[#2A1A14] bg-[#2A1A14] text-[16px] font-semibold tracking-[-0.01em] text-[#F4EFE6]"
+        className="welcome-follow mt-6 flex h-14 w-full items-center justify-center gap-2.5 border border-[#2A1A14] bg-[#2A1A14] text-[16px] font-semibold tracking-[-0.01em] text-[#F9F6F0]"
       >
+        <InstagramGlyph />
         {copy.cta}
-      </a>
+      </InstagramFollowLink>
     </main>
   );
 }

@@ -64,7 +64,7 @@ export const ar: Dictionary = {
   welcome: {
     stamp: "على القائمة",
     title: "تمّت.",
-    lede: "نكتب لكِ عند فتح الخزانة. تابعي @thriftitae حتى لا تضيع الرسالة في صندوق هادئ.",
+    lede: "نعلن إسقاطات البائعات المبكرة ودعوات البيتا حصراً على إنستغرام.",
     cta: "تابعي @thriftitae",
     handle: "@thriftitae",
   },

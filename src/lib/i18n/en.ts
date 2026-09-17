@@ -64,7 +64,7 @@ export const en: Dictionary = {
   welcome: {
     stamp: "On the list",
     title: "You’re in.",
-    lede: "We’ll email when the closet opens. Follow @thriftitae so the note doesn’t land in a quiet inbox.",
+    lede: "We announce early seller drops and beta invites exclusively on IG.",
     cta: "Follow @thriftitae",
     handle: "@thriftitae",
   },

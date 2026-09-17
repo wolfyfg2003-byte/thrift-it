@@ -1,5 +1,6 @@
 import { LanguageToggle } from "@/components/web/LanguageToggle";
 import { RansomLogo } from "@/components/brand/RansomLogo";
+import { InstagramFollowLink } from "@/components/web/InstagramFollowLink";
 import type { Dictionary, Locale } from "@/lib/i18n";
 import { localeHome, localePath } from "@/lib/i18n";
 import Link from "next/link";
@@ -9,9 +10,10 @@ const EASE = "cubic-bezier(0.19, 1, 0.22, 1)";
 type HeaderProps = {
   locale: Locale;
   t: Dictionary;
+  onWelcome?: boolean;
 };
 
-export function Header({ locale, t }: HeaderProps) {
+export function Header({ locale, t, onWelcome = false }: HeaderProps) {
   const links = [
     { href: localePath(locale, "how-it-works"), label: t.nav.how },
     { href: localePath(locale, "the-tech"), label: t.nav.tech },
@@ -59,13 +61,22 @@ export function Header({ locale, t }: HeaderProps) {
               </a>
             </div>
             <LanguageToggle locale={locale} t={t} />
-            <Link
-              href={localePath(locale, "waitlist")}
-              className="border border-[#2A1A14] bg-[#D8829D] px-3 py-2 text-[12px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] lg:px-5 lg:py-2.5 lg:text-[14px]"
-              style={{ transitionTimingFunction: EASE }}
-            >
-              {t.nav.waitlist}
-            </Link>
+            {onWelcome ? (
+              <InstagramFollowLink
+                dir="ltr"
+                className="border border-[#2A1A14] bg-[#D8829D] px-3 py-2 text-[12px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] lg:px-5 lg:py-2.5 lg:text-[14px]"
+              >
+                {t.welcome.handle}
+              </InstagramFollowLink>
+            ) : (
+              <Link
+                href={localePath(locale, "waitlist")}
+                className="border border-[#2A1A14] bg-[#D8829D] px-3 py-2 text-[12px] font-semibold tracking-[-0.01em] text-[#2A1A14] shadow-[3px_3px_0_0_#2A1A14] lg:px-5 lg:py-2.5 lg:text-[14px]"
+                style={{ transitionTimingFunction: EASE }}
+              >
+                {t.nav.waitlist}
+              </Link>
+            )}
           </div>
         </div>
       </header>
