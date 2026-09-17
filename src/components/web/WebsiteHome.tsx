@@ -17,11 +17,11 @@ export function WebsiteHome({ locale, t }: WebsiteHomeProps) {
   return (
     <main className="min-h-dvh w-full bg-[#F9F6F0]">
       <JsonLd locale={locale} />
-      <div className="mx-auto grid w-full max-w-[72rem] grid-cols-1 items-stretch gap-10 px-0 py-8 lg:grid-cols-2 lg:gap-10 lg:px-8 lg:py-12">
-        <div className="order-2 lg:order-1">
+      <div className="mx-auto grid w-full max-w-[72rem] grid-cols-1 items-stretch gap-8 px-0 py-5 lg:grid-cols-2 lg:gap-10 lg:px-8 lg:py-12">
+        <div>
           <HomeEditorial t={t} />
         </div>
-        <div className="order-1 lg:order-2">
+        <div>
           <p className="mb-4 px-5 text-center font-[family-name:var(--font-handwritten)] text-[14px] text-[#6B4A3A] lg:px-0">
             {t.home.saleWorks}
           </p>

@@ -31,8 +31,8 @@ export const en: Dictionary = {
     ar: "عربي",
   },
   home: {
-    hero: "Sell your closet. 0% commission.",
-    lede: "Pre-loved fashion in Dubai. You photograph, you price, you keep every dirham.",
+    hero: "Sell your pre-loved fashion. 0% commission.",
+    lede: "Turn your closet into cash in Dubai. You photograph, you price, you keep every dirham.",
     brands:
       "From closets like Zimmermann, Self-Portrait, House of CB, and Rat & Boa.",
     proofLine: "48-hour inspect-at-home · Flat AED 20 UAE shipping",
@@ -45,14 +45,14 @@ export const en: Dictionary = {
     vipTitle: "We shoot it. 50/50.",
     vipBody:
       "Closet Detox is the other door: pickup, photos, listing, storage. You keep half after 48-hour escrow. Photograph it yourself and you still keep every dirham.",
-    saleWorks: "How a sale works",
+    saleWorks: "See how it works",
     saleDemo: "Sale demonstration",
   },
   form: {
     email: "Email",
     emailPlaceholder: "you@email.com",
     mobile: "UAE mobile",
-    submit: "Claim early access",
+    submit: "Get early access",
     pending: "Securing your spot...",
     hint: "We’ll email when the closet opens. No spam.",
     joined: "You’re on the list. We’ll write when the closet opens.",
@@ -133,11 +133,11 @@ export const en: Dictionary = {
     comingSoon: "Coming soon",
   },
   jsonLd: {
-    slogan: "Sell your closet. 0% commission.",
+    slogan: "Sell your pre-loved fashion. 0% commission.",
     waitlistName: "Thrift It waitlist",
     waitlistDescription:
       "Waitlist for pre-loved luxury in Dubai. Self-list at 0% seller commission, 48-hour inspect-at-home escrow after delivery, and flat AED 20 UAE shipping when the closet opens.",
-    offerName: "Claim early access",
+    offerName: "Get early access",
     inspectName: "48-hour inspect-at-home",
     inspectDescription:
       "After delivery, payment stays in escrow for 48 hours. If no dispute is opened, funds release to the seller.",

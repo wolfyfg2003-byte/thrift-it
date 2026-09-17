@@ -7,7 +7,7 @@ type HomeEditorialProps = {
 
 export function HomeEditorial({ t }: HomeEditorialProps) {
   return (
-    <section className="flex flex-col justify-center px-5 pt-4 lg:px-0 lg:pt-0">
+    <section className="flex flex-col justify-center px-5 pt-2 lg:px-0 lg:pt-0">
       <h1 className="max-w-[18ch] text-[28px] leading-[1.08] text-[#2A1A14] rtl:max-w-[22ch] rtl:leading-[1.35] lg:text-[32px]">
         {t.home.hero}
       </h1>
