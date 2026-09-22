@@ -106,45 +106,32 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
         >
           {t.form.email}
         </label>
-        <div
-          className={`mt-1.5 border bg-[#F9F6F0] ${flash ? "waitlist-flash" : ""}`}
+        <input
+          ref={inputRef}
+          id={fieldId}
+          name="email"
+          type="text"
+          dir="ltr"
+          autoComplete="email"
+          inputMode="email"
+          enterKeyHint="go"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          placeholder={t.form.emailPlaceholder}
+          value={email}
+          aria-invalid={emailError ? true : undefined}
+          aria-describedby={emailError ? `${fieldId}-error` : undefined}
+          disabled={isPending}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setEmailError(undefined);
+            setFormError(null);
+          }}
+          data-clarity-mask="true"
+          className={`mt-1.5 h-12 w-full border bg-[#F9F6F0] px-4 text-[16px] text-[#2A1A14] outline-none placeholder:text-[#6B4A3A] focus:border-[#4B6584] disabled:opacity-60 ${flash ? "waitlist-flash" : ""}`}
           style={{ borderColor: ink }}
-        >
-          <input
-            ref={inputRef}
-            id={fieldId}
-            name="email"
-            type="text"
-            dir="ltr"
-            autoComplete="email"
-            inputMode="email"
-            enterKeyHint="go"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            placeholder={t.form.emailPlaceholder}
-            value={email}
-            aria-invalid={emailError ? true : undefined}
-            aria-describedby={emailError ? `${fieldId}-error` : undefined}
-            disabled={isPending}
-            onChange={(event) => {
-              setEmail(event.target.value);
-              setEmailError(undefined);
-              setFormError(null);
-            }}
-            data-clarity-mask="true"
-            className="h-12 w-full border-0 bg-transparent px-4 text-[16px] text-[#2A1A14] outline-none placeholder:text-[#6B4A3A] disabled:opacity-60"
-          />
-          <button
-            ref={buttonRef}
-            type={isValidEmail(email) ? "submit" : "button"}
-            disabled={isPending}
-            className={`${compact ? "h-12" : "h-14"} flex w-full items-center justify-center border-t bg-[#2A1A14] text-[16px] font-semibold tracking-[-0.01em] text-[#F4EFE6] disabled:opacity-70`}
-            style={{ borderColor: ink, transitionTimingFunction: EASE }}
-          >
-            {isPending ? t.form.pending : t.form.submit}
-          </button>
-        </div>
+        />
         {emailError ? (
           <p
             id={`${fieldId}-error`}
@@ -154,6 +141,15 @@ export function WaitlistForm({ variant = "page", t }: WaitlistFormProps) {
             {emailError}
           </p>
         ) : null}
+        <button
+          ref={buttonRef}
+          type={isValidEmail(email) ? "submit" : "button"}
+          disabled={isPending}
+          className={`${compact ? "mt-3 h-12" : "mt-4 h-14"} flex w-full items-center justify-center border border-[#2A1A14] bg-[#2A1A14] text-[16px] font-semibold tracking-[-0.01em] text-[#F4EFE6] shadow-[4px_4px_0_0_#D8829D] disabled:opacity-70`}
+          style={{ transitionTimingFunction: EASE }}
+        >
+          {isPending ? t.form.pending : t.form.submit}
+        </button>
       </div>
 
       {formError === "already_registered" ? (
