@@ -40,6 +40,7 @@ export type Dictionary = {
     vipBody: string;
     saleWorks: string;
     saleDemo: string;
+    previewBadge: string;
   };
   form: {
     email: string;

@@ -462,6 +462,29 @@ details[open] [data-stem] {
   animation: floor-lock-shake 380ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+@keyframes waitlist-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.waitlist-nudge {
+  animation: waitlist-nudge 400ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.waitlist-flash {
+  box-shadow: 0 0 0 2px #8b3a32;
+}
+
 @keyframes welcome-boot-mark {
   from {
     opacity: 0.2;

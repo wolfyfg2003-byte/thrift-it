@@ -25,7 +25,7 @@ export function WebsiteHome({ locale, t }: WebsiteHomeProps) {
           <p className="mb-4 px-5 text-center font-[family-name:var(--font-handwritten)] text-[14px] text-[#6B4A3A] lg:px-0">
             {t.home.saleWorks}
           </p>
-          <PhoneFrame label={t.home.saleDemo}>
+          <PhoneFrame label={t.home.saleDemo} preview badge={t.home.previewBadge}>
             <TeaserPipeline key={locale} />
           </PhoneFrame>
         </div>

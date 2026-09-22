@@ -15,6 +15,7 @@ export default async function WebLayout({
   const dictionary = getDictionary(locale);
   const pathname = (await headers()).get("x-pathname") ?? "/";
   const onWelcome = /(?:^|\/)welcome\/?$/.test(pathname);
+  const onHome = pathname === "/" || pathname === "/ar" || pathname === "/ar/";
   const visitor = await captureMetaCapiVisitor();
   after(() =>
     sendMetaCapiEvent(
@@ -28,7 +29,7 @@ export default async function WebLayout({
 
   return (
     <>
-      <Header locale={locale} t={dictionary} onWelcome={onWelcome} />
+      <Header locale={locale} t={dictionary} onWelcome={onWelcome} onHome={onHome} />
       <div id="main-content" className="pt-[4.25rem] lg:pt-[4.75rem]">
         {children}
       </div>

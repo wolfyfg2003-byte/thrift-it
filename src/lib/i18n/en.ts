@@ -47,10 +47,11 @@ export const en: Dictionary = {
       "Closet Detox is the other door: pickup, photos, listing, storage. You keep half after 48-hour escrow. Photograph it yourself and you still keep every dirham.",
     saleWorks: "See how it works",
     saleDemo: "Sale demonstration",
+    previewBadge: "Preview only — the closet is not live yet",
   },
   form: {
     email: "Email",
-    emailPlaceholder: "you@email.com",
+    emailPlaceholder: "Your email",
     mobile: "UAE mobile",
     submit: "Get early access",
     pending: "Securing your spot...",
@@ -58,7 +59,7 @@ export const en: Dictionary = {
     joined: "You’re on the list. We’ll write when the closet opens.",
     already: "You’re already on the waitlist.",
     unknown: "Oops, something went wrong. Please try again.",
-    emailError: "Enter an email we can reach when the closet opens.",
+    emailError: "Type your email, then tap Get early access.",
     mobileError: "Enter a UAE mobile number after +971.",
   },
   welcome: {
