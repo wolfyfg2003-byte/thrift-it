@@ -1,6 +1,7 @@
 import { Accordion } from "@/components/web/Accordion";
 import { getDictionary } from "@/lib/i18n";
 import { getRequestLocale } from "@/lib/i18n/server";
+import Link from "next/link";
 
 export async function Footer() {
   const t = getDictionary(await getRequestLocale());
@@ -19,6 +20,20 @@ export async function Footer() {
         <p className="mt-12 font-[family-name:var(--font-handwritten)] text-[14px] leading-4 text-[#6B4A3A] lg:mt-16">
           {t.footer.mark}
         </p>
+        <nav
+          aria-label="Legal"
+          className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#C9B8A4] pt-6 font-[family-name:var(--font-typewriter)] text-[12px] uppercase tracking-[0.12em] text-[#6B4A3A]"
+        >
+          <Link href="/privacy" className="underline decoration-transparent transition-colors hover:text-[#2A1A14] hover:decoration-[#2A1A14]">
+            Privacy
+          </Link>
+          <Link href="/terms" className="underline decoration-transparent transition-colors hover:text-[#2A1A14] hover:decoration-[#2A1A14]">
+            Terms
+          </Link>
+          <Link href="/support" className="underline decoration-transparent transition-colors hover:text-[#2A1A14] hover:decoration-[#2A1A14]">
+            Support
+          </Link>
+        </nav>
       </div>
     </footer>
   );

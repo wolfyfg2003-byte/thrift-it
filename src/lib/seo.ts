@@ -26,7 +26,7 @@ const APP_INDEX_BLOCK = [
 export const ROBOTS_DISALLOW = [...APP_INDEX_BLOCK];
 
 /** Public waitlist landers Google should crawl. App and demo routes stay out. */
-export const ROBOTS_ALLOW = ["/", "/ar", "/llms.txt"] as const;
+export const ROBOTS_ALLOW = ["/", "/ar", "/privacy", "/terms", "/support", "/llms.txt"] as const;
 
 const HREFLANG = {
   "en-AE": "/",
@@ -107,6 +107,12 @@ export const rootMetadata: Metadata = {
   description: enMeta.description,
   keywords: enMeta.keywords,
   applicationName: SITE_NAME,
+  /* Home-screen install: full-screen, own icon, no Safari chrome. */
+  appleWebApp: {
+    capable: true,
+    title: SITE_NAME,
+    statusBarStyle: "default",
+  },
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
