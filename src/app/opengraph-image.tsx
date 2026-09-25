@@ -99,7 +99,7 @@ export default function OpenGraphImage() {
                 fontSize: 22,
               }}
             >
-              48-hour inspect-at-home · AED 20 shipping
+              48-hour inspect-at-home · AED 25 shipping
             </div>
           </div>
         </div>

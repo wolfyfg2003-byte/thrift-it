@@ -167,7 +167,7 @@ type JsonLdNode = Record<string, unknown>;
 
 /**
  * LocalBusiness + Product graph for the waitlist site.
- * Claims match on-page copy only: waitlist, 0% self-list, 48-hour inspect, AED 20 UAE shipping.
+ * Claims match on-page copy only: waitlist, 0% self-list, 48-hour inspect, AED 25 UAE shipping.
  */
 export function waitlistJsonLd(locale: Locale = "en"): JsonLdNode {
   const t = getDictionary(locale);
@@ -255,7 +255,7 @@ export function waitlistJsonLd(locale: Locale = "en"): JsonLdNode {
         name: t.jsonLd.shippingName,
         shippingRate: {
           "@type": "MonetaryAmount",
-          value: "20",
+          value: "25",
           currency: "AED",
         },
         shippingDestination: {

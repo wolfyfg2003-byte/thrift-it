@@ -17,9 +17,16 @@ export default function SupportPage() {
         Open a dispute from the invoice in the app within 48 hours of
         delivery. If the app cannot send it, write to us with the slip number.
       </p>
+      <h2>Courier</h2>
+      <p>
+        Buyers pay a flat AED 25 for a city UAE job. Allow 2–4 days after the
+        seller marks the piece packed. This is not next-day. If a parcel is
+        stuck, email support@thrifit.ae with the tracking link from the
+        invoice.
+      </p>
       <h2>Accounts</h2>
       <p>
-        Delete my rail lives in Settings. If that fails, email from the
+        Delete my profile lives in Settings. If that fails, email from the
         address on the account and we will close it.
       </p>
       <h2>Report a closet</h2>

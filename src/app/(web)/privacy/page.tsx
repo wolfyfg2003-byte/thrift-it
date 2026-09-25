@@ -11,7 +11,7 @@ export default function PrivacyPage() {
     <LegalDoc title="Privacy Policy" kicker="Thrift It · Dubai">
       <p>
         Thrift It is a Dubai closet marketplace. This page is the privacy policy
-        for the iOS app and thrifit.ae. Last updated 24 September 2026.
+        for the iOS app and thrifit.ae. Last updated 25 September 2026.
       </p>
       <h2>What we collect</h2>
       <p>
@@ -23,9 +23,8 @@ export default function PrivacyPage() {
         address in the UAE. Chats and offers you send to another closet.
       </p>
       <p>
-        Payments: Stripe processes card and Apple Pay authorizations. We store
-        a payment intent id and hold status. We do not store full card numbers
-        or CVV.
+        Payments: Stripe processes card authorizations. We store a payment
+        intent id and hold status. We do not store full card numbers or CVV.
       </p>
       <h2>Why</h2>
       <p>
@@ -36,12 +35,14 @@ export default function PrivacyPage() {
       <h2>Who else sees it</h2>
       <p>
         Supabase hosts identity and escrow records. Stripe processes holds.
-        The other party on a sale sees what they need to ship or inspect. A
-        report you file is read by support@thrifit.ae.
+        Quiqup collects and delivers the parcel using the pickup and drop-off
+        addresses and phone numbers on the order. The other party on a sale
+        sees what they need to ship or inspect. A report you file is read by
+        support@thrifit.ae.
       </p>
-      <h2>Delete my rail</h2>
+      <h2>Delete my profile</h2>
       <p>
-        In the app: Settings → Delete my rail. That wipes the account and
+        In the app: Settings → Delete my profile. That wipes the account and
         associated profile. You can also email support@thrifit.ae.
       </p>
       <p>

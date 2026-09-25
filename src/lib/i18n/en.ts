@@ -4,7 +4,7 @@ export const en: Dictionary = {
   meta: {
     title: "Thrift It | Pre-loved luxury resale in Dubai",
     description:
-      "Join the Thrift It waitlist for pre-loved luxury in Dubai. Sustainable fashion UAE, 0% commission resale, 48-hour inspect-at-home, AED 20 shipping.",
+      "Join the Thrift It waitlist for pre-loved luxury in Dubai. Sustainable fashion UAE, 0% commission resale, 48-hour inspect-at-home, AED 25 shipping.",
     keywords: [
       "pre-loved luxury Dubai",
       "sustainable fashion UAE",
@@ -13,7 +13,7 @@ export const en: Dictionary = {
       "fashion waitlist Dubai",
       "consignment closet Dubai",
       "inspect at home escrow UAE",
-      "AED 20 fashion shipping UAE",
+      "AED 25 fashion shipping UAE",
     ],
     ogAlt: "Thrift It — pre-loved luxury resale in Dubai. Join the waitlist.",
   },
@@ -35,10 +35,10 @@ export const en: Dictionary = {
     lede: "Turn your closet into cash in Dubai. You photograph, you price, you keep every dirham.",
     brands:
       "From closets like Zimmermann, Self-Portrait, House of CB, and Rat & Boa.",
-    proofLine: "48-hour inspect-at-home · Flat AED 20 UAE shipping",
+    proofLine: "48-hour inspect-at-home · Flat AED 25 UAE shipping",
     benefitCommission: "0% commission on self-listed fashion resale in Dubai.",
     benefitInspect: "48-hour inspect-at-home. Escrow holds until that window closes.",
-    benefitShipping: "Flat AED 20 tracked shipping across the UAE.",
+    benefitShipping: "Flat AED 25 tracked courier. 2–4 days in UAE city areas.",
     zero: "0%",
     zeroBody:
       "Seller commission on self-listed sales. You photograph, you price, you keep 100% of the selling price.",
@@ -82,7 +82,7 @@ export const en: Dictionary = {
       },
       {
         title: "Pay into escrow",
-        body: "Escrow holds the charge. A prepaid courier label is generated. Nothing is a classified meetup.",
+        body: "Escrow holds the charge. A courier collects from the seller and delivers to you. Nothing is a classified meetup.",
       },
       {
         title: "Inspect, then release",
@@ -99,7 +99,7 @@ export const en: Dictionary = {
       },
       {
         title: "Tracked courier",
-        body: "Buyers pay a published flat AED 20. A prepaid label is issued after checkout.",
+        body: "Buyers pay a published flat AED 25. The courier collects from the seller — no label to print. 2–4 days in city areas, longer to remote areas. Not next-day.",
       },
       {
         title: "Two seller doors",
@@ -117,7 +117,7 @@ export const en: Dictionary = {
       },
       {
         title: "Tracked courier",
-        body: "Domestic pickup and tracked delivery across the UAE. Buyers pay a published flat shipping rate; a prepaid label is issued after checkout.",
+        body: "Pickup at the seller and tracked drop-off across the UAE. Buyers pay a flat AED 25. City jobs take 2–4 days. Remote areas take longer and are not in that flat fee.",
       },
       {
         title: "UAE Consumer Protection",
@@ -137,7 +137,7 @@ export const en: Dictionary = {
     slogan: "Sell your pre-loved fashion. 0% commission.",
     waitlistName: "Thrift It waitlist",
     waitlistDescription:
-      "Waitlist for pre-loved luxury in Dubai. Self-list at 0% seller commission, 48-hour inspect-at-home escrow after delivery, and flat AED 20 UAE shipping when the closet opens.",
+      "Waitlist for pre-loved luxury in Dubai. Self-list at 0% seller commission, 48-hour inspect-at-home escrow after delivery, and flat AED 25 UAE shipping when the closet opens.",
     offerName: "Get early access",
     inspectName: "48-hour inspect-at-home",
     inspectDescription:
@@ -154,7 +154,7 @@ export const en: Dictionary = {
       },
       {
         q: "How much is shipping in the UAE?",
-        a: "Buyers pay a published flat AED 20. A prepaid tracked courier label is issued after checkout. Domestic pickup and tracked delivery across the UAE.",
+        a: "Buyers pay a published flat AED 25 for a city UAE job. A courier collects from the seller and delivers to you — no meetup, no label to print. Allow 2–4 days in city areas. Remote areas cost more and can take 3–10 days. This is not next-day delivery.",
       },
     ],
     props: [
@@ -172,7 +172,7 @@ export const en: Dictionary = {
       },
       {
         name: "UAE shipping",
-        value: "Flat AED 20. Prepaid tracked courier label after checkout.",
+        value: "Flat AED 25 in UAE city areas. 2–4 days. Courier collects from the seller.",
       },
     ],
   },
