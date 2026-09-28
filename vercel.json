@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/quiqup/poll",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
